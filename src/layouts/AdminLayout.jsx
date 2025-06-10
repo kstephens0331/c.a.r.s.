@@ -1,39 +1,44 @@
-import { Outlet, useNavigate, Link } from 'react-router-dom';
+import { Outlet, useNavigate, Link, useLocation } from 'react-router-dom'; // Import useLocation
 import { useEffect, useState } from 'react';
 import { supabase } from '../services/supabaseClient.js'; // Ensure this path is correct
 
 export default function AdminLayout() {
   const [session, setSession] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false); // New state to track admin status
-  const [loading, setLoading] = useState(true); // New loading state for auth check
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation(); // Get current location
 
   useEffect(() => {
-    const checkAuthAndAdminStatus = async () => {
+    const checkAuthAndAdminStatus = async (currentSession) => {
       setLoading(true);
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
 
       // DEBUG LOG 1: Initial session data check
       console.log('AdminLayout DEBUG: --- Starting Auth/Admin Check ---');
-      console.log('AdminLayout DEBUG: Session retrieved:', session);
-      console.log('AdminLayout DEBUG: Session error:', sessionError);
+      console.log('AdminLayout DEBUG: Session retrieved:', currentSession);
 
-      if (sessionError || !session) {
-        // No session found, redirect to login
+      if (!currentSession) {
         console.log('AdminLayout DEBUG: No active session, redirecting to /login');
-        navigate('/login');
+        navigate('/login', { replace: true }); // Use replace: true
         setLoading(false);
         return;
       }
+      setSession(currentSession);
 
-      setSession(session);
+      // If the current URL contains access tokens (e.g., after OAuth redirect),
+      // navigate to a clean URL to strip them.
+      if (location.hash.includes('access_token')) {
+        navigate(location.pathname, { replace: true }); // Redirect to current path without hash
+        setLoading(false); // Stop loading while redirecting
+        return;
+      }
 
       // Fetch user profile to check admin status
-      console.log('AdminLayout DEBUG: Attempting to fetch profile for user ID:', session.user.id);
+      console.log('AdminLayout DEBUG: Attempting to fetch profile for user ID:', currentSession.user.id);
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('is_admin')
-        .eq('id', session.user.id)
+        .eq('id', currentSession.user.id)
         .single();
 
       // DEBUG LOG 2: Profile data and error check
@@ -42,14 +47,12 @@ export default function AdminLayout() {
 
       if (profileError) {
         console.error('AdminLayout DEBUG: Error fetching profile:', profileError.message);
-        // If there's an error fetching the profile, treat as unauthorized or redirect
         console.warn('AdminLayout DEBUG: Profile fetch error, redirecting to /portal');
-        navigate('/portal');
+        navigate('/portal', { replace: true }); // Use replace: true
         setIsAdmin(false);
       } else if (!profile || !profile.is_admin) {
-        // User is logged in but profile is missing or is_admin is false
         console.warn('AdminLayout DEBUG: User is NOT an admin. Profile exists:', !!profile, 'is_admin:', profile?.is_admin, 'Redirecting to /portal');
-        navigate('/portal'); // Redirect to customer portal or an unauthorized page
+        navigate('/portal', { replace: true }); // Use replace: true
         setIsAdmin(false);
       } else {
         console.log('AdminLayout DEBUG: User IS an admin. Granting access.');
@@ -59,19 +62,16 @@ export default function AdminLayout() {
       console.log('AdminLayout DEBUG: --- Auth/Admin Check Complete ---');
     };
 
-    checkAuthAndAdminStatus();
+    // Initial session check
+    supabase.auth.getSession().then(({ data: { session }, error }) => {
+      checkAuthAndAdminStatus(session);
+      if (error) console.error("Error getting initial session:", error.message);
+    });
 
-    // Set up auth state change listener for real-time updates/re-checks
+    // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       console.log('AdminLayout DEBUG: Auth state changed event:', _event, 'New session:', session);
-      if (!session) {
-        console.log('AdminLayout DEBUG: Session ended, redirecting to /login');
-        navigate('/login');
-        setIsAdmin(false);
-      } else {
-        // Re-check admin status if session changes (e.g., after login/logout in another tab, or refresh)
-        checkAuthAndAdminStatus();
-      }
+      checkAuthAndAdminStatus(session);
     });
 
     return () => {
@@ -80,12 +80,12 @@ export default function AdminLayout() {
         subscription.unsubscribe();
       }
     };
-  }, [navigate]);
+  }, [navigate, location.hash]); // Re-run effect if hash changes
 
   const handleLogout = async () => {
     console.log('AdminLayout DEBUG: Logging out...');
     await supabase.auth.signOut();
-    navigate('/login');
+    navigate('/login', { replace: true }); // Use replace: true
   };
 
   if (loading) {
@@ -96,11 +96,7 @@ export default function AdminLayout() {
     );
   }
 
-  // If not admin and loading is false, the redirect should have already happened.
-  // This render is only if isAdmin is true or if redirect is pending
   if (!isAdmin) {
-    // This case should ideally not be reached if redirects are working correctly immediately.
-    // It acts as a fallback or a momentary state if a redirect is pending.
     return (
       <div className="min-h-screen flex items-center justify-center bg-accent text-primary">
         <p>Access Denied. Redirecting...</p>
@@ -113,7 +109,6 @@ export default function AdminLayout() {
       {/* Sidebar */}
       <aside className="w-64 bg-primary text-white hidden md:flex flex-col p-6 space-y-4">
         <h2 className="text-2xl font-bold mb-6">Admin Panel</h2>
-        {/* Use Link components for navigation */}
         <Link to="/admin" className="hover:text-brandRed">Dashboard</Link>
         <Link to="/admin/work-orders" className="hover:text-brandRed">Work Orders</Link>
         <Link to="/admin/inventory" className="hover:text-brandRed">Inventory</Link>
