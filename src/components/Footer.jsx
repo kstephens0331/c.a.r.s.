@@ -36,9 +36,20 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="bg-black text-center py-3">
-        <p>&copy; {new Date().getFullYear()} Collision & Refinish Shop. All rights reserved.</p>
-      </div>
+      <div className="bg-black text-center py-3 text-white">
+  <p>
+    &copy; {new Date().getFullYear()} C.A.R.S Collision & Refinish. All rights reserved. Built by{' '}
+    <a
+      href="https://stephenscode.dev"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="no-underline text-inherit"
+      style={{ textDecoration: 'none', color: 'inherit' }}
+    >
+      StephensCode LLC
+    </a>.
+  </p>
+</div>
     </footer>
   );
 }
