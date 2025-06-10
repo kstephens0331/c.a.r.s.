@@ -1,21 +1,68 @@
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { supabase } from '../../services/supabaseClient';
+import { supabase } from '../../services/supabaseClient.js'; // Ensure path is correct
+import { Link } from 'react-router-dom'; // Import Link
 
 export default function CustomerList() {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchCustomers = async () => {
-      const { data, error } = await supabase.from('customers').select('*').order('created_at', { ascending: false });
-      if (error) console.error('Error fetching customers:', error.message);
-      else setCustomers(data);
-      setLoading(false);
+      setLoading(true);
+      setError(null);
+      try {
+        // Fetch from the 'profiles' table instead of 'customers'
+        const { data, error: fetchError } = await supabase
+          .from('profiles')
+          .select('id, created_at, full_name, email, phone, address') // Select necessary fields
+          .order('created_at', { ascending: false });
+
+        if (fetchError) {
+          throw new Error(fetchError.message);
+        }
+        setCustomers(data);
+      } catch (err) {
+        console.error('Error fetching customers:', err);
+        setError(`Failed to load customers: ${err.message}`);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchCustomers();
   }, []);
+
+  if (loading) {
+    return (
+      <>
+        <Helmet>
+          <title>Customers | Collision & Refinish Shop</title>
+          <meta name="description" content="View and manage customer accounts and their linked vehicles." />
+        </Helmet>
+        <div className="space-y-6">
+          <h1 className="text-3xl font-bold">Customer Records</h1>
+          <p className="text-gray-600">Loading customers...</p>
+        </div>
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        <Helmet>
+          <title>Customers | Collision & Refinish Shop</title>
+          <meta name="description" content="View and manage customer accounts and their linked vehicles." />
+        </Helmet>
+        <div className="space-y-6">
+          <h1 className="text-3xl font-bold">Customer Records</h1>
+          <p className="text-red-600">{error}</p>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -30,9 +77,7 @@ export default function CustomerList() {
       <div className="space-y-6">
         <h1 className="text-3xl font-bold">Customer Records</h1>
 
-        {loading ? (
-          <p className="text-gray-600">Loading customers...</p>
-        ) : customers.length === 0 ? (
+        {customers.length === 0 ? (
           <p className="text-gray-500">No customers found.</p>
         ) : (
           <div className="overflow-x-auto">
@@ -49,10 +94,14 @@ export default function CustomerList() {
               <tbody>
                 {customers.map((cust) => (
                   <tr key={cust.id} className="hover:bg-gray-50">
-                    <td className="p-3 border-b">{cust.name}</td>
-                    <td className="p-3 border-b">{cust.phone}</td>
-                    <td className="p-3 border-b">{cust.email}</td>
-                    <td className="p-3 border-b">{cust.address}</td>
+                    <td className="p-3 border-b">
+                      <Link to={`/admin/customers/${cust.id}`} className="text-brandRed hover:underline font-semibold">
+                        {cust.full_name || 'N/A'}
+                      </Link>
+                    </td>
+                    <td className="p-3 border-b">{cust.phone || 'N/A'}</td>
+                    <td className="p-3 border-b">{cust.email || 'N/A'}</td>
+                    <td className="p-3 border-b">{cust.address || 'N/A'}</td>
                     <td className="p-3 border-b">
                       {new Date(cust.created_at).toLocaleDateString()}
                     </td>

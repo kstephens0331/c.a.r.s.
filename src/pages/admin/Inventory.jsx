@@ -1,6 +1,67 @@
 import { Helmet } from 'react-helmet-async';
+import { useEffect, useState } from 'react';
+import { supabase } from '../../services/supabaseClient.js'; // Ensure path is correct
 
 export default function Inventory() {
+  const [inventoryItems, setInventoryItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchInventory = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const { data, error: fetchError } = await supabase
+          .from('inventory')
+          .select('*')
+          .order('part_number', { ascending: true });
+
+        if (fetchError) {
+          throw new Error(fetchError.message);
+        }
+        setInventoryItems(data);
+      } catch (err) {
+        console.error('Error fetching inventory:', err);
+        setError(`Failed to load inventory: ${err.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInventory();
+  }, []);
+
+  if (loading) {
+    return (
+      <>
+        <Helmet>
+          <title>Inventory | Collision & Refinish Shop</title>
+          <meta name="description" content="Track and manage all parts used in repairs. View quantity, pricing, and suppliers." />
+        </Helmet>
+        <div className="space-y-6">
+          <h1 className="text-3xl font-bold">Parts Inventory</h1>
+          <p className="text-gray-600">Loading inventory...</p>
+        </div>
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        <Helmet>
+          <title>Inventory | Collision & Refinish Shop</title>
+          <meta name="description" content="Track and manage all parts used in repairs. View quantity, pricing, and suppliers." />
+        </Helmet>
+        <div className="space-y-6">
+          <h1 className="text-3xl font-bold">Parts Inventory</h1>
+          <p className="text-red-600">{error}</p>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <Helmet>
@@ -15,35 +76,33 @@ export default function Inventory() {
         <h1 className="text-3xl font-bold">Parts Inventory</h1>
         <p className="text-lg">Monitor available parts and add or adjust inventory as needed.</p>
 
-        {/* Placeholder table */}
         <div className="overflow-x-auto">
-          <table className="min-w-full border border-gray-300">
-            <thead className="bg-accent text-left">
-              <tr>
-                <th className="p-3 border-b">Part #</th>
-                <th className="p-3 border-b">Description</th>
-                <th className="p-3 border-b">Quantity</th>
-                <th className="p-3 border-b">Price</th>
-                <th className="p-3 border-b">Supplier</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="p-3 border-b">12345-A</td>
-                <td className="p-3 border-b">Front Bumper Cover</td>
-                <td className="p-3 border-b">3</td>
-                <td className="p-3 border-b">$128.75</td>
-                <td className="p-3 border-b">Keystone</td>
-              </tr>
-              <tr>
-                <td className="p-3 border-b">67890-Z</td>
-                <td className="p-3 border-b">Passenger Side Mirror</td>
-                <td className="p-3 border-b">1</td>
-                <td className="p-3 border-b">$85.00</td>
-                <td className="p-3 border-b">LKQ</td>
-              </tr>
-            </tbody>
-          </table>
+          {inventoryItems.length === 0 ? (
+            <p className="text-gray-500">No inventory items found. Add some from the backend!</p>
+          ) : (
+            <table className="min-w-full border border-gray-300">
+              <thead className="bg-accent text-left">
+                <tr>
+                  <th className="p-3 border-b">Part #</th>
+                  <th className="p-3 border-b">Description</th>
+                  <th className="p-3 border-b">Quantity</th>
+                  <th className="p-3 border-b">Price</th>
+                  <th className="p-3 border-b">Supplier</th>
+                </tr>
+              </thead>
+              <tbody>
+                {inventoryItems.map((item) => (
+                  <tr key={item.id} className="hover:bg-gray-50">
+                    <td className="p-3 border-b">{item.part_number}</td>
+                    <td className="p-3 border-b">{item.description}</td>
+                    <td className="p-3 border-b">{item.quantity}</td>
+                    <td className="p-3 border-b">${item.unit_price ? parseFloat(item.unit_price).toFixed(2) : '0.00'}</td>
+                    <td className="p-3 border-b">{item.supplier}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </>

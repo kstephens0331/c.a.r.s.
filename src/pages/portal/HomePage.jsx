@@ -5,7 +5,7 @@ export default function HomePage() {
   return (
     <>
       <Helmet>
-        <title>Collision & Refinish Shop | Quality Auto Body Repairs in Spring, TX</title>
+        <title>C.A.R.S Collision & Refinish Shop | Quality Auto Body Repairs in Spring, TX</title>
         <meta
           name="description"
           content="Veteran & family-owned collision repair shop in Spring, TX. Fast, honest, and guaranteed repairs from bumper to bumper."
@@ -37,7 +37,7 @@ export default function HomePage() {
 
         {/* Why Choose Us */}
         <section className="py-16 px-4 text-center bg-accent">
-          <h2 className="text-3xl font-bold mb-6">Why Choose Collision & Refinish Shop?</h2>
+          <h2 className="text-3xl font-bold mb-6">Why C.A.R.S Collision & Refinish Shop?</h2>
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto text-left">
             <div>
               <h3 className="font-semibold text-xl mb-2">Veteran-Owned & Operated</h3>

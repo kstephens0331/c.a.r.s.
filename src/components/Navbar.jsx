@@ -14,7 +14,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo / Title */}
         <Link to="/" className="text-2xl font-bold tracking-tight">
-          Collision & Refinish
+          C.A.R.S Collision & Refinish
         </Link>
 
         {/* Desktop Nav */}

@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { supabase } from '../services/supabaseClient';
+import { supabase } from '../../services/supabaseClient';
 
-export default function RegisterPage() {
+export default function CustomerLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const handleRegister = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError(null);
-    const { error } = await supabase.auth.signUp({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       setError(error.message);
     } else {
@@ -20,7 +20,7 @@ export default function RegisterPage() {
     }
   };
 
-  const handleGoogleSignUp = async () => {
+  const handleGoogleLogin = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: `${window.location.origin}/portal` },
@@ -33,19 +33,19 @@ export default function RegisterPage() {
   return (
     <>
       <Helmet>
-        <title>Create Account | Collision & Refinish Shop</title>
+        <title>Customer Login | C.A.R.S Collision & Refinish Shop</title>
         <meta
           name="description"
-          content="Create your customer account to track vehicle repairs and receive real-time updates."
+          content="Secure login for customers to track repair progress and updates from Collision & Refinish Shop."
         />
       </Helmet>
 
       <div className="min-h-screen flex items-center justify-center bg-accent px-4">
         <form
-          onSubmit={handleRegister}
+          onSubmit={handleLogin}
           className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md"
         >
-          <h2 className="text-2xl font-bold mb-4 text-primary text-center">Create Your Account</h2>
+          <h2 className="text-2xl font-bold mb-4 text-primary text-center">Customer Login</h2>
 
           {error && <p className="text-red-600 mb-4 text-sm">{error}</p>}
 
@@ -71,21 +71,21 @@ export default function RegisterPage() {
             type="submit"
             className="bg-primary text-white w-full py-3 rounded font-semibold hover:bg-black mb-4"
           >
-            Register
+            Log In
           </button>
 
           <button
             type="button"
-            onClick={handleGoogleSignUp}
+            onClick={handleGoogleLogin}
             className="w-full border border-gray-400 py-3 rounded font-semibold text-sm hover:bg-gray-100"
           >
-            Sign up with Google
+            Sign in with Google
           </button>
 
           <p className="text-sm text-center mt-6">
-            Already have an account?{' '}
-            <Link to="/login" className="text-brandRed font-semibold hover:underline">
-              Log in here
+            Don’t have an account?{' '}
+            <Link to="/register" className="text-brandRed font-semibold hover:underline">
+              Register here
             </Link>
           </p>
         </form>
