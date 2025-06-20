@@ -1,66 +1,78 @@
 import { Helmet } from 'react-helmet-async';
+import TonyImage from '../../assets/tony.png';
 
-export default function AboutPage() {
+export default function AboutUs() {
   return (
     <>
       <Helmet>
-        <title>About | Collision & Refinish Shop</title>
+        <title>About Us | C.A.R.S Collision & Refinish</title>
         <meta
           name="description"
-          content="Learn about our story, values, and why we're trusted by drivers across Spring, TX."
+          content="Learn about C.A.R.S Collision & Refinish: veteran-owned, community-trusted, and committed to quality workmanship."
         />
       </Helmet>
 
-      <div className="bg-white text-primary">
-        {/* Header */}
-        <section className="bg-primary text-white py-20 px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">About Us</h1>
-          <p className="text-lg md:text-xl max-w-2xl mx-auto">
-            Veteran & family-owned. Built on honesty, craftsmanship, and a passion for getting you back on the road — safely and quickly.
-          </p>
-        </section>
+      <section className="bg-black text-white text-center py-20 px-6 animate-fade-in">
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 transition duration-700 ease-out transform hover:scale-105 animate-fade-in">A Reputation Built on Trust</h1>
+        <p className="max-w-2xl mx-auto text-lg text-gray-300">
+          We’re more than a repair shop. We’re a team of skilled technicians and family-first people who believe in delivering honest, high-quality work—every time.
+        </p>
+      </section>
 
-        {/* Our Story */}
-        <section className="py-16 px-4 max-w-5xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">Our Story</h2>
-          <p className="mb-6">
-            Collision and Refinish Shop was born from a commitment to do things right. After years in the industry, we saw the gaps — shady shops, poor communication, rushed repairs. So we decided to build the opposite.
-          </p>
-          <p>
-            Today, we operate with military-grade precision and a customer-first mindset. Whether it’s restoring your vehicle after a collision or adding a custom bedliner, we deliver top-quality work with full transparency.
-          </p>
-        </section>
+      <section className="bg-white py-16 px-6 animate-fade-in">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold mb-6 text-center animate-fade-in">Our Story</h2>
+<p className="text-center max-w-3xl mx-auto text-gray-700 mb-8">
+  The C.A.R.S. journey is rooted in experience, growth, and a commitment to quality. From humble beginnings to a full-service facility, each milestone reflects our dedication to building trust and delivering top-tier craftsmanship for every customer who walks through our doors.
+</p>
+          <p className="text-gray-700 mb-8 leading-relaxed">
+  What began as a single technician’s commitment to doing things the right way has grown into one of Spring, TX’s most trusted full-service repair shops. Tony started in the industry with a passion for high-end paint correction and vehicle aesthetics. Over the years, that commitment to precision expanded to include mechanical diagnostics, routine maintenance, accessory installs, and advanced electrical troubleshooting. 
+</p>
+<p className="text-gray-700 mb-8 leading-relaxed">
+  C.A.R.S. was officially established in 2016, and the shop quickly gained a reputation for honesty, follow-through, and keeping customers informed. With the addition of customer photo updates, online quote tracking, and the ability to log in and manage your vehicle repair status digitally, C.A.R.S. now blends old-school craftsmanship with modern communication and tech. Our mission has never changed: serve the community with integrity, and deliver results we’d be proud to put our name on.
+</p>
+<ul className="space-y-6 text-gray-700">
+            <li><strong>2007:</strong> Tony begins working in auto repair with a focus on paint and finish restoration.</li>
+            <li><strong>2016:</strong> C.A.R.S is founded in Spring, TX to serve the local community with integrity and precision.</li>
+            <li><strong>2020:</strong> Expanded into full-service mechanical repairs, diagnostics, and custom accessories.</li>
+            <li><strong>2024:</strong> Introduced online repair tracking and digital vehicle onboarding.</li>
+          </ul>
+        </div>
+      </section>
 
-        {/* Our Promise */}
-        <section className="bg-accent py-16 px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6">What You Can Expect</h2>
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto text-left">
-            <div>
-              <h3 className="text-xl font-semibold mb-2">Integrity</h3>
-              <p>No upsells, no pressure. Just honest work and clear communication at every step.</p>
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold mb-2">Precision</h3>
-              <p>From insurance claims to paint match — we sweat every detail so you don’t have to.</p>
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold mb-2">Respect</h3>
-              <p>We treat your car like it’s ours — because we know how much it matters to you.</p>
-            </div>
+      <section className="bg-gray-100 py-16 px-6">
+        <h2 className="text-2xl font-bold mb-10 text-center animate-fade-in">Our Values</h2>
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto text-center transition-opacity duration-700 animate-fade-in">
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Integrity</h3>
+            <p className="text-sm text-gray-700">We stand behind every repair and every quote. No upsells. No games.</p>
           </div>
-        </section>
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Precision</h3>
+            <p className="text-sm text-gray-700">Our repairs meet or exceed OEM standards and reflect our pride in every detail.</p>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Transparency</h3>
+            <p className="text-sm text-gray-700">We show our work—literally—with photo updates and full access to repair history.</p>
+          </div>
+        </div>
+      </section>
 
-        {/* Visit Us */}
-        <section className="py-16 px-4 max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">Visit Our Shop</h2>
-          <p className="mb-4">
-            📍 2530 Old Louetta Loop #114, Spring, TX 77388  
-          </p>
-          <p className="mb-2">📞 832-885-3055</p>
-          <p className="mb-2">✉️ collisionandrefinishshop@gmail.com</p>
-          <p>Mon–Fri: 9am–6pm · Sat: 9am–1pm · Sun: Closed</p>
-        </section>
-      </div>
+      <section className="bg-white py-16 px-6 text-center animate-fade-in">
+        <h2 className="text-2xl font-bold mb-6 animate-fade-in">Meet the Owner</h2>
+        <img src={TonyImage} alt="Tony - Owner" className="w-40 h-40 object-cover rounded-full mx-auto mb-6 shadow-md" />
+        <p className="max-w-3xl mx-auto text-gray-700 text-lg leading-relaxed">
+          “After nearly a decade in the industry, I built C.A.R.S. to be a shop that customers could trust without hesitation. Our name is on every vehicle that leaves the bay—and we take that seriously.”
+        </p>
+        <p className="mt-4 font-semibold text-brandRed">– Tony, Owner & Lead Technician</p>
+      </section>
+
+      <section className="bg-black text-white text-center py-20 px-6">
+        <h2 className="text-2xl font-bold mb-4 animate-fade-in">Proud to Serve Our Community</h2>
+        <p className="max-w-2xl mx-auto text-lg text-gray-300">
+          As a veteran-owned local business, we serve not only families but also commercial fleets, first responders, and small business owners who depend on reliability.
+        </p>
+      </section>
     </>
   );
 }
