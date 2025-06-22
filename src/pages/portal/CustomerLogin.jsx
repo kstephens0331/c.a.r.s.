@@ -24,7 +24,7 @@ export default function CustomerLogin() {
     const redirectTo =
       window.location.hostname === 'localhost'
         ? 'http://localhost:3000/portal'
-        : 'https://www.c-a-r-s.vercel.app/portal';
+        : 'http://www.c-a-r-s.vercel.app/portal';
 
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
