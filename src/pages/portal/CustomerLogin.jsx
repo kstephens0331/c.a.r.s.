@@ -20,19 +20,19 @@ export default function CustomerLogin() {
     }
   };
 
-const handleGoogleLogin = async () => {
-  const redirectTo =
-    window.location.hostname === 'localhost'
-      ? 'http://localhost:3000'
-      : 'https://c-a-r-s.vercel.app/'; // must match what's in Google Console
+  const handleGoogleLogin = async () => {
+    const redirectTo =
+      window.location.hostname === 'localhost'
+        ? 'http://localhost:3000/portal'
+        : 'https://www.c-a-r-s.vercel.app/portal';
 
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: { redirectTo }
-  });
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo }
+    });
 
-  if (error) console.error('Google login error:', error.message);
-};
+    if (error) console.error('Google login error:', error.message);
+  };
 
   return (
     <>
