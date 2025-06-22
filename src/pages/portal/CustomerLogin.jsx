@@ -10,30 +10,51 @@ export default function CustomerLogin() {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    setError(null);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
-      setError(error.message);
-    } else {
-      navigate('/portal');
-    }
-  };
+  e.preventDefault();
+  setError(null);
 
-  const handleGoogleLogin = async () => {
-    const redirectTo =
-      window.location.hostname === 'localhost'
-        ? 'http://localhost:3000/portal'
-        : 'https://c-a-r-s.vercel.app/portal';
+  const { error: loginError } = await supabase.auth.signInWithPassword({ email, password });
+  if (loginError) {
+    setError(loginError.message);
+    return;
+  }
 
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo }
-    });
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
 
-    if (error) console.error('Google login error:', error.message);
-  };
+  const { data: profile, error: profileError } = await supabase
+    .from('profiles')
+    .select('is_admin')
+    .eq('id', user.id)
+    .single();
 
+  if (profileError) {
+    console.error('Profile lookup failed:', profileError.message);
+    setError('Unable to verify user role.');
+    return;
+  }
+
+  if (profile?.is_admin) {
+    navigate('/admin');
+  } else {
+    navigate('/portal');
+  }
+};
+
+const handleGoogleLogin = async () => {
+  const redirectTo =
+    window.location.hostname === 'localhost'
+      ? 'http://localhost:3000/portal'
+      : 'https://c-a-r-s.vercel.app/portal';
+
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo }
+  });
+
+  if (error) console.error('Google login error:', error.message);
+};
   return (
     <>
       <Helmet>
