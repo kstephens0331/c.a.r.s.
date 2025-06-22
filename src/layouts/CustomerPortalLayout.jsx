@@ -6,32 +6,43 @@ import { supabase } from '../services/supabaseClient.js'; // Ensure path is corr
 export default function CustomerPortalLayout() {
   const [session, setSession] = useState(null);
   const navigate = useNavigate();
-  const location = useLocation(); // Get current location
+  const location = useLocation();
 
   useEffect(() => {
     const handleAuthChange = async (currentSession) => {
-      // If there's no session, redirect to login
       if (!currentSession) {
-        navigate('/login', { replace: true }); // Use replace: true
+        navigate('/login', { replace: true });
         return;
       }
+
       setSession(currentSession);
 
-      // If the current URL contains access tokens (e.g., after OAuth redirect),
-      // navigate to a clean URL to strip them.
       if (location.hash.includes('access_token')) {
-        navigate(location.pathname, { replace: true }); // Redirect to current path without hash
+        navigate(location.pathname, { replace: true });
         return;
+      }
+
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('is_admin')
+        .eq('id', currentSession.user.id)
+        .single();
+
+      if (error) {
+        console.error('Error fetching profile:', error.message);
+        return;
+      }
+
+      if (profile?.is_admin) {
+        navigate('/admin', { replace: true });
       }
     };
 
-    // Initial session check
     supabase.auth.getSession().then(({ data: { session }, error }) => {
       handleAuthChange(session);
       if (error) console.error("Error getting session:", error.message);
     });
 
-    // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       handleAuthChange(session);
     });
@@ -41,22 +52,20 @@ export default function CustomerPortalLayout() {
         subscription.unsubscribe();
       }
     };
-  }, [navigate, location.hash]); // Re-run effect if hash changes
+  }, [navigate, location.hash]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    navigate('/login', { replace: true }); // Use replace: true
+    navigate('/login', { replace: true });
   };
 
   if (!session) {
-    // Optionally render a loading or redirecting message while session is being checked
     return (
       <div className="min-h-screen flex items-center justify-center bg-accent text-primary">
         <p>Checking authentication...</p>
       </div>
     );
   }
-
   return (
     <div className="flex min-h-screen">
       {/* Sidebar for Customer Portal */}
