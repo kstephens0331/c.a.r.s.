@@ -1,5 +1,6 @@
 import { Link, NavLink } from 'react-router-dom';
 import { useState } from 'react';
+import Logo from '../assets/logo.png';
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -13,9 +14,11 @@ export default function Navbar() {
     <header className="bg-primary text-white shadow">
       <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo / Title */}
-        <Link to="/" className="text-2xl font-bold tracking-tight">
-          C.A.R.S Collision & Refinish
-        </Link>
+        <Link to="/" className="flex items-center space-x-2">
+  <img src={Logo} alt="C.A.R.S Logo" className="w-10 h-auto" />
+  <span className="text-2xl font-bold tracking-tight">C.A.R.S Collision & Refinish</span>
+</Link>
+
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex space-x-6 text-sm">
