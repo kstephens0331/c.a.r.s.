@@ -32,22 +32,23 @@ export default function AdminLayout() {
         setLoading(false); // Stop loading while redirecting
         return;
       }
-      
+
       const { data: existingProfile, error: fetchError } = await supabase
   .from('profiles')
-  .select('*')
+  .select('id')
   .eq('id', currentSession.user.id)
   .maybeSingle();
 
 if (!existingProfile && !fetchError) {
   console.warn('AdminLayout DEBUG: Profile not found, inserting...');
+  const { full_name } = currentSession.user.user_metadata || {};
   await supabase.from('profiles').insert([
     {
       id: currentSession.user.id,
-      full_name: currentSession.user.user_metadata.full_name || null,
+      full_name: full_name || null,
       is_admin: false,
-      created_at: new Date().toISOString()
-    }
+      created_at: new Date().toISOString(),
+    },
   ]);
 }
 
