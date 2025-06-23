@@ -1,0 +1,9 @@
+# robots.txt for collisionandrefinishshop.com
+
+User-agent: *
+Disallow:
+
+# Allow all bots full access to the site
+
+# Optional: Add sitemap for better crawling
+Sitemap: https://collisionandrefinishshop.com/sitemap.xml
