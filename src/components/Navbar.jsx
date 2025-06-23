@@ -32,7 +32,7 @@ export default function Navbar() {
         {/* Mobile Menu Toggle */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden focus:outline-none"
+          class="md:hidden focus:outline-none" aria-label="Open menu"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <path
