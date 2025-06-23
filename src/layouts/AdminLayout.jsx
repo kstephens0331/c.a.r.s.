@@ -50,6 +50,25 @@ if (!existingProfile && !fetchError) {
       created_at: new Date().toISOString(),
     },
   ]);
+
+  const { data: existingCustomer, error: customerCheckError } = await supabase
+  .from('customers')
+  .select('id')
+  .eq('user_id', currentSession.user.id)
+  .maybeSingle();
+
+if (!existingCustomer && !customerCheckError) {
+  console.warn('Inserting new customer record...');
+  await supabase.from('customers').insert([
+    {
+      user_id: currentSession.user.id,
+      name: currentSession.user.user_metadata?.full_name || 'Unknown',
+      email: currentSession.user.email || null,
+      phone: null,
+      address: null
+    }
+  ]);
+}
 }
 
       // Fetch user profile to check admin status
