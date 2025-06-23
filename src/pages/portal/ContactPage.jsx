@@ -100,7 +100,7 @@ export default function ContactPage() {
           <div className="max-w-4xl mx-auto">
             <div className="aspect-w-16 aspect-h-9">
               <iframe
-                src="https://calendly.com/YOUR-CALENDLY-LINK"
+                src="https://calendly.com/collisionandrefinishshop"
                 title="Schedule via Calendly"
                 className="w-full h-[720px] border-none rounded shadow"
                 allowFullScreen
