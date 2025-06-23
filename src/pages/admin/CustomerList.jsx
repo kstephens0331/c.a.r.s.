@@ -14,10 +14,10 @@ export default function CustomerList() {
       setError(null);
       try {
         // Fetch from the 'profiles' table instead of 'customers'
-        const { data, error: fetchError } = await supabase
-          .from('profiles')
-          .select('id, created_at, full_name, email, phone, address') // Select necessary fields
-          .order('created_at', { ascending: false });
+      const { data, error: fetchError } = await supabase
+        .from('customers')
+        .select('id, full_name, phone, address, email, user_id')
+        .order('created_at', { ascending: false });
 
         if (fetchError) {
           throw new Error(fetchError.message);
