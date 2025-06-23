@@ -96,7 +96,7 @@ export default function CustomerList() {
                   <tr key={cust.id} className="hover:bg-gray-50">
                     <td className="p-3 border-b">
                       <Link to={`/admin/customers/${cust.id}`} className="text-brandRed hover:underline font-semibold">
-                        {cust.full_name || 'N/A'}
+                        {cust.name || 'N/A'}
                       </Link>
                     </td>
                     <td className="p-3 border-b">{cust.phone || 'N/A'}</td>
