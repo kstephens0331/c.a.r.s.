@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import Logo from "../../assets/logo.png";
 
 export default function ContactPage() {
   return (
@@ -20,14 +21,78 @@ export default function ContactPage() {
           </p>
         </section>
 
-        {/* Contact Info */}
-        <section className="py-12 px-4 max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl font-bold mb-4">Contact Information</h2>
-          <p className="mb-2">📍 2530 Old Louetta Loop #114, Spring, TX 77388</p>
-          <p className="mb-2">📞 832-885-3055</p>
-          <p className="mb-2">✉️ collisionandrefinishshop@gmail.com</p>
-          <p>Mon–Fri: 9am–6pm · Sat: 9am–1pm · Sun: Closed</p>
-        </section>
+       {/* Contact Form + Info Side-by-Side */}
+<section className="py-16 px-4 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
+  {/* Form */}
+  <form
+    action="https://formspree.io/f/mdkzwdjg"
+    method="POST"
+    className="bg-white shadow-lg rounded-xl p-6 space-y-4"
+  >
+    <h2 className="text-3xl font-bold mb-4 text-center">Contact Us</h2>
+
+    <div>
+      <label className="block text-sm font-medium text-gray-700">Name</label>
+      <input
+        type="text"
+        name="name"
+        required
+        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+      />
+    </div>
+
+    <div>
+      <label className="block text-sm font-medium text-gray-700">Email</label>
+      <input
+        type="email"
+        name="email"
+        required
+        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+      />
+    </div>
+
+    <div>
+      <label className="block text-sm font-medium text-gray-700">Phone</label>
+      <input
+        type="tel"
+        name="phone"
+        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+      />
+    </div>
+
+    <div>
+      <label className="block text-sm font-medium text-gray-700">Message</label>
+      <textarea
+        name="message"
+        rows="5"
+        required
+        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+      ></textarea>
+    </div>
+
+    <button
+      type="submit"
+      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition"
+    >
+      Send Message
+    </button>
+  </form>
+
+  {/* Contact Info */}
+  <div className="bg-gray-100 rounded-xl shadow-md p-6 text-gray-800 space-y-4">
+    <h2 className="text-2xl font-bold mb-2">Contact Information</h2>
+
+    <p>📍 2530 Old Louetta Loop #114, Spring, TX 77388</p>
+    <p>📞 <a href="tel:8328853055" className="text-blue-600 hover:underline">832-885-3055</a></p>
+    <p>✉️ <a href="mailto:collisionandrefinishshop@gmail.com" className="text-blue-600 hover:underline">collisionandrefinishshop@gmail.com</a></p>
+    <p>🕒 Mon–Fri: 9am–6pm</p>
+    <p>🕒 Sat: 9am–1pm · Sun: Closed</p>
+
+    <div className="mt-6 flex justify-center">
+      <img src={Logo} alt="Logo" className="w-50 h-auto" />
+    </div>
+  </div>
+</section>
 
         {/* Calendly Embed */}
         <section className="py-12 px-4 bg-accent">
