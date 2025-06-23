@@ -16,7 +16,7 @@ export default function CustomerList() {
         // Fetch from the 'profiles' table instead of 'customers'
       const { data, error: fetchError } = await supabase
         .from('customers')
-        .select('id, full_name, phone, address, email, user_id')
+        .select('id, name, phone, address, email, user_id')
         .order('created_at', { ascending: false });
 
         if (fetchError) {
