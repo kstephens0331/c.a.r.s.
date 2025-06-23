@@ -32,6 +32,24 @@ export default function AdminLayout() {
         setLoading(false); // Stop loading while redirecting
         return;
       }
+      
+      const { data: existingProfile, error: fetchError } = await supabase
+  .from('profiles')
+  .select('*')
+  .eq('id', currentSession.user.id)
+  .maybeSingle();
+
+if (!existingProfile && !fetchError) {
+  console.warn('AdminLayout DEBUG: Profile not found, inserting...');
+  await supabase.from('profiles').insert([
+    {
+      id: currentSession.user.id,
+      full_name: currentSession.user.user_metadata.full_name || null,
+      is_admin: false,
+      created_at: new Date().toISOString()
+    }
+  ]);
+}
 
       // Fetch user profile to check admin status
       console.log('AdminLayout DEBUG: Attempting to fetch profile for user ID:', currentSession.user.id);
