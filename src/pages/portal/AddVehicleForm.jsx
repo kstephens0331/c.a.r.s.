@@ -15,15 +15,12 @@ export default function AddVehicleForm() {
   });
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [userId, setUserId] = useState(null); // To store the logged-in user's ID
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    // Fetch the current user's session to get their ID
     const getSession = async () => {
       const { data: { session }, error } = await supabase.auth.getSession();
       if (error || !session) {
-        // If no session, redirect to login page.
-        // This is a fallback as CustomerPortalLayout should already protect this route.
         navigate('/login');
       } else {
         setUserId(session.user.id);
@@ -48,24 +45,33 @@ export default function AddVehicleForm() {
     }
 
     try {
-      // Insert the new vehicle into the 'vehicles' table
+      const { data: customer, error: customerError } = await supabase
+        .from('customers')
+        .select('id')
+        .eq('user_id', userId)
+        .maybeSingle();
+
+      if (customerError || !customer) {
+        setMessage('Error: Customer record not found for this user.');
+        setLoading(false);
+        return;
+      }
+
       const { data, error } = await supabase
         .from('vehicles')
-        .insert([
-          {
-            customer_id: userId, // Link vehicle to the logged-in user
-            make: form.make,
-            model: form.model,
-            year: parseInt(form.year), // Ensure year is an integer
-            color: form.color,
-            vin: form.vin,
-            license_plate: form.license_plate
-          }
-        ])
-        .select(); // Select the inserted data to confirm
+        .insert([{
+          customer_id: customer.id,
+          make: form.make,
+          model: form.model,
+          year: parseInt(form.year),
+          color: form.color,
+          vin: form.vin,
+          license_plate: form.license_plate
+        }])
+        .select();
 
       if (error) {
-        if (error.code === '23505' && error.details.includes('vin')) {
+        if (error.code === '23505' && error.details?.includes('vin')) {
           setMessage('Error: A vehicle with this VIN already exists.');
         } else {
           setMessage(`Error adding vehicle: ${error.message}`);
@@ -73,16 +79,7 @@ export default function AddVehicleForm() {
         console.error('Error adding vehicle:', error);
       } else {
         setMessage('Vehicle added successfully!');
-        // Clear the form
-        setForm({
-          make: '',
-          model: '',
-          year: '',
-          color: '',
-          vin: '',
-          license_plate: ''
-        });
-        // Optionally navigate back to MyVehicles after successful add
+        setForm({ make: '', model: '', year: '', color: '', vin: '', license_plate: '' });
         setTimeout(() => navigate('/portal/my-vehicles'), 1500);
       }
     } catch (err) {
