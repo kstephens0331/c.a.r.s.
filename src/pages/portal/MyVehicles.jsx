@@ -38,6 +38,7 @@ export default function MyVehicles() {
     }
 
     setVehicles(vehiclesData);
+    setLoading(false);
   };
 
   fetchVehicles();
