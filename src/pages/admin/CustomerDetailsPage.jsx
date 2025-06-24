@@ -9,6 +9,26 @@ import AdminAddVehicleForm from '../../components/admin/CustomerDetails/AdminAdd
 import AdminWorkOrderCreator from '../../components/admin/CustomerDetails/AdminWorkOrderCreator.jsx';
 import AdminWorkOrderManager from '../../components/admin/CustomerDetails/AdminWorkOrderManager.jsx';
 
+async function fetchCustomerVehicles(customerId) {
+  const res = await fetch('https://vbxrcqtjpcyhylanozgz.functions.supabase.co/get-customer-vehicles', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
+    },
+    body: JSON.stringify({ customerId }),
+  });
+
+  const { data, error } = await res.json();
+
+  if (error) {
+    console.error('Error fetching vehicles:', error);
+    return [];
+  }
+
+  return data;
+}
+
 
 export default function CustomerDetailsPage() {
   const { id: customerId } = useParams();
@@ -51,14 +71,8 @@ export default function CustomerDetailsPage() {
       setCustomer(profile);
 
       // Fetch customer's vehicles
-const { data: vehiclesData, error: vehiclesError } = await supabase
-  .from('vehicles')
-  .select('id, make, model, year, color, vin, license_plate')
-  .eq('customer_id', profile.id) // ✅ correctly references the fetched customer
-  .order('year', { ascending: false });
-
-      if (vehiclesError) throw new Error(`Error fetching vehicles: ${vehiclesError.message}`);
-      setVehicles(vehiclesData);
+const vehiclesData = await fetchCustomerVehicles(profile.id);
+setVehicles(vehiclesData);
 
       // Fetch all work orders for all of this customer's vehicles
       const customerVehicleIds = vehiclesData.map(v => v.id);
