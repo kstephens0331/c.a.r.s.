@@ -54,7 +54,7 @@ export default function CustomerDetailsPage() {
       const { data: vehiclesData, error: vehiclesError } = await supabase
         .from('vehicles')
         .select('id, make, model, year, color, vin, license_plate')
-        .eq('customer_id', customerId)
+        .eq('customer_id', profile.id)
         .order('year', { ascending: false });
 
       if (vehiclesError) throw new Error(`Error fetching vehicles: ${vehiclesError.message}`);
