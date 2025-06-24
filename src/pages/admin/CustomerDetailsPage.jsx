@@ -13,8 +13,8 @@ async function fetchCustomerVehicles(customerId) {
   const res = await fetch('https://vbxrcqtjpcyhylanozgz.functions.supabase.co/get-customer-vehicles', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
+      'Content-Type': 'application/json'
+      // ❌ No Authorization header for public functions
     },
     body: JSON.stringify({ customerId }),
   });
