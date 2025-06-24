@@ -21,175 +21,120 @@ export default function VehicleDetailsPage() {
     'Ready for Pickup'
   ];
 
-  useEffect(() => {
-    const fetchVehicleDetails = async () => {
-      setLoading(true);
-      setError(null);
+useEffect(() => {
+  const fetchVehicleDetails = async () => {
+    setLoading(true);
+    setError(null);
 
-      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
-      if (sessionError || !sessionData?.session?.user) {
-        setError('You must be logged in to view vehicle details.');
+    const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+    if (sessionError || !sessionData?.session?.user) {
+      setError('You must be logged in to view vehicle details.');
+      setLoading(false);
+      return;
+    }
+    const userId = sessionData.session.user.id;
+
+    // Get customer ID from user ID
+    const { data: customer, error: customerError } = await supabase
+      .from('customers')
+      .select('id')
+      .eq('user_id', userId)
+      .maybeSingle();
+
+    if (customerError || !customer) {
+      setError('Customer record not found.');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // ✅ Fetch vehicle only if owned by the customer
+      const { data: vehicleData, error: vehicleError } = await supabase
+        .from('vehicles')
+        .select('*')
+        .eq('id', vehicleId)
+        .eq('customer_id', customer.id)
+        .single();
+
+      if (vehicleError) {
+        if (vehicleError.code === 'PGRST116') {
+          setError('Vehicle not found or you do not have permission to view it.');
+        } else {
+          throw new Error(`Failed to load vehicle details: ${vehicleError.message}`);
+        }
         setLoading(false);
         return;
       }
-      const userId = sessionData.session.user.id;
+      setVehicle(vehicleData);
 
-      try {
-        // 1. Fetch vehicle details
-        const { data: vehicleData, error: vehicleError } = await supabase
-          .from('vehicles')
-          .select('*')
-          .eq('id', vehicleId)
-          .eq('customer_id', userId) // Ensure this vehicle belongs to the logged-in user
-          .single();
+      // Fetch all work orders for this vehicle
+      const { data: woData, error: woError } = await supabase
+        .from('work_orders')
+        .select(`
+          id,
+          work_order_number,
+          current_status,
+          created_at,
+          updated_at,
+          description,
+          work_order_parts (
+            part_number,
+            quantity_used,
+            description
+          ),
+          customer_documents (
+            document_type,
+            document_url,
+            file_name,
+            created_at
+          )
+        `)
+        .eq('vehicle_id', vehicleId)
+        .order('created_at', { ascending: false });
 
-        if (vehicleError) {
-          if (vehicleError.code === 'PGRST116') { // No rows found
-            setError('Vehicle not found or you do not have permission to view it.');
-          } else {
-            throw new Error(`Failed to load vehicle details: ${vehicleError.message}`);
-          }
-          setLoading(false);
-          return;
-        }
-        setVehicle(vehicleData);
+      if (woError) {
+        throw new Error(`Failed to load work orders for vehicle: ${woError.message}`);
+      }
 
-        // 2. Fetch all work orders for this vehicle, including related parts and documents
-        const { data: woData, error: woError } = await supabase
-          .from('work_orders')
-          .select(`
-            id,
-            work_order_number,
-            current_status,
-            created_at,
-            updated_at,
-            description,
-            work_order_parts (
-              part_number,
-              quantity_used,
-              description
-            ),
-            customer_documents (
-              document_type,
-              document_url,
-              file_name,
-              created_at
-            )
-          `)
-          .eq('vehicle_id', vehicleId)
-          .order('created_at', { ascending: false });
+      // Fetch repair photos from storage
+      const workOrdersWithPhotos = await Promise.all(woData.map(async (order) => {
+        const { data: files, error: storageError } = await supabase.storage
+          .from('repair-photos')
+          .list(`work_orders/${order.id}/`, {
+            sortBy: { column: 'name', order: 'asc' },
+          });
 
-        if (woError) {
-          throw new Error(`Failed to load work orders for vehicle: ${woError.message}`);
-        }
-
-        // 3. Fetch repair photos from storage for each work order
-        const workOrdersWithPhotos = await Promise.all(woData.map(async (order) => {
-          const { data: files, error: storageError } = await supabase.storage
-            .from('repair-photos') // Your bucket name for repair photos
-            .list(`work_orders/${order.id}/`, {
-              sortBy: { column: 'name', order: 'asc' },
-            });
-
-          let photoUrls = [];
-          if (storageError && storageError.message !== 'The specified bucket does not exist.') { // Allow bucket not existing
-            console.warn(`Could not list photos for work order ${order.id}:`, storageError.message);
-          } else if (files) {
-            for (const file of files) {
-              if (file.name !== '.emptyFolderPlaceholder' && file.id) {
-                const { data: publicUrlData } = supabase.storage
-                  .from('repair-photos')
-                  .getPublicUrl(`work_orders/${order.id}/${file.name}`);
-                if (publicUrlData?.publicUrl) {
-                  photoUrls.push(publicUrlData.publicUrl);
-                }
+        let photoUrls = [];
+        if (!storageError && files) {
+          for (const file of files) {
+            if (file.name !== '.emptyFolderPlaceholder') {
+              const { data: publicUrlData } = supabase.storage
+                .from('repair-photos')
+                .getPublicUrl(`work_orders/${order.id}/${file.name}`);
+              if (publicUrlData?.publicUrl) {
+                photoUrls.push(publicUrlData.publicUrl);
               }
             }
           }
-          return { ...order, photos: photoUrls };
-        }));
+        }
 
-        setWorkOrders(workOrdersWithPhotos);
+        return {
+          ...order,
+          repairPhotos: photoUrls
+        };
+      }));
 
-      } catch (err) {
-        console.error('Error fetching vehicle details and related data:', err);
-        setError(`Failed to load vehicle details: ${err.message}`);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (vehicleId) { // Only fetch if vehicleId is available
-      fetchVehicleDetails();
-    }
-  }, [vehicleId]);
-
-  const getStatusClass = (orderStatus, listItemStatus) => {
-    const orderStatusIndex = statuses.indexOf(orderStatus);
-    const listItemStatusIndex = statuses.indexOf(listItemStatus);
-
-    if (orderStatusIndex >= listItemStatusIndex) {
-      if (orderStatus === listItemStatus) {
-        return 'font-bold text-brandRed';
-      } else {
-        return 'text-gray-500';
-      }
-    } else {
-      return 'text-gray-400';
+      setWorkOrders(workOrdersWithPhotos);
+    } catch (err) {
+      console.error(err);
+      setError('An error occurred while loading vehicle data.');
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Fixed Helmet title
-  const helmetTitle = vehicle ? `${vehicle.year} ${vehicle.make} ${vehicle.model} Details` : 'Vehicle Details';
-  const helmetDescription = vehicle ? `Details for ${vehicle.year} ${vehicle.make} ${vehicle.model}.` : 'Loading vehicle details.';
-
-
-  if (loading) {
-    return (
-      <>
-        <Helmet>
-          <title>Loading Vehicle Details | Collision & Refinish Shop</title>
-          <meta name="description" content="Loading vehicle details, repair updates, photos, and documents." />
-        </Helmet>
-        <div className="space-y-6 p-4">
-          <h1 className="text-3xl font-bold">Vehicle Details</h1>
-          <p>Loading vehicle details...</p>
-        </div>
-      </>
-    );
-  }
-
-  if (error) {
-    return (
-      <>
-        <Helmet>
-          <title>Error Loading Details | Collision & Refinish Shop</title>
-          <meta name="description" content="Error loading vehicle details." />
-        </Helmet>
-        <div className="space-y-6 p-4">
-          <h1 className="text-3xl font-bold">Vehicle Details</h1>
-          <p className="text-red-600">{error}</p>
-          <Link to="/portal/my-vehicles" className="text-blue-600 hover:underline">Back to My Vehicles</Link>
-        </div>
-      </>
-    );
-  }
-
-  if (!vehicle) {
-    return (
-      <>
-        <Helmet>
-          <title>Vehicle Not Found | Collision & Refinish Shop</title>
-          <meta name="description" content="Vehicle details not found." />
-        </Helmet>
-        <div className="space-y-6 p-4">
-          <h1 className="text-3xl font-bold">Vehicle Not Found</h1>
-          <p className="text-gray-500">The vehicle you are looking for could not be found or you do not have permission to view it.</p>
-          <Link to="/portal/my-vehicles" className="text-brandRed hover:underline">Back to My Vehicles</Link>
-        </div>
-      </>
-    );
-  }
+  fetchVehicleDetails();
+}, [vehicleId]);
 
   return (
     <>
