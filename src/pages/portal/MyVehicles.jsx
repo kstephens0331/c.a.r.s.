@@ -1,107 +1,81 @@
-import { Helmet } from 'react-helmet-async';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../services/supabaseClient.js'; // Correct path to supabaseClient
-import { Link } from 'react-router-dom'; // Import Link
+import { useNavigate } from "react-router-dom";
+
 
 export default function MyVehicles() {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [customerId, setCustomerId] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUserVehicles = async () => {
+    const fetchCustomerVehicles = async () => {
       setLoading(true);
-      setError(null);
-      const { data: userSession, error: sessionError } = await supabase.auth.getSession();
-      if (sessionError || !userSession?.session?.user) {
-        setError('User not authenticated or session expired.');
+      try {
+        const {
+          data: { user },
+          error: sessionError,
+        } = await supabase.auth.getUser();
+
+        if (sessionError) throw sessionError;
+        if (!user) return navigate("/login");
+
+        const { data: customer, error: customerError } = await supabase
+          .from("customers")
+          .select("id")
+          .eq("user_id", user.id)
+          .maybeSingle();
+
+        if (customerError || !customer) throw new Error("Customer not found");
+
+        setCustomerId(customer.id);
+
+        const { data: vehiclesData, error: vehiclesError } = await supabase
+          .from("vehicles")
+          .select("*")
+          .eq("customer_id", customer.id)
+          .order("created_at", { ascending: false });
+
+        if (vehiclesError) throw vehiclesError;
+
+        setVehicles(vehiclesData);
+      } catch (err) {
+        console.error("Failed to fetch vehicles:", err.message);
+      } finally {
         setLoading(false);
-        return;
       }
-
-      const userId = userSession.session.user.id;
-
-      const { data, error: fetchError } = await supabase
-        .from('vehicles')
-        .select('*')
-        .eq('customer_id', userId);
-
-      if (fetchError) {
-        console.error('Error fetching vehicles:', fetchError.message);
-        setError(`Failed to load vehicles: ${fetchError.message}`);
-      } else {
-        setVehicles(data);
-      }
-      setLoading(false);
     };
 
-    fetchUserVehicles();
-  }, []);
-
-  if (loading) {
-    return (
-      <>
-        <Helmet>
-          <title>My Vehicles | C.A.R.S Collision & Refinish Shop</title>
-          <meta name="description" content="View your registered vehicles, VIN details, and linked repair jobs in one place." />
-        </Helmet>
-        <div className="space-y-6 p-4">
-          <h1 className="text-3xl font-bold">My Vehicles</h1>
-          <p>Loading your vehicles...</p>
-        </div>
-      </>
-    );
-  }
-
-  if (error) {
-    return (
-      <>
-        <Helmet>
-          <title>My Vehicles | Collision & Refinish Shop</title>
-          <meta name="description" content="View your registered vehicles, VIN details, and linked repair jobs in one place." />
-        </Helmet>
-        <div className="space-y-6 p-4">
-          <h1 className="text-3xl font-bold">My Vehicles</h1>
-          <p className="text-red-600">{error}</p>
-        </div>
-      </>
-    );
-  }
+    fetchCustomerVehicles();
+  }, [navigate]);
 
   return (
-    <>
-      <Helmet>
-        <title>My Vehicles | C.A.R.S Collision & Refinish Shop</title>
-        <meta
-          name="description"
-          content="View your registered vehicles, VIN details, and linked repair jobs in one place."
-        />
-      </Helmet>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">My Vehicles</h1>
+      <p className="mb-4">These vehicles are linked to your customer account. Click a vehicle to see its details.</p>
 
-      <div className="space-y-6 p-4">
-        <h1 className="text-3xl font-bold">My Vehicles</h1>
-        <p className="text-lg">These vehicles are linked to your customer account. Click a vehicle to see its details.</p>
-
-        {vehicles.length === 0 ? (
-          <p className="text-gray-500">No vehicles registered to your account yet. <Link to="/portal/add-vehicle" className="text-brandRed hover:underline">Add one now!</Link></p>
-        ) : (
-          <div className="grid md:grid-cols-2 gap-6">
-            {vehicles.map((vehicle) => (
-              // Make the entire card clickable
-              <Link to={`/portal/vehicles/${vehicle.id}`} key={vehicle.id} className="block">
-                <div className="border p-4 rounded shadow hover:shadow-lg transition-shadow duration-200 cursor-pointer">
-                  <h2 className="text-xl font-semibold mb-2">{vehicle.year} {vehicle.make} {vehicle.model}</h2>
-                  <p className="text-sm">VIN: {vehicle.vin}</p>
-                  <p className="text-sm">License Plate: {vehicle.license_plate}</p>
-                  {/* Status from work_orders would go here, if available */}
-                  {/* <p className="text-sm">Status: In Progress</p> */}
-                  <p className="text-sm text-gray-500 mt-2">Click for details</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
-    </>
+      {loading ? (
+        <p>Loading vehicles...</p>
+      ) : vehicles.length === 0 ? (
+        <p className="text-gray-500">No vehicles registered to your account yet. Add one now!</p>
+      ) : (
+        <ul className="space-y-4">
+          {vehicles.map((vehicle) => (
+            <li
+              key={vehicle.id}
+              className="border p-4 rounded shadow hover:bg-gray-100 cursor-pointer"
+              onClick={() => navigate(`/portal/vehicles/${vehicle.id}`)}
+            >
+              <p className="font-semibold">
+                {vehicle.year} {vehicle.make} {vehicle.model}
+              </p>
+              <p className="text-sm text-gray-600">VIN: {vehicle.vin}</p>
+              <p className="text-sm text-gray-600">Plate: {vehicle.license_plate}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }
