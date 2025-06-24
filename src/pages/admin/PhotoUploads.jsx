@@ -1,68 +1,109 @@
-import { Helmet } from 'react-helmet-async';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { supabase } from '../../services/supabaseClient';
+import { uploadRepairPhoto } from '../../services/uploadRepairPhoto';
 
-export default function PhotoUploads() {
-  const [file, setFile] = useState(null);
-  const [workOrderId, setWorkOrderId] = useState('');
+export default function UploadRepairPhoto() {
+  const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState('');
+  const [customers, setCustomers] = useState([]);
+  const [workOrders, setWorkOrders] = useState([]);
+  const [selectedCustomer, setSelectedCustomer] = useState('');
+  const [selectedWorkOrder, setSelectedWorkOrder] = useState('');
 
-  const handleUpload = async (e) => {
-    e.preventDefault();
-    if (!file || !workOrderId) {
-      setMessage('Please select a file and enter a work order ID.');
-      return;
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      const { data, error } = await supabase
+        .from('customers')
+        .select('id, name')
+        .order('name');
+      if (!error) setCustomers(data);
+    };
+    fetchCustomers();
+  }, []);
+
+  useEffect(() => {
+    const fetchWorkOrders = async () => {
+      if (!selectedCustomer) return;
+      const { data, error } = await supabase
+        .from('work_orders')
+        .select('id, work_order_number')
+        .eq('customer_id', selectedCustomer)
+        .order('created_at', { ascending: false });
+      if (!error) setWorkOrders(data);
+    };
+    fetchWorkOrders();
+  }, [selectedCustomer]);
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file || !selectedWorkOrder) return;
+
+    setUploading(true);
+    setMessage('');
+    try {
+      const path = await uploadRepairPhoto(selectedWorkOrder, file);
+      setMessage(`File uploaded: ${path}`);
+    } catch (err) {
+      console.error(err);
+      setMessage(`Upload failed: ${err.message}`);
+    } finally {
+      setUploading(false);
     }
-
-    // Placeholder upload logic
-    setMessage(`File "${file.name}" assigned to Work Order #${workOrderId}.`);
-    setFile(null);
-    setWorkOrderId('');
   };
 
   return (
-    <>
-      <Helmet>
-        <title>Upload Repair Photos | Collision & Refinish Shop</title>
-        <meta
-          name="description"
-          content="Upload repair images and assign them to customer work orders for customer portal viewing."
-        />
-      </Helmet>
+    <div className="max-w-lg mx-auto p-4 bg-white rounded shadow">
+      <h2 className="text-lg font-bold mb-4">Upload Repair Photos</h2>
 
-      <div className="space-y-6">
-        <h1 className="text-3xl font-bold">Upload Repair Photos</h1>
-        <p className="text-lg">Attach progress or final repair images to any work order.</p>
+      <label className="block text-sm font-medium mb-1">Select Customer</label>
+      <select
+        value={selectedCustomer}
+        onChange={(e) => {
+          setSelectedCustomer(e.target.value);
+          setSelectedWorkOrder('');
+        }}
+        className="w-full border p-2 rounded mb-4"
+      >
+        <option value="">-- Choose Customer --</option>
+        {customers.map((cust) => (
+          <option key={cust.id} value={cust.id}>
+            {cust.name}
+          </option>
+        ))}
+      </select>
 
-        <form onSubmit={handleUpload} className="bg-accent p-6 rounded shadow max-w-xl space-y-4">
-          <label className="block font-medium">Work Order ID</label>
-          <input
-            type="text"
-            value={workOrderId}
-            onChange={(e) => setWorkOrderId(e.target.value)}
-            className="w-full p-2 border rounded"
-            placeholder="e.g. 2047"
-            required
-          />
+      {selectedCustomer && (
+        <>
+          <label className="block text-sm font-medium mb-1">Select Work Order</label>
+          <select
+            value={selectedWorkOrder}
+            onChange={(e) => setSelectedWorkOrder(e.target.value)}
+            className="w-full border p-2 rounded mb-4"
+          >
+            <option value="">-- Choose Work Order --</option>
+            {workOrders.map((wo) => (
+              <option key={wo.id} value={wo.id}>
+                #{wo.work_order_number}
+              </option>
+            ))}
+          </select>
+        </>
+      )}
 
-          <label className="block font-medium">Photo File</label>
+      {selectedWorkOrder && (
+        <>
+          <label className="block text-sm font-medium mb-1">Photo File</label>
           <input
             type="file"
             accept="image/*"
-            onChange={(e) => setFile(e.target.files[0])}
-            className="w-full p-2 border rounded"
-            required
+            onChange={handleFileUpload}
+            className="block w-full p-2 border rounded"
+            disabled={uploading}
           />
+        </>
+      )}
 
-          <button
-            type="submit"
-            className="bg-primary text-white px-6 py-2 rounded font-semibold hover:bg-black"
-          >
-            Upload Photo
-          </button>
-
-          {message && <p className="text-green-600 mt-2 text-sm">{message}</p>}
-        </form>
-      </div>
-    </>
+      {message && <p className="mt-2 text-sm text-blue-600">{message}</p>}
+    </div>
   );
 }
