@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../../../services/supabaseClient.js'; // Adjust path as needed
+import { useState, useEffect } from 'react';
 
-export default function CustomerProfileEditor({ customer, customerId, onUpdate, message }) {
+export default function CustomerProfileEditor({ customer, onUpdate }) {
   const [formData, setFormData] = useState({
-    full_name: '',
+    name: '',
     email: '',
     phone: '',
     address: ''
@@ -12,7 +11,7 @@ export default function CustomerProfileEditor({ customer, customerId, onUpdate, 
   useEffect(() => {
     if (customer) {
       setFormData({
-        full_name: customer.full_name || '',
+        name: customer.name || '',
         email: customer.email || '',
         phone: customer.phone || '',
         address: customer.address || ''
@@ -21,25 +20,63 @@ export default function CustomerProfileEditor({ customer, customerId, onUpdate, 
   }, [customer]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    onUpdate(formData); // Pass the updated data to the parent handler
+    onUpdate(formData);
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-4">Edit Profile</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input type="text" name="full_name" value={formData.full_name} onChange={handleChange} placeholder="Full Name" className="w-full p-2 border rounded" />
-        <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" className="w-full p-2 border rounded" />
-        <input type="text" name="phone" value={formData.phone} onChange={handleChange} placeholder="Phone" className="w-full p-2 border rounded" />
-        <input type="text" name="address" value={formData.address} onChange={handleChange} placeholder="Address" className="w-full p-2 border rounded" />
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Update Profile</button>
-        {message && <p className="text-sm mt-2">{message}</p>}
-      </form>
-    </div>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label className="block text-sm font-medium">Name</label>
+        <input
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          placeholder="Full Name"
+          className="w-full p-2 border rounded"
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Email</label>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="Email Address"
+          className="w-full p-2 border rounded"
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Phone</label>
+        <input
+          type="text"
+          name="phone"
+          value={formData.phone}
+          onChange={handleChange}
+          placeholder="Phone Number"
+          className="w-full p-2 border rounded"
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Address</label>
+        <input
+          type="text"
+          name="address"
+          value={formData.address}
+          onChange={handleChange}
+          placeholder="Street Address"
+          className="w-full p-2 border rounded"
+        />
+      </div>
+      <button type="submit" className="bg-brandRed text-white px-4 py-2 rounded hover:bg-red-600">
+        Update Profile
+      </button>
+    </form>
   );
 }
