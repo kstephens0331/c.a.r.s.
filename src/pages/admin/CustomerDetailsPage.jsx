@@ -14,19 +14,21 @@ async function fetchCustomerVehicles(customerId) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
-      // ❌ No Authorization header for public functions
     },
     body: JSON.stringify({ customerId }),
   });
 
-  const { data, error } = await res.json();
-
-  if (error) {
-    console.error('Error fetching vehicles:', error);
+  if (!res.ok) {
+    console.error('Function call failed with status:', res.status);
     return [];
   }
 
-  return data;
+const resJson = await res.json();
+if (!res.ok || !Array.isArray(resJson.data)) {
+  console.error('Function call failed or returned invalid data:', resJson);
+  return [];
+}
+return resJson.data;
 }
 
 
@@ -73,12 +75,11 @@ export default function CustomerDetailsPage() {
       // Fetch customer's vehicles
       console.log("Sending customerId to function:", profile.id);
 const vehiclesData = await fetchCustomerVehicles(profile.id);
+if (!Array.isArray(vehiclesData)) {
+  throw new Error('Invalid vehicle data format.');
+}
 setVehicles(vehiclesData);
-console.log("🚗 vehiclesData from function:", vehiclesData);
-console.log("Function received customerId:", customerId);
-
-      // Fetch all work orders for all of this customer's vehicles
-      const customerVehicleIds = vehiclesData.map(v => v.id);
+const customerVehicleIds = vehiclesData.map(v => v.id);
       if (customerVehicleIds.length > 0) {
           const { data: allWoData, error: allWoError } = await supabase
               .from('work_orders')
