@@ -24,10 +24,23 @@ export default function RepairPhotos() {
 
       try {
         // Step 1: Fetch vehicles belonging to the current user
-        const { data: vehicles, error: vehiclesError } = await supabase
-          .from('vehicles')
-          .select('id, make, model, year')
-          .eq('customer_id', userId);
+        const { data: customer, error: customerError } = await supabase
+  .from('customers')
+  .select('id')
+  .eq('user_id', userId)
+  .maybeSingle();
+
+if (customerError || !customer) {
+  setError('No customer record found for your account.');
+  setLoading(false);
+  return;
+}
+
+// Step 1b: Fetch vehicles using the actual customer.id
+const { data: vehicles, error: vehiclesError } = await supabase
+  .from('vehicles')
+  .select('id, make, model, year')
+  .eq('customer_id', customer.id);
 
         if (vehiclesError) throw new Error(vehiclesError.message);
 
