@@ -50,15 +50,17 @@ if (!existingProfile && !fetchError) {
       created_at: new Date().toISOString(),
     },
   ]);
+}
 
-  const { data: existingCustomer, error: customerCheckError } = await supabase
+// Always check if a customer exists, even if the profile already existed
+const { data: existingCustomer, error: customerCheckError } = await supabase
   .from('customers')
   .select('id')
   .eq('user_id', currentSession.user.id)
   .maybeSingle();
 
 if (!existingCustomer && !customerCheckError) {
-  console.warn('Inserting new customer record...');
+  console.warn('AdminLayout DEBUG: Customer not found, inserting...');
   await supabase.from('customers').insert([
     {
       user_id: currentSession.user.id,
@@ -68,7 +70,7 @@ if (!existingCustomer && !customerCheckError) {
       address: null
     }
   ]);
-}
+  
 }
 
       // Fetch user profile to check admin status
