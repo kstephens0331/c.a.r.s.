@@ -59,7 +59,7 @@ export default function EditCustomer() {
       email: form.email,
       phone: form.phone,
       address: form.address
-    }).eq('id', id);
+    }).eq('user_id', user.id);
 
     const { error: vErr } = await supabase.from('vehicles').update({
       make: form.make,
