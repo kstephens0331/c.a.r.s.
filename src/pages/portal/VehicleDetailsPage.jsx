@@ -9,6 +9,7 @@ export default function VehicleDetailsPage() {
   const [workOrders, setWorkOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const helmetTitle = "Vehicle Details | C.A.R.S";
 
   const statuses = [
     'Estimate Scheduled',
