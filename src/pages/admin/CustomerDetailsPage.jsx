@@ -97,7 +97,7 @@ export default function CustomerDetailsPage() {
       const { error: updateError } = await supabase
         .from('customers')
         .update({
-          full_name: formData.name,
+          name: formData.name,
           email: formData.email,
           phone: formData.phone,
           address: formData.address,
