@@ -102,7 +102,7 @@ export default function CustomerDetailsPage() {
           phone: formData.phone,
           address: formData.address,
         })
-        .eq('id', customerId);
+        .eq('user_id', customerId);
 
       if (updateError) throw new Error(updateError.message);
       setMessage('Customer profile updated successfully!');
@@ -212,7 +212,7 @@ export default function CustomerDetailsPage() {
         const { error: updateInventoryError } = await supabase
             .from('inventory')
             .update({ quantity: partToAdd.quantity - partQuantity })
-            .eq('id', selectedPartId);
+            .eq('user_id', selectedPartId);
 
         if (updateInventoryError) throw new Error(`Failed to update inventory: ${updateInventoryError.message}`);
 
