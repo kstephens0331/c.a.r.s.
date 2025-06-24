@@ -10,25 +10,27 @@ import AdminWorkOrderCreator from '../../components/admin/CustomerDetails/AdminW
 import AdminWorkOrderManager from '../../components/admin/CustomerDetails/AdminWorkOrderManager.jsx';
 
 async function fetchCustomerVehicles(customerId) {
-  const res = await fetch('https://vbxrcqtjpcyhylanozgz.functions.supabase.co/get-customer-vehicles', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ customerId }),
-  });
+  try {
+    const res = await fetch('https://vbxrcqtjpcyhylanozgz.functions.supabase.co/get-customer-vehicles', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ customerId }),
+    });
 
-  if (!res.ok) {
-    console.error('Function call failed with status:', res.status);
+    const resJson = await res.json();
+
+    if (!res.ok || !Array.isArray(resJson.data)) {
+      console.error('Unexpected response from vehicle function:', res.status, resJson);
+      return [];
+    }
+
+    return resJson.data;
+  } catch (err) {
+    console.error('fetchCustomerVehicles error:', err);
     return [];
   }
-
-const resJson = await res.json();
-if (!res.ok || !Array.isArray(resJson.data)) {
-  console.error('Function call failed or returned invalid data:', resJson);
-  return [];
-}
-return resJson.data;
 }
 
 
