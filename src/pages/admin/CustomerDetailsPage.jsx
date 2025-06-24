@@ -123,7 +123,7 @@ const { data: vehiclesData, error: vehiclesError } = await supabase
       const { data: newVehicle, error: insertError } = await supabase
         .from('vehicles')
         .insert({
-          customer_id: customerId,
+          customer_id: customer.id,
           make: newVehicleData.make,
           model: newVehicleData.model,
           year: parseInt(newVehicleData.year),
