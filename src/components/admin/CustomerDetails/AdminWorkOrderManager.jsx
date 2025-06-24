@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../../services/supabaseClient.js'; // Adjust path as needed
 
-export default function AdminWorkOrderManager({ workOrder, customerId, onAddPart, onUploadDocument, message }) {
+export default function AdminWorkOrderManager({ workOrder, customerId, onAddPart, onUploadDocument, message, setMessage }) {
   // Parts Management States
   const [availableParts, setAvailableParts] = useState([]);
   const [selectedPartId, setSelectedPartId] = useState('');

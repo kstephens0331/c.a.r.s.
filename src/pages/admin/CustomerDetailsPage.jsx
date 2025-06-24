@@ -430,12 +430,13 @@ const handleAddNewVehicle = async (newVehicleData) => {
 
                             {expandedWorkOrderId === wo.id && (
                                 <AdminWorkOrderManager
-                                    workOrder={wo}
-                                    customerId={customer.id} // Pass customer.id
-                                    // Pass handler functions directly. Child components will manage their own loading/messages.
-                                    onAddPart={handleAddPartToWorkOrder}
-                                    onUploadDocument={handleDocumentUpload}
-                                />
+  workOrder={wo}
+  customerId={customer.id}
+  onAddPart={handleAddPartToWorkOrder}
+  onUploadDocument={handleDocumentUpload}
+  message={message}
+  setMessage={setMessage} // ✅ Add this line
+/>
                             )}
                           </div>
                         ))}
