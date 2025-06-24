@@ -10,45 +10,38 @@ export default function MyVehicles() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchCustomerVehicles = async () => {
-      setLoading(true);
-      try {
-        const {
-          data: { user },
-          error: sessionError,
-        } = await supabase.auth.getUser();
+  const fetchVehicles = async () => {
+    setLoading(true);
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
 
-        if (sessionError) throw sessionError;
-        if (!user) return navigate("/login");
+    if (!user) return;
 
-        const { data: customer, error: customerError } = await supabase
-          .from("customers")
-          .select("id")
-          .eq("user_id", user.id)
-          .maybeSingle();
+    const { data: customer, error: customerError } = await supabase
+      .from("customers")
+      .select("*")
+      .eq("user_id", user.id)
+      .single();
 
-        if (customerError || !customer) throw new Error("Customer not found");
+    if (customerError || !customer) {
+      console.error("Customer not found or error", customerError);
+      return;
+    }
 
-        setCustomerId(customer.id);
+    const { data: vehiclesData, error: vehicleError } = await supabase
+      .from("vehicles")
+      .select("*")
+      .eq("customer_id", customer.id);
 
-        const { data: vehiclesData, error: vehiclesError } = await supabase
-          .from("vehicles")
-          .select("*")
-          .eq("customer_id", customer.id)
-          .order("created_at", { ascending: false });
+    if (vehicleError) {
+      console.error("Error fetching vehicles", vehicleError);
+      return;
+    }
 
-        if (vehiclesError) throw vehiclesError;
+    setVehicles(vehiclesData);
+  };
 
-        setVehicles(vehiclesData);
-      } catch (err) {
-        console.error("Failed to fetch vehicles:", err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCustomerVehicles();
-  }, [navigate]);
+  fetchVehicles();
+}, []);
 
   return (
     <div className="p-6">
