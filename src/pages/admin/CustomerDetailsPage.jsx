@@ -74,6 +74,7 @@ export default function CustomerDetailsPage() {
       console.log("Sending customerId to function:", profile.id);
 const vehiclesData = await fetchCustomerVehicles(profile.id);
 setVehicles(vehiclesData);
+console.log("🚗 vehiclesData from function:", vehiclesData);
 console.log("Function received customerId:", customerId);
 
       // Fetch all work orders for all of this customer's vehicles
@@ -343,7 +344,6 @@ const handleAddNewVehicle = async (newVehicleData) => {
       </div>
     );
   }
-  console.log("🚗 vehiclesData from function:", vehiclesData);
 
   return (
     <>
