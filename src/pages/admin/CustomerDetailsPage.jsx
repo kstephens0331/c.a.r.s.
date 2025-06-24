@@ -37,7 +37,7 @@ export default function CustomerDetailsPage() {
     try {
       // Fetch customer profile
       const { data: profile, error: profileError } = await supabase
-        .from('profiles')
+        .from('customer')
         .select('*')
         .eq('id', customerId)
         .single();
@@ -95,9 +95,9 @@ export default function CustomerDetailsPage() {
     setMessage('');
     try {
       const { error: updateError } = await supabase
-        .from('profiles')
+        .from('customers')
         .update({
-          full_name: formData.full_name,
+          full_name: formData.name,
           email: formData.email,
           phone: formData.phone,
           address: formData.address,
@@ -325,12 +325,12 @@ export default function CustomerDetailsPage() {
   return (
     <>
       <Helmet>
-        <title>{customer.full_name || 'Customer'} Details | Admin</title>
-        <meta name="description" content={`Admin view for ${customer.full_name}'s details and vehicles.`} />
+        <title>{customer.name || 'Customer'} Details | Admin</title>
+        <meta name="description" content={`Admin view for ${customer.name}'s details and vehicles.`} />
       </Helmet>
 
       <div className="space-y-8 p-4">
-        <h1 className="text-4xl font-bold text-primary mb-4">{customer.full_name || 'Customer'}</h1>
+        <h1 className="text-4xl font-bold text-primary mb-4">{customer.name || 'Customer'}</h1>
         <p className="text-lg text-gray-700 mb-6">
           Email: {customer.email} | Phone: {customer.phone || 'N/A'} | Address: {customer.address || 'N/A'}
         </p>
