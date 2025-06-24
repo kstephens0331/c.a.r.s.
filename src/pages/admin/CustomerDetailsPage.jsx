@@ -116,37 +116,43 @@ const { data: vehiclesData, error: vehiclesError } = await supabase
 
 
   // Handlers for adding a new vehicle
-  const handleAddNewVehicle = async (newVehicleData) => { // Takes newVehicleData directly
-    setAddingVehicle(true);
-    setMessage('');
-    try {
-      const { data: newVehicle, error: insertError } = await supabase
-        .from('vehicles')
-        .insert({
-          customer_id: customer.id,
-          make: newVehicleData.make,
-          model: newVehicleData.model,
-          year: parseInt(newVehicleData.year),
-          color: newVehicleData.color,
-          vin: newVehicleData.vin,
-          license_plate: newVehicleData.license_plate,
-        })
-        .select()
-        .single();
+const handleAddNewVehicle = async (newVehicleData) => {
+  setAddingVehicle(true);
+  setMessage('');
 
-      if (insertError) throw new Error(insertError.message);
+  if (!customer?.id) {
+    setMessage('Error: customer record is not loaded.');
+    setAddingVehicle(false);
+    return;
+  }
 
-      setMessage('New vehicle added successfully!');
-      fetchCustomerData(); // Re-fetch to update vehicles list
-      setTimeout(() => setMessage(''), 3000);
-    } catch (err) {
-      console.error('Error adding new vehicle:', err);
-      setMessage(`Error adding new vehicle: ${err.message}`);
-    } finally {
-      setAddingVehicle(false);
-    }
-  };
+  try {
+    const { data: newVehicle, error: insertError } = await supabase
+      .from('vehicles')
+      .insert({
+        customer_id: customer.id,
+        make: newVehicleData.make,
+        model: newVehicleData.model,
+        year: parseInt(newVehicleData.year),
+        color: newVehicleData.color,
+        vin: newVehicleData.vin,
+        license_plate: newVehicleData.license_plate,
+      })
+      .select()
+      .single();
 
+    if (insertError) throw new Error(insertError.message);
+
+    setMessage('New vehicle added successfully!');
+    fetchCustomerData(); // Refresh data
+    setTimeout(() => setMessage(''), 3000);
+  } catch (err) {
+    console.error('Error adding new vehicle:', err);
+    setMessage(`Error adding new vehicle: ${err.message}`);
+  } finally {
+    setAddingVehicle(false);
+  }
+};
   // Handlers for adding a new work order
   const handleCreateNewWorkOrder = async (vehicleId, newWorkOrderData) => { // Takes vehicleId and newWorkOrderData
     setCreatingWorkOrder(true);
