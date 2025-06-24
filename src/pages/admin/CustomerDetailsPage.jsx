@@ -51,11 +51,11 @@ export default function CustomerDetailsPage() {
       setCustomer(profile);
 
       // Fetch customer's vehicles
-      const { data: vehiclesData, error: vehiclesError } = await supabase
-        .from('vehicles')
-        .select('id, make, model, year, color, vin, license_plate')
-        .eq('customer_id', customerId)
-        .order('year', { ascending: false });
+const { data: customer, error: customerError } = await supabase
+  .from('customers')
+  .select('id')
+  .eq('user_id', user.id)
+  .maybeSingle();
 
       if (vehiclesError) throw new Error(`Error fetching vehicles: ${vehiclesError.message}`);
       setVehicles(vehiclesData);
