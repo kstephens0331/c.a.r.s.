@@ -10,6 +10,7 @@ export default function VehicleDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const helmetTitle = "Vehicle Details | C.A.R.S";
+  const helmetDescription = "View your vehicle's repair status, photos, and work order updates.";
 
   const statuses = [
     'Estimate Scheduled',
