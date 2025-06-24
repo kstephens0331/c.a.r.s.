@@ -22,6 +22,45 @@ export default function CustomerPortalLayout() {
         return;
       }
 
+      // Ensure profile exists
+const { data: existingProfile, error: fetchError } = await supabase
+  .from('profiles')
+  .select('id')
+  .eq('id', currentSession.user.id)
+  .maybeSingle();
+
+if (!existingProfile && !fetchError) {
+  const { full_name } = currentSession.user.user_metadata || {};
+  await supabase.from('profiles').insert([
+    {
+      id: currentSession.user.id,
+      full_name: full_name || null,
+      is_admin: false,
+      created_at: new Date().toISOString(),
+    },
+  ]);
+}
+
+// Ensure customer record exists
+const { data: existingCustomer, error: customerCheckError } = await supabase
+  .from('customers')
+  .select('id')
+  .eq('user_id', currentSession.user.id)
+  .maybeSingle();
+
+if (!existingCustomer && !customerCheckError) {
+  await supabase.from('customers').insert([
+    {
+      user_id: currentSession.user.id,
+      name: currentSession.user.user_metadata?.full_name || 'Unknown',
+      email: currentSession.user.email || null,
+      phone: null,
+      address: null
+    }
+  ]);
+}
+
+
       const { data: profile, error } = await supabase
         .from('profiles')
         .select('is_admin')
