@@ -146,8 +146,8 @@ export default function AdminWorkOrderManager({ workOrder, customerId, onAddPart
       disabled={documentUploading}
     >
       <option value="quote">Quote</option>
-      <option value="invoice">Invoice</option>
-      <option value="photo">Photo</option>
+      <option value="paid_invoice">Paid Invoice</option>
+      <option value='repair_photo'>Repair Photo</option>
     </select>
     <button
       type="submit"
