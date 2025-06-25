@@ -13,20 +13,20 @@ export async function uploadRepairPhoto(workOrderId, file) {
     const customerId = woData.customer_id;
 
     // Step 2: Upload the file to Supabase storage
-    const filePath = `repair-photos/work_orders/${workOrderId}/${Date.now()}_${file.name}`;
+const filePath = `work_orders/${workOrderId}/${Date.now()}_${file.name}`;
 
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from('customer-files')
-      .upload(filePath, file, {
-        cacheControl: '3600',
-        upsert: false,
-      });
+const { data: uploadData, error: uploadError } = await supabase.storage
+  .from('repair-photos')  // ✅ bucket matches use-case
+  .upload(filePath, file, {
+    cacheControl: '3600',
+    upsert: false,
+  });
 
     if (uploadError) throw new Error(`Upload failed: ${uploadError.message}`);
 
     // Step 3: Get the public URL
     const { data: publicUrlData } = supabase.storage
-      .from('customer-files')
+      .from('repair-photos')
       .getPublicUrl(filePath);
 
     if (!publicUrlData?.publicUrl) throw new Error('Failed to get public URL.');
