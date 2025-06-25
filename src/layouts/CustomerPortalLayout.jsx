@@ -114,8 +114,6 @@ if (!existingCustomer && !customerCheckError) {
         <Link to="/portal/my-vehicles" className="hover:text-brandRed">My Vehicles</Link>
         <Link to="/portal/add-vehicle" className="hover:text-brandRed">Add New Vehicle</Link>
         <Link to="/portal/repair-updates" className="hover:text-brandRed">Repair Updates</Link>
-        <Link to="/portal/repair-photos" className="hover:text-brandRed">Repair Photos</Link>
-        <Link to="/portal/my-documents" className="hover:text-brandRed">My Documents</Link>
         <button
           onClick={handleLogout}
           className="mt-auto text-sm text-white border-t border-white/30 pt-4 hover:text-red-400"
