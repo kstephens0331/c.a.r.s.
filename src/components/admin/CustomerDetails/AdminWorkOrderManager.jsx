@@ -127,29 +127,57 @@ export default function AdminWorkOrderManager({ workOrder, customerId, onAddPart
       </div>
 
       {/* Upload Documents Section */}
-      <div className="mt-4 pt-4 border-t border-gray-100">
-        <h6 className="font-semibold mb-2">Upload Documents:</h6>
-        <form onSubmit={handleDocumentUploadSubmit} className="space-y-2">
-          <input type="file" accept="application/pdf,image/*" onChange={(e) => setDocumentFile(e.target.files[0])} required className="block w-full text-sm text-gray-500" disabled={documentUploading} />
-          <select value={documentType} onChange={(e) => setDocumentType(e.target.value)} required className="w-full p-2 border rounded" disabled={documentUploading}>
-            <option value="quote">Quote</option>
-            <option value="paid_invoice">Paid Invoice</option>
-          </select>
-          <button type="submit" className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600" disabled={documentUploading}>
-            {documentUploading ? 'Uploading...' : 'Upload Document'}
-          </button>
-        </form>
-        {currentWorkOrderDocuments.length > 0 && (
-          <div className="mt-3">
-            <h6 className="text-sm font-medium mb-1">Uploaded Docs:</h6>
-            <ul className="list-disc list-inside text-xs">
-              {currentWorkOrderDocuments.map(doc => (
-                <li key={doc.id}><a href={doc.document_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{doc.file_name || doc.document_type}</a></li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
+<div className="mt-4 pt-4 border-t border-gray-100">
+  <h6 className="font-semibold mb-2">Upload Documents:</h6>
+  <form onSubmit={handleDocumentUploadSubmit} className="space-y-2">
+    <input
+      type="file"
+      accept="application/pdf,image/*"
+      onChange={(e) => setDocumentFile(e.target.files[0])}
+      required
+      className="block w-full text-sm text-gray-500"
+      disabled={documentUploading}
+    />
+    <select
+      value={documentType}
+      onChange={(e) => setDocumentType(e.target.value)}
+      required
+      className="w-full p-2 border rounded"
+      disabled={documentUploading}
+    >
+      <option value="quote">Quote</option>
+      <option value="invoice">Invoice</option>
+      <option value="photo">Photo</option>
+    </select>
+    <button
+      type="submit"
+      className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600"
+      disabled={documentUploading}
+    >
+      {documentUploading ? 'Uploading...' : 'Upload Document'}
+    </button>
+  </form>
+
+  {currentWorkOrderDocuments.length > 0 && (
+    <div className="mt-3">
+      <h6 className="text-sm font-medium mb-1">Uploaded Docs:</h6>
+      <ul className="list-disc list-inside text-xs space-y-1">
+        {currentWorkOrderDocuments.map((doc) => (
+          <li key={doc.id}>
+            <a
+              href={doc.document_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline"
+            >
+              {doc.file_name} ({doc.document_type})
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+</div>
     </div>
   );
 }
