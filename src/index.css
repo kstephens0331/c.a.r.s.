@@ -4,5 +4,14 @@
 
 /* Optional: Add custom global styles here */
 body {
-  @apply bg-accent text-primary font-sans;
+  background: linear-gradient(to bottom right, #2c1b14, #3e1f1c, #000);
+  background-attachment: fixed;
+  color: #f8f1e7;
+}
+@keyframes glow {
+  0%, 100% { stroke: rgba(255, 0, 0, 0.3); }
+  50% { stroke: rgba(255, 0, 0, 0.6); }
+}
+.animate-glow-path {
+  animation: glow 3s ease-in-out infinite;
 }
