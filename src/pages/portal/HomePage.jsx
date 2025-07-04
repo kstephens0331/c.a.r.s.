@@ -9,54 +9,30 @@ export default function Home() {
 
   const services = [
     {
-      icon: <Wrench size={32} className="text-brandRed mb-2" />,
-      title: 'Collision Damage',
-      desc: 'Bumper-to-bumper collision repair with insurance coordination.',
-      detail: 'From dents and frame repair to panel replacement, our team handles it all using manufacturer specs.'
-    },
-    {
-      icon: <Paintbrush size={32} className="text-brandRed mb-2" />,
-      title: 'Paint & Refinishing',
-      desc: 'Factory-matched paint, flawless clear coat, and custom finishes.',
-      detail: 'We use computerized color matching and pro-grade refinishing techniques for a seamless look.'
-    },
-    {
-      icon: <Truck size={32} className="text-brandRed mb-2" />,
-      title: 'Bedliners & Accessories',
-      desc: 'Spray-in bedliners, toolboxes, light bars, and custom add-ons.',
-      detail: 'Protect your truck bed and outfit your vehicle with high-end accessories and hardware.'
-    },
-    {
-      icon: <RefreshCw size={32} className="text-brandRed mb-2" />,
-      title: 'Routine Maintenance',
-      desc: 'Oil changes, fluid services, belts, hoses, and inspections.',
-      detail: 'Quick, efficient service to keep your vehicle running strong between major repairs.'
-    },
-    {
-      icon: <Disc3 size={32} className="text-brandRed mb-2" />,
-      title: 'Brake Services',
-      desc: 'Pad and rotor replacement, fluid flushes, and diagnostics.',
-      detail: 'Feel confident with full-service brake repairs and detailed safety inspections.'
-    },
-    {
-      icon: <Zap size={32} className="text-brandRed mb-2" />,
-      title: 'Diagnostics & Electrical',
-      desc: 'Battery, alternator, lighting, sensor, and check engine issues.',
-      detail: 'Our diagnostic tools read all makes/models for fast electrical troubleshooting and repair.'
-    },
-    {
-      icon: <MoveDiagonal size={32} className="text-brandRed mb-2" />,
-      title: 'Suspension & Steering',
-      desc: 'Shocks, struts, alignments, control arms, and bushings.',
-      detail: 'We repair handling issues and ride comfort with precision suspension work.'
-    },
-    {
-      icon: <Snowflake size={32} className="text-brandRed mb-2" />,
-      title: 'A/C & Heating',
-      desc: 'Recharge, compressor repair, and airflow optimization.',
-      detail: 'Stay comfortable year-round with A/C diagnostics, fixes, and heating repair.'
-    }
-  ];
+  icon: <Wrench size={32} className="text-brandRed mb-2" />,
+  title: "Collision Repairs – Insurance or Out-of-Pocket",
+  description: "Whether you're going through insurance or paying out of pocket, we’ll restore your vehicle with precision and care.",
+  detail: "From dents and frame repair to panel replacement and paintless dent removal, our team handles it all using manufacturer specs."
+},
+{
+  icon: <Paintbrush size={32} className="text-brandRed mb-2" />,
+  title: "Paint & Refinishing",
+  desc: "Professionally matched finishes on vehicles, furniture, signage, and more.",
+  detail: "We use computerized color matching and pro-grade refinishing techniques for a flawless result—if it fits in our booth, we’ll paint it."
+},
+{
+  icon: <Truck size={32} className="text-brandRed mb-2" />,
+  title: "Bedliners & Accessories",
+  desc: "Spray-in bedliners, toolboxes, light bars, and custom add-ons.",
+  detail: "Protect your truck bed and outfit your vehicle with high-end accessories and hardware."
+},
+{
+  icon: <RefreshCw size={32} className="text-brandRed mb-2" />,
+  title: "Routine Maintenance",
+  desc: "Brakes, suspension, A/C, and oil service—all in one visit.",
+  detail: "We cover the core systems that keep your vehicle safe, smooth, and reliable between major repairs."
+}
+  ]
 
   const testimonials = [
     {
@@ -160,22 +136,30 @@ export default function Home() {
   </div>
 </section>
 
-      <section className="bg-gray-100 py-16 px-4 text-center">
+<section className="bg-gray-100 py-16 px-4 text-center">
   <h2 className="text-2xl font-bold mb-10">How It Works</h2>
   <p className="max-w-2xl mx-auto mb-10 text-gray-700 text-base">
-    Whether you're a walk-in customer or referred through insurance, our process is fast and easy. You or a C.A.R.S. technician can load your vehicle details directly into our system. From there, you can track your repairs online, receive updates, and stay informed every step of the way.
+    Whether you're a walk-in customer or referred through insurance, our process is straightforward and transparent. You or a C.A.R.S. technician can load your vehicle details directly into our system. From there, you can track your repair status online and stay informed every step of the way.
   </p>
-        <div className="flex flex-col md:flex-row justify-center items-center gap-8 max-w-5xl mx-auto">
-          {['Get a Free Estimate', 'Approve & Schedule', 'Track Repairs Online', 'Pick Up & Drive'].map((step, i) => (
-            <div key={i} className="flex flex-col items-center max-w-[180px]">
-              <div className="w-12 h-12 rounded-full bg-brandRed text-white font-bold flex items-center justify-center mb-2">
-                {i + 1}
-              </div>
-              <p className="text-sm font-semibold text-gray-700">{step}</p>
-            </div>
-          ))}
+  <div className="flex flex-wrap justify-center items-start gap-8 max-w-5xl mx-auto">
+    {[
+      'Estimate',
+      'Drop Off Vehicle',
+      'Disassembly',
+      'Updated Estimate Finalized',
+      'Insurance or Customer Approval',
+      'Repairs Begin',
+      'Final Inspection & Delivery',
+    ].map((step, i) => (
+      <div key={i} className="flex flex-col items-center max-w-[180px] text-center">
+        <div className="w-12 h-12 rounded-full bg-brandRed text-white font-bold flex items-center justify-center mb-2">
+          {i + 1}
         </div>
-      </section>
+        <p className="text-sm font-semibold text-gray-700">{step}</p>
+      </div>
+    ))}
+  </div>
+</section>
 
       <section className="bg-white py-16 px-6 text-center">
   <h2 className="text-2xl font-bold mb-6">Meet the Owner</h2>

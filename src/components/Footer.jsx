@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { FaFacebook, FaInstagram, FaYelp, FaGoogle } from 'react-icons/fa';
 
 export default function Footer() {
   return (
@@ -36,20 +37,36 @@ export default function Footer() {
         </div>
       </div>
 
+      {/* Social Media Links */}
+      <div className="flex justify-center space-x-6 py-4 text-xl">
+        <a href="https://www.facebook.com/people/CARS-Collision-and-Refinish-Shop/61565873026881/" target="_blank" rel="noopener noreferrer" className="hover:text-brandRed">
+          <FaFacebook />
+        </a>
+        <a href="https://www.instagram.com/collisionandrefinishshop" target="_blank" rel="noopener noreferrer" className="hover:text-brandRed">
+          <FaInstagram />
+        </a>
+        <a href="https://www.google.com/search?sca_esv=8ff83a0cf2859f3b&si=AMgyJEtREmoPL4P1I5IDCfuA8gybfVI2d5Uj7QMwYCZHKDZ-E4uMOPX7uMabRXTvbiHEpRK7rXyLpDQ7Fp3Zxfg0mxZ7Blb3s3mSWW0wHqyJPbxnDxmDHjFiTNKLi0ekh5sIdE4ecBHknW5S55PPntE8DRlhLo1izurpfaSlRyjnK4A9QPyWY9o%3D&q=C.A.R.S+Collision+and+Refinish+Shop+Reviews&sa=X&ved=2ahUKEwjMlqKX15qOAxXQ38kDHZBVMPgQ0bkNegQIJxAE&biw=1920&bih=945&dpr=1" target="_blank" rel="noopener noreferrer" className="hover:text-brandRed">
+          <FaGoogle />
+        </a>
+        <a href="https://www.yelp.com/biz/cars-collision-and-refinish-shop-spring" target="_blank" rel="noopener noreferrer" className="hover:text-brandRed">
+          <FaYelp />
+        </a>
+      </div>
+
+      {/* Copyright */}
       <div className="bg-black text-center py-3 text-white">
-  <p>
-    &copy; {new Date().getFullYear()} C.A.R.S Collision & Refinish. All rights reserved. Built by{' '}
-    <a
-      href="https://stephenscode.dev"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="no-underline text-inherit"
-      style={{ textDecoration: 'none', color: 'inherit' }}
-    >
-      StephensCode LLC
-    </a>.
-  </p>
-</div>
+        <p>
+          &copy; {new Date().getFullYear()} C.A.R.S Collision & Refinish. All rights reserved. Built by{' '}
+          <a
+            href="https://stephenscode.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="no-underline text-inherit"
+          >
+            StephensCode LLC
+          </a>.
+        </p>
+      </div>
     </footer>
   );
 }

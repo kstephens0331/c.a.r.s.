@@ -33,9 +33,9 @@ export default function AboutUs() {
 </p>
 <ul className="space-y-6 text-gray-700">
             <li><strong>2007:</strong> Tony begins working in auto repair with a focus on paint and finish restoration.</li>
-            <li><strong>2016:</strong> C.A.R.S is founded in Spring, TX to serve the local community with integrity and precision.</li>
-            <li><strong>2020:</strong> Expanded into full-service mechanical repairs, diagnostics, and custom accessories.</li>
-            <li><strong>2024:</strong> Introduced online repair tracking and digital vehicle onboarding.</li>
+            <li><strong>2023:</strong> C.A.R.S is founded in Spring, TX to serve the local community with integrity and precision.</li>
+            <li><strong>2023:</strong> Expanded into full-service mechanical repairs, diagnostics, and custom accessories.</li>
+            <li><strong>2025:</strong> Introduced online repair tracking and digital vehicle onboarding.</li>
           </ul>
         </div>
       </section>

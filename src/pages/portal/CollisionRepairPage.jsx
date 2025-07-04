@@ -13,7 +13,7 @@ import {
   Hammer,
   CarFront,
   Palette,
-  Layers,
+  MoveDiagonal,
   Cpu
 } from 'lucide-react';
 
@@ -24,7 +24,7 @@ export default function CollisionRepairPage() {
         <title>Collision Repair | C.A.R.S Collision & Refinish</title>
         <meta
           name="description"
-          content="Explore our full-service collision repair offerings—from frame work to factory finish paint. We help with insurance, track progress online, and deliver results that exceed expectations."
+          content="Explore our full-service collision repair offerings—from frame work to factory finish paint. We help with insurance or out-of-pocket, track progress online, and deliver results that exceed expectations."
         />
       </Helmet>
 
@@ -61,7 +61,7 @@ export default function CollisionRepairPage() {
           </div>
           <div>
             <p><strong>🚗 Rental Coordination:</strong> We’ll help you stay mobile while we repair.</p>
-            <p><strong>⚙️ Paint Match Guarantee:</strong> Factory-match refinishing for seamless repair.</p>
+            <p><strong>⚙️ Paint Match Guarantee:</strong> Professionally matched refinishing for seamless repair.</p>
           </div>
         </div>
       </section>
@@ -69,64 +69,65 @@ export default function CollisionRepairPage() {
       {/* Repair Process */}
       <section className="bg-gray-100 py-16 px-6 text-center">
         <h2 className="text-2xl font-bold mb-6">Our Collision Repair Process</h2>
-        <div className="grid md:grid-cols-6 gap-6 max-w-6xl mx-auto text-sm text-gray-700">
-          <div><strong>1. Intake</strong><br /> Drop off your vehicle or request pickup.</div>
-          <div><strong>2. Estimate</strong><br /> We document all damage, inside and out.</div>
-          <div><strong>3. Disassembly</strong><br /> Hidden damage? We find and confirm it.</div>
-          <div><strong>4. Insurance Approval</strong><br /> We work directly with your provider.</div>
-          <div><strong>5. Repair & Refinish</strong><br /> OEM fit, factory-matched color, precision work.</div>
-          <div><strong>6. Inspection & Delivery</strong><br /> Final polish, customer review, and on your way.</div>
+        <div className="grid md:grid-cols-7 gap-6 max-w-6xl mx-auto text-sm text-gray-700">
+          <div><strong>1. Estimate</strong><br /> We assess and document all visible damage.</div>
+          <div><strong>2. Drop Off</strong><br /> Bring your vehicle or request pickup.</div>
+          <div><strong>3. Disassemble</strong><br /> Deeper inspection to uncover hidden damage.</div>
+          <div><strong>4. Update Estimate</strong><br /> Adjustments made after disassembly.</div>
+          <div><strong>5. Approval</strong><br /> Customer or insurance gives the go-ahead.</div>
+          <div><strong>6. Repair</strong><br /> Precision repair and refinishing work begins.</div>
+          <div><strong>7. Inspect & Deliver</strong><br /> Final review, polish, and hand-off.</div>
         </div>
       </section>
 
       {/* What We Offer */}
-<section className="bg-white py-20 px-6">
-  <h2 className="text-3xl font-bold text-center mb-12">What We Offer</h2>
-  <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto text-gray-800">
-    <div className="p-6 border rounded-lg shadow-sm hover:shadow-md transition">
-      <Wrench className="w-8 h-8 mb-4 text-gray-600" />
-      <h3 className="font-semibold text-lg mb-2">Frame Repair</h3>
-      <p className="text-sm text-gray-600">Structural realignment for safety and precision.</p>
-    </div>
-    <div className="p-6 border rounded-lg shadow-sm hover:shadow-md transition">
-      <ShieldCheck className="w-8 h-8 mb-4 text-gray-600" />
-      <h3 className="font-semibold text-lg mb-2">Fender Replacement</h3>
-      <p className="text-sm text-gray-600">Clean, seamless fit with panel and edge repair.</p>
-    </div>
-    <div className="p-6 border rounded-lg shadow-sm hover:shadow-md transition">
-      <PackageSearch className="w-8 h-8 mb-4 text-gray-600" />
-      <h3 className="font-semibold text-lg mb-2">OEM Part Matching</h3>
-      <p className="text-sm text-gray-600">Factory-grade components. No cheap substitutes.</p>
-    </div>
-    <div className="p-6 border rounded-lg shadow-sm hover:shadow-md transition">
-      <Hammer className="w-8 h-8 mb-4 text-gray-600" />
-      <h3 className="font-semibold text-lg mb-2">Dent & Paint Correction</h3>
-      <p className="text-sm text-gray-600">Panel perfection without overpainting.</p>
-    </div>
-    <div className="p-6 border rounded-lg shadow-sm hover:shadow-md transition">
-      <CarFront className="w-8 h-8 mb-4 text-gray-600" />
-      <h3 className="font-semibold text-lg mb-2">Bumper Restoration</h3>
-      <p className="text-sm text-gray-600">Impact-absorbing restoration for safety and aesthetics.</p>
-    </div>
-    <div className="p-6 border rounded-lg shadow-sm hover:shadow-md transition">
-      <Palette className="w-8 h-8 mb-4 text-gray-600" />
-      <h3 className="font-semibold text-lg mb-2">Color Match Refinishing</h3>
-      <p className="text-sm text-gray-600">Digitally matched blends with flawless finish.</p>
-    </div>
-    <div className="p-6 border rounded-lg shadow-sm hover:shadow-md transition">
-      <Layers className="w-8 h-8 mb-4 text-gray-600" />
-      <h3 className="font-semibold text-lg mb-2">Full Panel Rebuilds</h3>
-      <p className="text-sm text-gray-600">Complete replacement + prep for major damage.</p>
-    </div>
-    <div className="p-6 border rounded-lg shadow-sm hover:shadow-md transition">
-      <Cpu className="w-8 h-8 mb-4 text-gray-600" />
-      <h3 className="font-semibold text-lg mb-2">Sensor & Light Replacement</h3>
-      <p className="text-sm text-gray-600">Modern tech, factory-installed and calibrated.</p>
-    </div>
-  </div>
-</section>
+      <section className="bg-white py-20 px-6">
+        <h2 className="text-3xl font-bold text-center mb-12">What We Offer</h2>
+        <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto text-gray-800">
+          <div className="p-6 border rounded-lg shadow-sm hover:shadow-md transition">
+            <Wrench className="w-8 h-8 mb-4 text-gray-600" />
+            <h3 className="font-semibold text-lg mb-2">Frame Repair</h3>
+            <p className="text-sm text-gray-600">Structural realignment for safety and precision.</p>
+          </div>
+          <div className="p-6 border rounded-lg shadow-sm hover:shadow-md transition">
+            <ShieldCheck className="w-8 h-8 mb-4 text-gray-600" />
+            <h3 className="font-semibold text-lg mb-2">Panel Replacement</h3>
+            <p className="text-sm text-gray-600">Seamless replacement with factory-spec fit and finish.</p>
+          </div>
+          <div className="p-6 border rounded-lg shadow-sm hover:shadow-md transition">
+            <PackageSearch className="w-8 h-8 mb-4 text-gray-600" />
+            <h3 className="font-semibold text-lg mb-2">OEM Part Matching</h3>
+            <p className="text-sm text-gray-600">Factory-grade components. No cheap substitutes.</p>
+          </div>
+          <div className="p-6 border rounded-lg shadow-sm hover:shadow-md transition">
+            <Hammer className="w-8 h-8 mb-4 text-gray-600" />
+            <h3 className="font-semibold text-lg mb-2">Paintless Dent Removal</h3>
+            <p className="text-sm text-gray-600">Remove minor dents without affecting factory paint.</p>
+          </div>
+          <div className="p-6 border rounded-lg shadow-sm hover:shadow-md transition">
+            <Palette className="w-8 h-8 mb-4 text-gray-600" />
+            <h3 className="font-semibold text-lg mb-2">Color Match Refinishing</h3>
+            <p className="text-sm text-gray-600">Professionally matched blends with flawless finish.</p>
+          </div>
+          <div className="p-6 border rounded-lg shadow-sm hover:shadow-md transition">
+            <MoveDiagonal className="w-8 h-8 mb-4 text-gray-600" />
+            <h3 className="font-semibold text-lg mb-2">Suspension & Steering</h3>
+            <p className="text-sm text-gray-600">Shocks, struts, alignments, control arms, and bushings.</p>
+          </div>
+          <div className="p-6 border rounded-lg shadow-sm hover:shadow-md transition">
+            <CarFront className="w-8 h-8 mb-4 text-gray-600" />
+            <h3 className="font-semibold text-lg mb-2">Accessory Install</h3>
+            <p className="text-sm text-gray-600">Lights, trim, sensors, moldings, or minor aesthetic items.</p>
+          </div>
+          <div className="p-6 border rounded-lg shadow-sm hover:shadow-md transition">
+            <Cpu className="w-8 h-8 mb-4 text-gray-600" />
+            <h3 className="font-semibold text-lg mb-2">Sensor & Light Replacement</h3>
+            <p className="text-sm text-gray-600">Modern tech, factory-installed and calibrated.</p>
+          </div>
+        </div>
+      </section>
 
-      {/* Before & After Slider */}
+      {/* Before & After Showcase */}
       <section className="bg-white py-16 px-6">
         <h2 className="text-2xl font-bold mb-10 text-center">Before & After Showcase</h2>
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
