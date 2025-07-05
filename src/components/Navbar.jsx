@@ -46,12 +46,12 @@ export default function Navbar() {
             {dropdownOpen && (
               <div className="absolute left-0 top-full mt-2 w-56 bg-white text-black shadow-lg rounded-md z-50">
                 <NavLink to="/services" className="block px-4 py-2 hover:bg-gray-100">All Services</NavLink>
-                <NavLink to="/collision-repair" className="block px-4 py-2 hover:bg-gray-100">Collision Repair</NavLink>
-                <NavLink to="/paint-refinish" className="block px-4 py-2 hover:bg-gray-100">Paint & Refinish</NavLink>
-                <NavLink to="/custom-paint" className="block px-4 py-2 hover:bg-gray-100">Custom Paint</NavLink>
-                <NavLink to="/paintless-dent-repair" className="block px-4 py-2 hover:bg-gray-100">Paintless Dent Repair</NavLink>
-                <NavLink to="/spray-in-bedliners" className="block px-4 py-2 hover:bg-gray-100">Spray-In Bedliners</NavLink>
-                <NavLink to="/light-mechanical" className="block px-4 py-2 hover:bg-gray-100">Light Mechanical</NavLink>
+                <NavLink to="/services/collision-repair" className="block px-4 py-2 hover:bg-gray-100">Collision Repair</NavLink>
+                <NavLink to="/services/paint-refinish" className="block px-4 py-2 hover:bg-gray-100">Paint & Refinish</NavLink>
+                <NavLink to="/services/custom-paint" className="block px-4 py-2 hover:bg-gray-100">Custom Paint</NavLink>
+                <NavLink to="/services/paintless-dent-repair" className="block px-4 py-2 hover:bg-gray-100">Paintless Dent Repair</NavLink>
+                <NavLink to="/services/bedliners-accessories" className="block px-4 py-2 hover:bg-gray-100">Spray-In Bedliners</NavLink>
+                <NavLink to="/services/light-mechanical" className="block px-4 py-2 hover:bg-gray-100">Light Mechanical</NavLink>
               </div>
             )}
           </div>
@@ -83,12 +83,12 @@ export default function Navbar() {
           <NavLink to="/" onClick={() => setMenuOpen(false)} className={navClass}>Home</NavLink>
           <NavLink to="/about" onClick={() => setMenuOpen(false)} className={navClass}>About</NavLink>
           <NavLink to="/services" onClick={() => setMenuOpen(false)} className={navClass}>All Services</NavLink>
-          <NavLink to="/collision-repair" onClick={() => setMenuOpen(false)} className={navClass}>Collision Repair</NavLink>
-          <NavLink to="/paint-refinish" onClick={() => setMenuOpen(false)} className={navClass}>Paint & Refinish</NavLink>
-          <NavLink to="/custom-paint" onClick={() => setMenuOpen(false)} className={navClass}>Custom Paint</NavLink>
-          <NavLink to="/paintless-dent-repair" onClick={() => setMenuOpen(false)} className={navClass}>Paintless Dent Repair</NavLink>
-          <NavLink to="/spray-in-bedliners" onClick={() => setMenuOpen(false)} className={navClass}>Spray-In Bedliners</NavLink>
-          <NavLink to="/light-mechanical" onClick={() => setMenuOpen(false)} className={navClass}>Light Mechanical</NavLink>
+          <NavLink to="/services/collision-repair" onClick={() => setMenuOpen(false)} className={navClass}>Collision Repair</NavLink>
+          <NavLink to="/services/paint-refinish" onClick={() => setMenuOpen(false)} className={navClass}>Paint & Refinish</NavLink>
+          <NavLink to="/services/custom-paint" onClick={() => setMenuOpen(false)} className={navClass}>Custom Paint</NavLink>
+          <NavLink to="/services/paintless-dent-repair" onClick={() => setMenuOpen(false)} className={navClass}>Paintless Dent Repair</NavLink>
+          <NavLink to="/services/bedliners-accessories" onClick={() => setMenuOpen(false)} className={navClass}>Spray-In Bedliners</NavLink>
+          <NavLink to="/services/light-mechanical" onClick={() => setMenuOpen(false)} className={navClass}>Light Mechanical</NavLink>
           <NavLink to="/contact" onClick={() => setMenuOpen(false)} className={navClass}>Contact</NavLink>
           <NavLink to="/login" onClick={() => setMenuOpen(false)} className={navClass}>Customer Login</NavLink>
           <NavLink to="/repair-gallery" onClick={() => setMenuOpen(false)} className={navClass}>Repair Gallery</NavLink>
