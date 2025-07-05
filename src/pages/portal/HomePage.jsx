@@ -8,13 +8,8 @@ import { Wrench, Paintbrush, Truck, RefreshCw } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/effect-fade';
-import { Autoplay, EffectFade } from 'swiper/modules';
-import { ClipboardCheck, Car, FileText, CheckCircle, SprayCan, ShieldCheck } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { Info } from 'lucide-react';
+import TestimonialSlider from '../components/TestimonialSlider';
+
 
 
 
@@ -227,29 +222,9 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-16 px-6 text-center" data-aos="fade-up">
-        <h2 className="text-2xl font-bold mb-10">What Our Customers Say</h2>
-        <Swiper
-          spaceBetween={30}
-          slidesPerView={1}
-          autoplay={{ delay: 5000 }}
-          effect="fade"
-          loop={true}
-        >
-          {[
-            "I recently had the pleasure of working with C.A.R.S. Collision, and I can't recommend them highly enough!",
-            "Originally I was going to get my service done at Caliber Collision, but a buddy recommended Tony...",
-            "Had my 2018 GMC Terrain serviced for rear suspension. Tony personally worked on it..."
-          ].map((text, index) => (
-            <SwiperSlide key={index}>
-              <div className="max-w-3xl mx-auto bg-white/5 backdrop-blur-md p-6 rounded-lg shadow-lg">
-                <p className="italic text-gray-200">“{text}”</p>
-                <footer className="mt-4 text-sm font-semibold text-brandRed">– Customer</footer>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </section>
+<section>
+  <TestimonialSlider />
+</section>
 
       <section className="pt-0 pb-16 px-6 text-center relative" data-aos="fade-up">
         <h2 className="text-2xl font-bold mb-6">Meet the Owner</h2>
