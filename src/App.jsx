@@ -8,8 +8,15 @@ import HomePage from './pages/portal/HomePage.jsx';
 import CustomerLogin from './pages/portal/CustomerLogin.jsx';
 import RegisterPage from './pages/portal/RegisterPage.jsx';
 import AboutPage from './pages/portal/AboutPage.jsx';
-import CollisionRepairPage from './pages/portal/CollisionRepairPage.jsx';
+import CollisionRepairPage from './pages/portal/Services.jsx';
 import ContactPage from './pages/portal/ContactPage.jsx';
+import RepairGallery from './pages/portal/RepairGallery';
+import CollisionRepair from './pages/portal/CollisionRepair';
+import PaintAndRefinishPage from './pages/portal/PaintAndRefinishPage';
+import CustomPaint from './pages/portal/CustomPaint';
+import PaintlessDentRepair from './pages/portal/PaintlessDentRepair';
+import BedlinersPage from './pages/portal/BedlinersPage';
+import LightMechanicalPage from './pages/portal/LightMechanicalPage';
 
 // Import Admin Layout Component
 import AdminLayout from './layouts/AdminLayout.jsx';
@@ -57,8 +64,15 @@ function App() {
             <Route path="/login" element={<CustomerLogin />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/about" element={<AboutPage />} />
-            <Route path="/collision-repair" element={<CollisionRepairPage />} />
+            <Route path="/services" element={<CollisionRepairPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/repair-gallery" element={<RepairGallery />} />
+            <Route path="/services/collision-repair" element={<CollisionRepair />} />
+<Route path="/services/paint-refinish" element={<PaintAndRefinishPage />} />
+<Route path="/services/custom-paint" element={<CustomPaint />} />
+<Route path="/services/paintless-dent-repair" element={<PaintlessDentRepair />} />
+<Route path="/services/bedliners-accessories" element={<BedlinersPage />} />
+<Route path="/services/light-mechanical" element={<LightMechanicalPage />} />
 
             {/* Admin Routes - Nested under AdminLayout */}
             <Route path="/admin" element={<AdminLayout />}>

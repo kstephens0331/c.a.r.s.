@@ -1,137 +1,170 @@
 import { Helmet } from 'react-helmet-async';
-import Logo from "../../assets/logo.png";
+import { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 
 export default function ContactPage() {
+  const [openFAQ, setOpenFAQ] = useState(null);
+
+  const toggleFAQ = (index) => {
+    setOpenFAQ(openFAQ === index ? null : index);
+  };
+
+  const faqs = [
+    {
+      question: 'Do I need an appointment for an estimate?',
+      answer:
+        'Appointments are preferred but not required. You’re welcome to walk in during business hours, or schedule ahead using our embedded calendar below.',
+    },
+    {
+      question: 'Can you work with my insurance?',
+      answer:
+        'Yes, we work with all major insurance providers. We can assist with documentation, supplements, and photo proof throughout the repair process.',
+    },
+    {
+      question: 'What if I want to pay out of pocket?',
+      answer:
+        'No problem at all. We’ll provide an honest estimate and work within your budget. No pressure, no upselling.',
+    },
+    {
+      question: 'Do you only paint cars?',
+      answer:
+        'Nope. If it fits in our booth, we’ll paint it. That includes motorcycles, golf carts, signs, metal parts, even small trailers.',
+    },
+    {
+      question: 'How long do repairs usually take?',
+      answer:
+        'Timeframes vary by job, but we’ll give you an accurate turnaround estimate upfront—and keep you updated throughout. Many jobs are completed in just a few days.',
+    },
+    {
+      question: 'Do you offer spray-in bedliners?',
+      answer:
+        'Yes, we install rugged spray-in bedliners that are UV-stable and resistant to scratches, oil, and chemicals. Ask us about color options too.',
+    },
+    {
+      question: 'Where are you located?',
+      answer:
+        'We’re located at 2530 Old Louetta Loop #114, Spring, TX 77388. You can get directions using the map below.',
+    },
+    {
+      question: 'What are your business hours?',
+      answer:
+        'We’re open Monday through Friday from 8am to 6pm. Saturday appointments available upon request.',
+    },
+    {
+      question: 'What services do you offer?',
+      answer:
+        'We handle collision repair, refinishing, dent removal, custom paint, spray-in bedliners, mechanical work (A/C, brakes, etc.), and more.',
+    },
+  ];
+
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-br from-[#2c1b14] via-[#3e1f1c] to-black text-white px-4 py-20">
       <Helmet>
-        <title>Contact & Schedule | Collision & Refinish Shop</title>
-        <meta
-          name="description"
-          content="Book your collision repair estimate or service appointment online. Call, email, or use our Calendly link to get started."
-        />
+        <title>Contact Us | C.A.R.S. Collision & Refinish</title>
       </Helmet>
 
-      <div className="bg-white text-primary">
-        {/* Header */}
-        <section className="bg-primary text-white py-20 px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Schedule an Estimate</h1>
-          <p className="text-lg md:text-xl max-w-2xl mx-auto">
-            Book your estimate, drop-off, or repair appointment right here. No calls needed.
-          </p>
-        </section>
+      <section className="max-w-6xl mx-auto">
+        <h1 className="text-4xl font-bold mb-4 text-center">Contact Us</h1>
+        <p className="text-center max-w-2xl mx-auto text-gray-300 mb-10">
+          Whether you need an estimate, want to schedule an appointment, or just have a few questions—our team is here to help. Call us at{' '}
+          <a href="tel:8328853055" className="text-brandRed hover:underline font-medium">832-885-3055</a>{' '}
+          or use the form below to get started.
+        </p>
 
-       {/* Contact Form + Info Side-by-Side */}
-<section className="py-16 px-4 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
-  {/* Form */}
-  <form
-    action="https://formspree.io/f/mdkzwdjg"
-    method="POST"
-    className="bg-white shadow-lg rounded-xl p-6 space-y-4"
-  >
-    <h2 className="text-3xl font-bold mb-4 text-center">Contact Us</h2>
+        <div className="grid md:grid-cols-2 gap-12 mb-20">
+          <form
+            action="https://formspree.io/f/mdkzwdjg"
+            method="POST"
+            className="space-y-6"
+          >
+            <input type="text" name="name" placeholder="Your Name" required className="w-full bg-[#1a1a1a] text-white px-4 py-3 rounded" />
+            <input type="email" name="email" placeholder="Your Email" required className="w-full bg-[#1a1a1a] text-white px-4 py-3 rounded" />
+            <textarea name="message" placeholder="Message" rows="5" required className="w-full bg-[#1a1a1a] text-white px-4 py-3 rounded" />
+            <button type="submit" className="bg-brandRed px-6 py-3 rounded text-white hover:bg-red-700 transition">
+              Send Message
+            </button>
+          </form>
 
-    <div>
-      <label className="block text-sm font-medium text-gray-700">Name</label>
-      <input
-        type="text"
-        name="name"
-        required
-        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-      />
-    </div>
-
-    <div>
-      <label className="block text-sm font-medium text-gray-700">Email</label>
-      <input
-        type="email"
-        name="email"
-        required
-        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-      />
-    </div>
-
-    <div>
-      <label className="block text-sm font-medium text-gray-700">Phone</label>
-      <input
-        type="tel"
-        name="phone"
-        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-      />
-    </div>
-
-    <div>
-      <label className="block text-sm font-medium text-gray-700">Message</label>
-      <textarea
-        name="message"
-        rows="5"
-        required
-        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-      ></textarea>
-    </div>
-
-    <button
-      type="submit"
-      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition"
-    >
-      Send Message
-    </button>
-  </form>
-
-  {/* Contact Info */}
-  <div className="bg-gray-100 rounded-xl shadow-md p-6 text-gray-800 space-y-4">
-    <h2 className="text-2xl font-bold mb-2">Contact Information</h2>
-
-    <p>📍 2530 Old Louetta Loop #114, Spring, TX 77388</p>
-    <p>📞 <a href="tel:8328853055" className="text-blue-600 hover:underline">832-885-3055</a></p>
-    <p>✉️ <a href="mailto:collisionandrefinishshop@gmail.com" className="text-blue-600 hover:underline">collisionandrefinishshop@gmail.com</a></p>
-    <p>🕒 Mon–Fri: 9am–6pm</p>
-    <p>🕒 Sat: 9am–1pm · Sun: Closed</p>
-
-    <div className="mt-6 flex justify-center">
-      <img src={Logo} alt="Logo" className="w-50 h-auto" />
-    </div>
-  </div>
-</section>
+          <div className="space-y-4 text-sm text-gray-300">
+            <p><strong>📍 Address:</strong> 2530 Old Louetta Loop #114, Spring, TX 77388</p>
+            <p><strong>📞 Phone:</strong> <a href="tel:8328853055" className="text-brandRed hover:underline">832-885-3055</a></p>
+            <p><strong>📧 Email:</strong> <a href="mailto:carscollisionhouston@gmail.com" className="text-brandRed hover:underline">carscollisionhouston@gmail.com</a></p>
+            <p><strong>🕐 Hours:</strong> Mon–Fri: 8am – 6pm, Sat by appt.</p>
+          </div>
+        </div>
 
         {/* Calendly Embed */}
-        <section className="py-12 px-4 bg-accent">
-          <h2 className="text-2xl font-bold text-center mb-6">Book an Appointment</h2>
-          <div className="max-w-4xl mx-auto">
-            <div className="aspect-w-16 aspect-h-9">
-              <iframe
-                src="https://calendly.com/collisionandrefinishshop"
-                title="Schedule via Calendly"
-                className="w-full h-[720px] border-none rounded shadow"
-                allowFullScreen
-              ></iframe>
-            </div>
+        <div className="mb-20">
+          <h2 className="text-2xl font-bold mb-4 text-center">Schedule an Appointment</h2>
+          <div className="overflow-hidden rounded-lg shadow-lg">
+            <iframe
+              src="https://calendly.com/collisionandrefinishshop"
+              width="100%"
+              height="700"
+              frameBorder="0"
+              scrolling="no"
+              title="Schedule with Calendly"
+              className="w-full rounded-md"
+            ></iframe>
           </div>
-        </section>
+        </div>
 
-        {/* Optional FAQs */}
-        <section className="py-16 px-4 max-w-5xl mx-auto">
+        {/* FAQ Accordion */}
+        <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-bold text-center mb-8">Frequently Asked Questions</h2>
-          <div className="grid md:grid-cols-2 gap-8 text-left text-sm md:text-base">
-            <div>
-              <h3 className="font-semibold mb-2">Do you work with my insurance?</h3>
-              <p>Yes — we handle all communication with your adjuster and help streamline approvals.</p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-2">How long will repairs take?</h3>
-              <p>It depends on parts availability and severity, but we keep you updated at every step.</p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-2">Can I drop off after hours?</h3>
-              <p>Yes! Just let us know and we’ll coordinate a safe drop-off time and instructions.</p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-2">What if I need help getting a rental?</h3>
-              <p>We’ll work with your rental provider or help arrange a loaner when possible.</p>
-            </div>
+          <div className="space-y-4">
+            {faqs.map((faq, i) => (
+              <div
+                key={i}
+                className="bg-[#1f1f1f] rounded-lg shadow-md transition-all duration-300"
+              >
+                <button
+                  onClick={() => toggleFAQ(i)}
+                  className="w-full flex justify-between items-center px-6 py-4 text-left"
+                >
+                  <span className="text-lg font-medium text-white">{faq.question}</span>
+                  <ChevronDown
+                    className={`transform transition-transform duration-300 ${
+                      openFAQ === i ? 'rotate-180' : ''
+                    } text-brandRed`}
+                  />
+                </button>
+                {openFAQ === i && (
+                  <div className="px-6 pb-4 text-gray-300">
+                    {faq.answer}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
-        </section>
-      </div>
-    </>
+        </div>
+
+        {/* Map */}
+        <div className="mt-20">
+          <h2 className="text-2xl font-bold mb-4 text-center">Find Us</h2>
+          <div className="overflow-hidden rounded-lg shadow-lg">
+            <iframe
+              src="https://www.google.com/maps?q=2530+Old+Louetta+Loop+%23114,+Spring,+TX+77388&output=embed"
+              width="100%"
+              height="400"
+              loading="lazy"
+              className="w-full rounded-md"
+              allowFullScreen
+              title="Map to C.A.R.S."
+            ></iframe>
+          </div>
+          <div className="text-center mt-4">
+            <a
+              href="https://www.google.com/maps/dir/?api=1&destination=2530+Old+Louetta+Loop+%23114,+Spring,+TX+77388"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block mt-2 bg-brandRed text-white px-6 py-3 rounded hover:bg-red-700 transition"
+            >
+              Get Directions
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }
