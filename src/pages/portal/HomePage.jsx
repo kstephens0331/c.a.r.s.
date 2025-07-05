@@ -8,7 +8,7 @@ import { Wrench, Paintbrush, Truck, RefreshCw } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import TestimonialSlider from '../components/TestimonialSlider';
+import TestimonialSlider from '../../components/TestimonialSlider';
 
 
 
