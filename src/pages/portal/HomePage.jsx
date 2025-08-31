@@ -10,11 +10,8 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import TestimonialSlider from '../../components/TestimonialSlider';
 
-
-
-
 export default function Home() {
-  const [expanded, setExpanded] = useState(0);
+  const [expanded, setExpanded] = useState(null);
 
   useEffect(() => {
     AOS.init({ duration: 800, once: true });
@@ -24,7 +21,7 @@ export default function Home() {
     {
       icon: <Wrench size={32} className="text-brandRed mb-2" />,
       title: 'Collision Repairs – Insurance or Out-of-Pocket',
-      description:
+      desc:
         "Whether you're going through insurance or paying out of pocket, we’ll restore your vehicle with precision and care.",
       detail:
         'From dents and frame repair to panel replacement and paintless dent removal, our team handles it all using manufacturer specs.',
@@ -51,6 +48,7 @@ export default function Home() {
         'We cover the core systems that keep your vehicle safe, smooth, and reliable between major repairs.',
     },
   ];
+
   return (
     <div className="bg-site text-white relative overflow-hidden">
       <Helmet>
@@ -69,9 +67,7 @@ export default function Home() {
         />
         <h1 className="text-3xl md:text-4xl font-bold max-w-2xl mb-6 leading-snug">
           <span className="block animate-type">Trusted repairs. Industrial precision.</span>
-          <span className="block animate-type2">
-            Backed by craftsmanship and pride.
-          </span>
+          <span className="block animate-type2">Backed by craftsmanship and pride.</span>
         </h1>
         <div className="flex flex-wrap gap-4 justify-center">
           <Link
@@ -93,55 +89,47 @@ export default function Home() {
         Family-Owned • Veteran Operated • No Surprises • Fast Turnaround • OEM Standards • Paint Matching • Local Trusted Experts
       </div>
 
-<section className="pt-16 pb-16 px-4 text-center">
-  <h2 className="text-2xl font-bold mb-2" data-aos="fade-up">What We Repair</h2>
-  <p className="text-sm text-gray-400 mb-8" data-aos="fade-up" data-aos-delay="100">
-    Click any service below to learn more.
-  </p>
+      {/* What We Repair */}
+      <section className="pt-16 pb-16 px-4 text-center">
+        <h2 className="text-2xl font-bold mb-2" data-aos="fade-up">
+          What We Repair
+        </h2>
+        <p
+          className="text-sm text-gray-400 mb-8"
+          data-aos="fade-up"
+          data-aos-delay="100"
+        >
+          Click any service below to learn more.
+        </p>
 
-  <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto">
-    {services.map((item, idx) => (
-    ))}
-  </div>
-</section>
+        <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          {services.map((item, idx) => (
+            <div
+              key={idx}
+              className={`border border-gray-600 rounded-xl p-6 text-left bg-[#2c1b14]/90 cursor-pointer shadow-lg hover:scale-[1.03] transition-transform duration-200 ${
+                expanded === idx ? 'ring-2 ring-brandRed' : ''
+              }`}
+              onClick={() => setExpanded(expanded === idx ? null : idx)}
+              data-aos="fade-up"
+              data-aos-delay={idx * 100}
+            >
+              <div className="flex flex-col h-full justify-between">
+                <div className="flex items-start gap-4 mb-2">
+                  <div>{item.icon}</div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-1">{item.title}</h3>
+                    <p className="text-sm text-gray-200 leading-snug">{item.desc}</p>
+                  </div>
+                </div>
 
-
-<section className="pt-16 pb-16 px-4 text-center">
-  <h2 className="text-2xl font-bold mb-2" data-aos="fade-up">What We Repair</h2>
-  <p className="text-sm text-gray-400 mb-8" data-aos="fade-up" data-aos-delay="100">
-    Click any service below to learn more.
-  </p>
-
-  <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto">
-    {services.map((item, idx) => (
-      <div
-        key={idx}
-        className={`border border-gray-600 rounded-xl p-6 text-left bg-[#2c1b14]/90 cursor-pointer shadow-lg hover:scale-[1.03] transition-transform duration-200 ${
-          expanded === idx ? 'ring-2 ring-brandRed' : ''
-        }`}
-        onClick={() => setExpanded(expanded === idx ? null : idx)}
-        data-aos="fade-up"
-        data-aos-delay={idx * 100}
-      >
-        <div className="flex flex-col h-full justify-between">
-          <div className="flex items-start gap-4 mb-2">
-            <div>{item.icon}</div>
-            <div>
-              <h3 className="font-semibold text-lg mb-1">{item.title}</h3>
-              <p className="text-sm text-gray-200 leading-snug">{item.desc}</p>
+                {expanded === idx && (
+                  <p className="text-sm text-gray-300 mt-2">{item.detail}</p>
+                )}
+              </div>
             </div>
-          </div>
-
-          {/* Detail - No transition or fading classes */}
-          {expanded === idx && (
-            <p className="text-sm text-gray-300 mt-2">{item.detail}</p>
-          )}
+          ))}
         </div>
-      </div>
-    ))}
-  </div>
-</section>
-
+      </section>
 
       <section className="pt-0 pb-20 px-4 text-center" data-aos="fade-up">
         <div className="flex flex-col md:flex-row gap-6 justify-center items-center max-w-5xl mx-auto">
@@ -160,24 +148,26 @@ export default function Home() {
               Hover to Reveal
             </span>
           </div>
-<div className="max-w-2xl text-left px-2 md:px-0">
-  <h3 className="text-2xl font-bold mb-4">Before & After — Real Collision Repair Results</h3>
-  <p className="text-gray-300 leading-relaxed text-sm md:text-base mb-4">
-    This is more than cosmetic work—it’s precision automotive restoration. At C.A.R.S. Collision & Refinish, we repair structural damage, blend factory-matched paint, and deliver OEM-level results. Our team follows manufacturer-approved repair procedures for every collision job, ensuring your car returns to the road looking and performing like it just left the showroom.
-  </p>
-  <p className="text-gray-300 leading-relaxed text-sm md:text-base mb-4">
-    In this example, extensive damage was professionally corrected using high-quality materials and our downdraft paint booths. Whether you’re dealing with bumper scrapes, dented panels, or cracked body lines, we restore vehicles to pre-accident condition—or better. Our before-and-after transformations showcase what’s possible with expert attention to detail and commitment to craftsmanship.
-  </p>
-  <p className="text-gray-300 leading-relaxed text-sm md:text-base">
-    Hover over the image to see the transition from damage to flawless finish. If you're ready to repair your vehicle, <Link to="/contact" className="text-brandRed underline hover:text-white">schedule your estimate now</Link> or <a href="tel:8328853055" className="text-brandRed underline hover:text-white">call us directly at (832) 885-3055</a>.
-  </p>
-</div>
+          <div className="max-w-2xl text-left px-2 md:px-0">
+            <h3 className="text-2xl font-bold mb-4">
+              Before & After — Real Collision Repair Results
+            </h3>
+            <p className="text-gray-300 leading-relaxed text-sm md:text-base mb-4">
+              This is more than cosmetic work—it’s precision automotive restoration. At C.A.R.S. Collision & Refinish, we repair structural damage, blend factory-matched paint, and deliver OEM-level results. Our team follows manufacturer-approved repair procedures for every collision job, ensuring your car returns to the road looking and performing like it just left the showroom.
+            </p>
+            <p className="text-gray-300 leading-relaxed text-sm md:text-base mb-4">
+              In this example, extensive damage was professionally corrected using high-quality materials and our downdraft paint booths. Whether you’re dealing with bumper scrapes, dented panels, or cracked body lines, we restore vehicles to pre-accident condition—or better. Our before-and-after transformations showcase what’s possible with expert attention to detail and commitment to craftsmanship.
+            </p>
+            <p className="text-gray-300 leading-relaxed text-sm md:text-base">
+              Hover over the image to see the transition from damage to flawless finish. If you're ready to repair your vehicle, <Link to="/contact" className="text-brandRed underline hover:text-white">schedule your estimate now</Link> or <a href="tel:8328853055" className="text-brandRed underline hover:text-white">call us directly at (832) 885-3055</a>.
+            </p>
+          </div>
         </div>
       </section>
 
-<section>
-  <TestimonialSlider />
-</section>
+      <section>
+        <TestimonialSlider />
+      </section>
 
       <section className="pt-0 pb-16 px-6 text-center relative" data-aos="fade-up">
         <h2 className="text-2xl font-bold mb-6">Meet the Owner</h2>
@@ -189,10 +179,9 @@ export default function Home() {
           repair. Whether you’re a first-time visitor or a long-time client, I
           want you to know that your vehicle is in the hands of people who care.”
         </p>
-        <p className="mt-4 font-semibold text-brandRed">
-          – Tony, Owner & Lead Technician
-        </p>
+        <p className="mt-4 font-semibold text-brandRed">– Tony, Owner & Lead Technician</p>
       </section>
+
       <section className="pt-0 pb-24 text-center px-4" data-aos="fade-up">
         <h2 className="text-2xl font-bold mb-4">Need Help Now?</h2>
         <p className="mb-6">
