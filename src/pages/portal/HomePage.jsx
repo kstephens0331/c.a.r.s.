@@ -14,7 +14,7 @@ import TestimonialSlider from '../../components/TestimonialSlider';
 
 
 export default function Home() {
-  const [expanded, setExpanded] = useState(null);
+  const [expanded, setExpanded] = useState(0);
 
   useEffect(() => {
     AOS.init({ duration: 800, once: true });
@@ -93,100 +93,49 @@ export default function Home() {
         Family-Owned • Veteran Operated • No Surprises • Fast Turnaround • OEM Standards • Paint Matching • Local Trusted Experts
       </div>
 
-      <section className="pt-16 pb-16 px-4 text-center">
-        <h2 className="text-2xl font-bold mb-8" data-aos="fade-up">What We Repair</h2>
-        <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto">
-          {services.map((item, idx) => (
-            <div
-              key={idx}
-              className="border border-gray-600 rounded-xl p-6 text-left bg-white/5 backdrop-blur-md hover:scale-[1.03] transition duration-300 cursor-pointer shadow-lg"
-              onClick={() => setExpanded(expanded === idx ? null : idx)}
-              data-aos="fade-up"
-              data-aos-delay={idx * 100}
-            >
-              <div className="flex items-start gap-4">
-                <div>{item.icon}</div>
-                <div>
-                  <h3 className="font-semibold text-lg mb-1">{item.title}</h3>
-                  <p className="text-sm text-gray-200 leading-snug">{item.desc}</p>
-                  {expanded === idx && (
-                    <p className="text-sm text-gray-300 mt-2 transition-all duration-300 ease-in-out">
-                      {item.detail}
-                    </p>
-                  )}
-                </div>
-              </div>
+<section className="pt-16 pb-16 px-4 text-center">
+  <h2 className="text-2xl font-bold mb-2" data-aos="fade-up">What We Repair</h2>
+  <p className="text-sm text-gray-400 mb-8" data-aos="fade-up" data-aos-delay="100">
+    Click any service below to learn more.
+  </p>
+
+  <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+    {services.map((item, idx) => (
+    ))}
+  </div>
+</section>
+
+
+<section className="pt-16 pb-16 px-4 text-center">
+  <h2 className="text-2xl font-bold mb-2" data-aos="fade-up">What We Repair</h2>
+  <p className="text-sm text-gray-400 mb-8" data-aos="fade-up" data-aos-delay="100">
+    Click any service below to learn more.
+  </p>
+
+  <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+    {services.map((item, idx) => (
+      <div
+        key={idx}
+        className={`border border-gray-600 rounded-xl p-6 text-left bg-[#2c1b14]/90 cursor-pointer shadow-lg hover:scale-[1.03] transition-transform duration-200 ${
+          expanded === idx ? 'ring-2 ring-brandRed' : ''
+        }`}
+        onClick={() => setExpanded(expanded === idx ? null : idx)}
+        data-aos="fade-up"
+        data-aos-delay={idx * 100}
+      >
+        <div className="flex flex-col h-full justify-between">
+          <div className="flex items-start gap-4 mb-2">
+            <div>{item.icon}</div>
+            <div>
+              <h3 className="font-semibold text-lg mb-1">{item.title}</h3>
+              <p className="text-sm text-gray-200 leading-snug">{item.desc}</p>
             </div>
-          ))}
-        </div>
-      </section>
-
-<section className="relative py-28 text-center" id="how-it-works">
-  <h2 className="text-3xl font-bold mb-20 text-white">How It Works</h2>
-
-  {/* Glowing Red Line */}
-  <div className="absolute top-1/2 left-0 right-0 h-1 bg-red-600 shadow-[0_0_15px_6px_rgba(255,0,0,0.5)] z-0 rounded-full" />
-
-  {/* Cars Positioned on the Line */}
-  <div className="relative z-10 max-w-6xl mx-auto grid grid-cols-7 gap-2 px-4">
-    {[
-      {
-        label: 'Estimate',
-        desc: 'No appointment needed. We’ll assess the damage and give you a clear estimate.',
-      },
-      {
-        label: 'Drop-Off',
-        desc: 'Quick check-in and we’ll get your repair started. We can help with rental coordination too.',
-      },
-      {
-        label: 'Disassembly',
-        desc: 'We fully disassemble affected areas to reveal hidden damage and finalize parts needed.',
-      },
-      {
-        label: 'Updated Estimate',
-        desc: 'Your updated estimate is submitted for approval—always with transparency.',
-      },
-      {
-        label: 'Authorization',
-        desc: 'Once approved, we order parts and move your vehicle into the workflow for immediate repair.',
-      },
-      {
-        label: 'Repairs Begin',
-        desc: 'Certified technicians perform frame, body, and paint work to OEM spec.',
-      },
-      {
-        label: 'Final Inspection',
-        desc: 'We clean, test, and document before handing the keys back—better than new.',
-      },
-    ].map((step, i) => (
-      <div key={i} className="flex flex-col items-center relative group">
-        {/* Car Icon on the Line */}
-        <div className="relative -mb-5 z-10">
-          <div className="relative flex items-center justify-center w-10 h-10">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="black"
-              viewBox="0 0 24 24"
-              stroke="white"
-              strokeWidth="1.5"
-              className="w-8 h-8 drop-shadow-md"
-            >
-              <path d="M3 13l2-5h14l2 5M5 13v4m14-4v4M8 17h0m8 0h0M7 8h10" />
-            </svg>
-            <span className="absolute text-[10px] text-white font-bold top-0 right-0 bg-brandRed w-4 h-4 rounded-full flex items-center justify-center">
-              {i + 1}
-            </span>
           </div>
-        </div>
 
-        {/* Label */}
-        <p className="text-xs font-semibold text-white mt-6">{step.label}</p>
-
-        {/* Hover Bubble */}
-        <div className="absolute bottom-[-100%] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-          <div className="bg-white text-black text-xs rounded-md shadow-lg p-3 w-48">
-            {step.desc}
-          </div>
+          {/* Detail - No transition or fading classes */}
+          {expanded === idx && (
+            <p className="text-sm text-gray-300 mt-2">{item.detail}</p>
+          )}
         </div>
       </div>
     ))}
@@ -195,7 +144,6 @@ export default function Home() {
 
 
       <section className="pt-0 pb-20 px-4 text-center" data-aos="fade-up">
-        <h2 className="text-2xl font-bold mb-6">Before & After</h2>
         <div className="flex flex-col md:flex-row gap-6 justify-center items-center max-w-5xl mx-auto">
           <div className="relative w-full md:w-1/2 group overflow-hidden rounded-xl shadow-lg">
             <img
@@ -212,13 +160,18 @@ export default function Home() {
               Hover to Reveal
             </span>
           </div>
-          <div className="max-w-md text-left">
-            <h3 className="text-xl font-semibold mb-2">See the Transformation</h3>
-            <p className="text-gray-300">
-              From dents and damage to flawless finish—our team delivers results
-              that speak for themselves. Hover to see the before-and-after difference.
-            </p>
-          </div>
+<div className="max-w-2xl text-left px-2 md:px-0">
+  <h3 className="text-2xl font-bold mb-4">Before & After — Real Collision Repair Results</h3>
+  <p className="text-gray-300 leading-relaxed text-sm md:text-base mb-4">
+    This is more than cosmetic work—it’s precision automotive restoration. At C.A.R.S. Collision & Refinish, we repair structural damage, blend factory-matched paint, and deliver OEM-level results. Our team follows manufacturer-approved repair procedures for every collision job, ensuring your car returns to the road looking and performing like it just left the showroom.
+  </p>
+  <p className="text-gray-300 leading-relaxed text-sm md:text-base mb-4">
+    In this example, extensive damage was professionally corrected using high-quality materials and our downdraft paint booths. Whether you’re dealing with bumper scrapes, dented panels, or cracked body lines, we restore vehicles to pre-accident condition—or better. Our before-and-after transformations showcase what’s possible with expert attention to detail and commitment to craftsmanship.
+  </p>
+  <p className="text-gray-300 leading-relaxed text-sm md:text-base">
+    Hover over the image to see the transition from damage to flawless finish. If you're ready to repair your vehicle, <Link to="/contact" className="text-brandRed underline hover:text-white">schedule your estimate now</Link> or <a href="tel:8328853055" className="text-brandRed underline hover:text-white">call us directly at (832) 885-3055</a>.
+  </p>
+</div>
         </div>
       </section>
 

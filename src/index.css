@@ -8,10 +8,21 @@ body {
   background-attachment: fixed;
   color: #f8f1e7;
 }
-@keyframes glow {
-  0%, 100% { stroke: rgba(255, 0, 0, 0.3); }
-  50% { stroke: rgba(255, 0, 0, 0.6); }
+
+/* Tracker Glow Animation */
+@keyframes glowBar {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
-.animate-glow-path {
-  animation: glow 3s ease-in-out infinite;
+
+.animate-glow-bar {
+  background-size: 200% 100%;
+  animation: glowBar 2.5s linear infinite;
+}
+.transition-max-height {
+  transition: max-height 0.3s ease-in-out;
 }
