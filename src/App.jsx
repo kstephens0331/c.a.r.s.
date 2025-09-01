@@ -17,6 +17,7 @@ import CustomPaint from './pages/portal/CustomPaint';
 import PaintlessDentRepair from './pages/portal/PaintlessDentRepair';
 import BedlinersPage from './pages/portal/BedlinersPage';
 import LightMechanicalPage from './pages/portal/LightMechanicalPage';
+import FinancingPage from './pages/portal/FinancingPage.jsx';
 
 // Import Admin Layout Component
 import AdminLayout from './layouts/AdminLayout.jsx';
@@ -73,6 +74,7 @@ function App() {
 <Route path="/services/paintless-dent-repair" element={<PaintlessDentRepair />} />
 <Route path="/services/bedliners-accessories" element={<BedlinersPage />} />
 <Route path="/services/light-mechanical" element={<LightMechanicalPage />} />
+<Route path="/financing" element={<FinancingPage />} />
 
             {/* Admin Routes - Nested under AdminLayout */}
             <Route path="/admin" element={<AdminLayout />}>

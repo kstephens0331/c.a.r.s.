@@ -139,6 +139,22 @@ export default function ContactPage() {
           </div>
         </div>
 
+        <section className="bg-white py-16 px-6 text-center">
+  <h2 className="text-2xl font-bold mb-6">Financing Available</h2>
+  <a
+    href="https://snapf.in/Iqkca1U"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <img
+      src="https://merchant-banners-s3.snapfinance.com/Loans/EN/A160x600.jpeg"
+      alt="Snap Finance - Apply Here"
+      style={{ boxShadow: '4px 2px 6px #010101', border: 'none' }}
+      className="mx-auto rounded-lg"
+    />
+  </a>
+</section>
+
         {/* Map */}
         <div className="mt-20">
           <h2 className="text-2xl font-bold mb-4 text-center">Find Us</h2>

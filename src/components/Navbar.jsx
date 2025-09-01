@@ -57,8 +57,9 @@ export default function Navbar() {
           </div>
 
           <NavLink to="/contact" className={navClass}>Contact</NavLink>
-          <NavLink to="/login" className={navClass}>Customer Login</NavLink>
           <NavLink to="/repair-gallery" className={navClass}>Repair Gallery</NavLink>
+          <NavLink to="/financing" className={navClass}>Financing</NavLink>
+          <NavLink to="/login" className={navClass}>Customer Login</NavLink>
         </nav>
 
         {/* Mobile Toggle */}
@@ -90,8 +91,9 @@ export default function Navbar() {
           <NavLink to="/services/bedliners-accessories" onClick={() => setMenuOpen(false)} className={navClass}>Spray-In Bedliners</NavLink>
           <NavLink to="/services/light-mechanical" onClick={() => setMenuOpen(false)} className={navClass}>Light Mechanical</NavLink>
           <NavLink to="/contact" onClick={() => setMenuOpen(false)} className={navClass}>Contact</NavLink>
-          <NavLink to="/login" onClick={() => setMenuOpen(false)} className={navClass}>Customer Login</NavLink>
           <NavLink to="/repair-gallery" onClick={() => setMenuOpen(false)} className={navClass}>Repair Gallery</NavLink>
+          <NavLink to="/financing" onClick={() => setMenuOpen(false)} className={navClass}>Financing</NavLink>
+          <NavLink to="/login" onClick={() => setMenuOpen(false)} className={navClass}>Customer Login</NavLink>
         </nav>
       )}
     </header>
