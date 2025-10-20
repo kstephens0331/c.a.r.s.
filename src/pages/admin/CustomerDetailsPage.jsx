@@ -11,10 +11,14 @@ import AdminWorkOrderManager from '../../components/admin/CustomerDetails/AdminW
 
 async function fetchCustomerVehicles(customerId) {
   try {
+    // Get the current session to send auth token
+    const { data: { session } } = await supabase.auth.getSession();
+
     const res = await fetch('https://vbxrcqtjpcyhylanozgz.functions.supabase.co/get-customer-vehicles', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session?.access_token || ''}`
       },
       body: JSON.stringify({ customerId }),
     });
