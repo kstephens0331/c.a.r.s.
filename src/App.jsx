@@ -27,11 +27,12 @@ import CustomerList from './pages/admin/CustomerList.jsx';
 import AddCustomer from './pages/admin/AddCustomer.jsx';
 import EditCustomer from './pages/admin/EditCustomer.jsx';
 import WorkOrders from './pages/admin/WorkOrders.jsx';
+import WorkOrdersListView from './pages/admin/WorkOrdersListView.jsx';
 import Inventory from './pages/admin/Inventory.jsx';
 import Invoices from './pages/admin/Invoices.jsx';
 import PhotoUploads from './pages/admin/PhotoUploads.jsx';
 import AdminDashboardContent from './pages/admin/AdminDashboard.jsx';
-import CustomerDetailsPage from './pages/admin/CustomerDetailsPage.jsx'; // NEW IMPORT
+import CustomerDetailsPage from './pages/admin/CustomerDetailsPage.jsx';
 
 // Import Customer Portal Layout
 import CustomerPortalLayout from './layouts/CustomerPortalLayout.jsx';
@@ -80,10 +81,11 @@ function App() {
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboardContent />} />
               <Route path="customers" element={<CustomerList />} />
-              <Route path="customers/:id" element={<CustomerDetailsPage />} /> {/* NEW ROUTE */}
-              <Route path="customers/add" element={<AddCustomer />} /> {/* Keep if you need a separate add customer form */}
-              <Route path="customers/edit/:id" element={<EditCustomer />} /> {/* Keep if you need a separate edit form */}
-              <Route path="work-orders" element={<WorkOrders />} />
+              <Route path="customers/:id" element={<CustomerDetailsPage />} />
+              <Route path="customers/add" element={<AddCustomer />} />
+              <Route path="customers/edit/:id" element={<EditCustomer />} />
+              <Route path="work-orders" element={<WorkOrdersListView />} />
+              <Route path="work-orders/details/:id" element={<WorkOrders />} />
               <Route path="inventory" element={<Inventory />} />
               <Route path="invoices" element={<Invoices />} />
               <Route path="photos" element={<PhotoUploads />} />
