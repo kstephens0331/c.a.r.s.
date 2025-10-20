@@ -33,9 +33,25 @@ export default function RepairUpdates() {
       const userId = session.user.id;
 
       try {
+        // First, get the customer record for this user
+        const { data: customer, error: customerError } = await supabase
+          .from('customers')
+          .select('id')
+          .eq('user_id', userId)
+          .single();
+
+        if (customerError) throw new Error(customerError.message);
+        if (!customer) {
+          setCustomerWorkOrders([]);
+          setLoading(false);
+          return;
+        }
+
+        // Now get only this customer's vehicles
         const { data: vehicles, error: vehiclesError } = await supabase
           .from('vehicles')
-          .select('id');
+          .select('id')
+          .eq('customer_id', customer.id);
 
         if (vehiclesError) throw new Error(vehiclesError.message);
 

@@ -238,7 +238,7 @@ const handleAddNewVehicle = async (newVehicleData) => {
         const { error: updateInventoryError } = await supabase
             .from('inventory')
             .update({ quantity: partToAdd.quantity - partQuantity })
-            .eq('user_id', selectedPartId);
+            .eq('id', selectedPartId);
 
         if (updateInventoryError) throw new Error(`Failed to update inventory: ${updateInventoryError.message}`);
 

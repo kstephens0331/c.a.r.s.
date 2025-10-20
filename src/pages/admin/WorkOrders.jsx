@@ -142,12 +142,42 @@ export default function WorkOrders() {
         throw new Error(updateError.message);
       }
 
+      // Send email notification to customer
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        const emailResponse = await fetch(
+          'https://vbxrcqtjpcyhylanozgz.functions.supabase.co/status-update-email',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${session?.access_token || ''}`
+            },
+            body: JSON.stringify({
+              workOrderId: workOrderId,
+              newStatus: newStatus
+            })
+          }
+        );
+
+        if (!emailResponse.ok) {
+          const errorData = await emailResponse.json();
+          console.warn('Email notification failed:', errorData);
+          // Don't fail the status update if email fails
+        } else {
+          console.log('Email notification sent successfully');
+        }
+      } catch (emailError) {
+        console.warn('Email notification error:', emailError);
+        // Don't fail the status update if email fails
+      }
+
       setWorkOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.id === workOrderId ? { ...order, current_status: newStatus } : order
         )
       );
-      setMessage(`Status for WO #${workOrders.find(o => o.id === workOrderId)?.work_order_number || workOrderId} updated successfully.`);
+      setMessage(`Status for WO #${workOrders.find(o => o.id === workOrderId)?.work_order_number || workOrderId} updated successfully. Customer notified via email.`);
       setTimeout(() => setMessage(''), 3000);
     } catch (err) {
       console.error('Error updating status:', err);

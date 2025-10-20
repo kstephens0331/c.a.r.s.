@@ -68,7 +68,7 @@ export default function Inventory() {
         <title>Inventory | Collision & Refinish Shop</title>
         <meta
           name="description"
-          content="Track and manage all parts used in repairs. View quantity, pricing, and suppliers."
+          content="Track and manage all parts used in repairs. View quantity and pricing."
         />
       </Helmet>
 
@@ -87,7 +87,7 @@ export default function Inventory() {
                   <th className="p-3 border-b">Description</th>
                   <th className="p-3 border-b">Quantity</th>
                   <th className="p-3 border-b">Price</th>
-                  <th className="p-3 border-b">Supplier</th>
+                  <th className="p-3 border-b">Date Added</th>
                 </tr>
               </thead>
               <tbody>
@@ -97,7 +97,7 @@ export default function Inventory() {
                     <td className="p-3 border-b">{item.description}</td>
                     <td className="p-3 border-b">{item.quantity}</td>
                     <td className="p-3 border-b">${item.unit_price ? parseFloat(item.unit_price).toFixed(2) : '0.00'}</td>
-                    <td className="p-3 border-b">{item.supplier}</td>
+                    <td className="p-3 border-b">{item.created_at ? new Date(item.created_at).toLocaleDateString() : 'N/A'}</td>
                   </tr>
                 ))}
               </tbody>
