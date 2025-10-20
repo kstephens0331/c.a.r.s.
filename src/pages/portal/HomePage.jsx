@@ -122,15 +122,11 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div
-                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                    expanded === idx ? 'max-h-40 opacity-100 mt-3' : 'max-h-0 opacity-0'
-                  }`}
-                >
-                  <p className="text-sm text-gray-300 border-t border-gray-600 pt-3">
+                {expanded === idx && (
+                  <p className="text-sm text-gray-300 border-t border-gray-600 pt-3 mt-3">
                     {item.detail}
                   </p>
-                </div>
+                )}
               </div>
             </div>
           ))}
