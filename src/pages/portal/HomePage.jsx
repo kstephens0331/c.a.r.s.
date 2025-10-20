@@ -106,14 +106,14 @@ export default function Home() {
           {services.map((item, idx) => (
             <div
               key={idx}
-              className={`border border-gray-600 rounded-xl p-6 text-left bg-[#2c1b14]/90 cursor-pointer shadow-lg hover:scale-[1.03] transition-transform duration-200 ${
+              className={`border border-gray-600 rounded-xl p-6 text-left bg-[#2c1b14]/90 cursor-pointer shadow-lg hover:shadow-xl transition-all duration-300 ${
                 expanded === idx ? 'ring-2 ring-brandRed' : ''
               }`}
               onClick={() => setExpanded(expanded === idx ? null : idx)}
               data-aos="fade-up"
               data-aos-delay={idx * 100}
             >
-              <div className="flex flex-col h-full justify-between">
+              <div className="flex flex-col h-full">
                 <div className="flex items-start gap-4 mb-2">
                   <div>{item.icon}</div>
                   <div>
@@ -122,9 +122,15 @@ export default function Home() {
                   </div>
                 </div>
 
-                {expanded === idx && (
-                  <p className="text-sm text-gray-300 mt-2">{item.detail}</p>
-                )}
+                <div
+                  className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                    expanded === idx ? 'max-h-96 opacity-100 mt-3' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <p className="text-sm text-gray-300 border-t border-gray-600 pt-3">
+                    {item.detail}
+                  </p>
+                </div>
               </div>
             </div>
           ))}
