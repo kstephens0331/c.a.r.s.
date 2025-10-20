@@ -138,7 +138,7 @@ export default function Invoices() {
             }
         };
 
-        const apiKey = ""; // Canvas will automatically provide this at runtime if empty
+        const apiKey = "AIzaSyDFHVnXhRk6xyM4dzaCLe2sBOpfbrx0rE4";
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
         const response = await fetch(apiUrl, {
@@ -290,7 +290,7 @@ export default function Invoices() {
               description: item.description,
               quantity: item.quantity,
               unit_price: item.unit_price, // Use the unit price from the invoice
-              supplier: supplier, // Use the invoice's supplier
+              // Note: supplier column removed - not in inventory table schema
             });
           if (insertInventoryError) {
             console.error(`Error inserting new inventory item ${item.part_number}:`, insertInventoryError.message);
