@@ -44,6 +44,7 @@ export default function WorkOrders() {
           work_order_number,
           current_status,
           description,
+          estimated_completion_date,
           vehicle_id,
           vehicles (
             make,
@@ -53,6 +54,11 @@ export default function WorkOrders() {
             profiles (
               full_name
             )
+          ),
+          customers (
+            name,
+            email,
+            phone
           )
         `)
         .order('created_at', { ascending: false });
@@ -182,6 +188,31 @@ export default function WorkOrders() {
     } catch (err) {
       console.error('Error updating status:', err);
       setError(`Failed to update status for WO #${workOrderId}: ${err.message}`);
+    }
+  };
+
+  const handleEstimatedDateChange = async (workOrderId, newDate) => {
+    setMessage('');
+    try {
+      const { error: updateError } = await supabase
+        .from('work_orders')
+        .update({ estimated_completion_date: newDate || null })
+        .eq('id', workOrderId);
+
+      if (updateError) {
+        throw new Error(updateError.message);
+      }
+
+      setWorkOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.id === workOrderId ? { ...order, estimated_completion_date: newDate } : order
+        )
+      );
+      setMessage(`Estimated completion date updated successfully.`);
+      setTimeout(() => setMessage(''), 3000);
+    } catch (err) {
+      console.error('Error updating estimated date:', err);
+      setError(`Failed to update estimated date: ${err.message}`);
     }
   };
 
@@ -366,25 +397,55 @@ export default function WorkOrders() {
                 <h2 className="text-xl font-semibold">
                   Work Order #{order.work_order_number} – {order.vehicles?.year} {order.vehicles?.make} {order.vehicles?.model}
                 </h2>
-                <p className="text-sm text-gray-500 mb-2">
-                  Customer: {order.vehicles?.profiles?.full_name || 'N/A'}
-                </p>
+                <div className="mb-4 mt-2">
+                  <p className="text-sm text-gray-700">
+                    <span className="font-medium">Customer:</span> {order.customers?.name || order.vehicles?.profiles?.full_name || 'N/A'}
+                  </p>
+                  <p className="text-sm text-gray-700">
+                    <span className="font-medium">Email:</span> {order.customers?.email || 'N/A'}
+                  </p>
+                  <p className="text-sm text-gray-700">
+                    <span className="font-medium">Phone:</span> {order.customers?.phone || 'N/A'}
+                  </p>
+                </div>
 
-                <label htmlFor={`status-${order.id}`} className="block mb-2 font-medium">
-                  Current Status
-                </label>
-                <select
-                  id={`status-${order.id}`}
-                  className="border rounded px-3 py-2 w-full md:w-1/2"
-                  value={order.current_status}
-                  onChange={(e) => handleStatusChange(order.id, e.target.value)}
-                >
-                  {statuses.map((status) => (
-                    <option key={status} value={status}>
-                      {status}
-                    </option>
-                  ))}
-                </select>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                  <div>
+                    <label htmlFor={`status-${order.id}`} className="block mb-2 font-medium">
+                      Current Status
+                    </label>
+                    <select
+                      id={`status-${order.id}`}
+                      className="border rounded px-3 py-2 w-full"
+                      value={order.current_status}
+                      onChange={(e) => handleStatusChange(order.id, e.target.value)}
+                    >
+                      {statuses.map((status) => (
+                        <option key={status} value={status}>
+                          {status}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label htmlFor={`est-date-${order.id}`} className="block mb-2 font-medium">
+                      Estimated Completion Date
+                    </label>
+                    <input
+                      type="date"
+                      id={`est-date-${order.id}`}
+                      className="border rounded px-3 py-2 w-full"
+                      value={order.estimated_completion_date || ''}
+                      onChange={(e) => handleEstimatedDateChange(order.id, e.target.value)}
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      {order.estimated_completion_date
+                        ? `Due: ${new Date(order.estimated_completion_date).toLocaleDateString()}`
+                        : 'No date set'}
+                    </p>
+                  </div>
+                </div>
 
                 {/* --- Add Parts Section --- */}
                 <div className="mt-6 pt-4 border-t border-gray-200">

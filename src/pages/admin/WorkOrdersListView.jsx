@@ -8,6 +8,9 @@ export default function WorkOrdersListView() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [viewMode, setViewMode] = useState('grouped'); // 'grouped' or 'all'
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [customers, setCustomers] = useState([]);
+  const [selectedCustomerId, setSelectedCustomerId] = useState('');
   const navigate = useNavigate();
 
   const statuses = [
@@ -59,6 +62,24 @@ export default function WorkOrdersListView() {
     };
 
     fetchWorkOrders();
+  }, []);
+
+  // Fetch customers for the dropdown
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      const { data, error: fetchError } = await supabase
+        .from('customers')
+        .select('id, name, email')
+        .order('name', { ascending: true });
+
+      if (fetchError) {
+        console.error('Error fetching customers:', fetchError.message);
+      } else {
+        setCustomers(data || []);
+      }
+    };
+
+    fetchCustomers();
   }, []);
 
   // Group work orders by status
@@ -132,6 +153,19 @@ export default function WorkOrdersListView() {
     );
   };
 
+  // Handle customer selection
+  const handleCustomerSelect = () => {
+    if (selectedCustomerId === 'new') {
+      // Navigate to add new customer page
+      navigate('/admin/customers/add');
+    } else if (selectedCustomerId) {
+      // Navigate to customer details to add work order
+      navigate(`/admin/customers/${selectedCustomerId}`);
+    }
+    setShowAddModal(false);
+    setSelectedCustomerId('');
+  };
+
   if (loading) {
     return (
       <>
@@ -171,6 +205,12 @@ export default function WorkOrdersListView() {
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold">Work Orders Overview</h1>
           <div className="flex gap-2">
+            <button
+              onClick={() => setShowAddModal(true)}
+              className="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700 font-semibold"
+            >
+              + Add Work Order
+            </button>
             <button
               onClick={() => setViewMode('grouped')}
               className={`px-4 py-2 rounded ${
@@ -302,6 +342,74 @@ export default function WorkOrdersListView() {
         {workOrders.length === 0 && (
           <div className="text-center py-12 bg-gray-50 rounded-lg">
             <p className="text-gray-500 text-lg">No work orders found</p>
+          </div>
+        )}
+
+        {/* Add Work Order Modal */}
+        {showAddModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-bold">Add Work Order</h2>
+                <button
+                  onClick={() => {
+                    setShowAddModal(false);
+                    setSelectedCustomerId('');
+                  }}
+                  className="text-gray-500 hover:text-gray-700 text-2xl"
+                >
+                  &times;
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block mb-2 font-medium">
+                    Select Customer
+                  </label>
+                  <select
+                    className="w-full border rounded px-3 py-2 text-gray-900"
+                    value={selectedCustomerId}
+                    onChange={(e) => setSelectedCustomerId(e.target.value)}
+                  >
+                    <option value="">-- Choose a customer --</option>
+                    <option value="new" className="font-semibold text-green-700">
+                      + Add New Customer
+                    </option>
+                    <optgroup label="Existing Customers">
+                      {customers.map((customer) => (
+                        <option key={customer.id} value={customer.id}>
+                          {customer.name} ({customer.email})
+                        </option>
+                      ))}
+                    </optgroup>
+                  </select>
+                </div>
+
+                <div className="flex gap-2 pt-4">
+                  <button
+                    onClick={handleCustomerSelect}
+                    disabled={!selectedCustomerId}
+                    className={`flex-1 px-4 py-2 rounded font-semibold ${
+                      selectedCustomerId
+                        ? 'bg-primary text-white hover:bg-primary-dark'
+                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    }`}
+                  >
+                    Continue
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowAddModal(false);
+                      setSelectedCustomerId('');
+                    }}
+                    className="flex-1 px-4 py-2 rounded border border-gray-300 hover:bg-gray-50"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>
