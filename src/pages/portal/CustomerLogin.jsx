@@ -102,7 +102,7 @@ const handleGoogleLogin = async () => {
           <button
             type="button"
             onClick={handleGoogleLogin}
-            className="w-full border border-gray-400 py-3 rounded font-semibold text-sm hover:bg-gray-100"
+            className="w-full border border-gray-400 py-3 rounded font-semibold text-sm text-gray-900 hover:bg-gray-100"
           >
             Sign in with Google
           </button>
