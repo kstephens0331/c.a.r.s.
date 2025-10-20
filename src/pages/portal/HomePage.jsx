@@ -102,18 +102,18 @@ export default function Home() {
           Click any service below to learn more.
         </p>
 
-        <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto items-start">
           {services.map((item, idx) => (
             <div
               key={idx}
-              className={`border border-gray-600 rounded-xl p-6 text-left bg-[#2c1b14]/90 cursor-pointer shadow-lg hover:shadow-xl transition-all duration-300 ${
+              className={`border border-gray-600 rounded-xl p-6 text-left bg-[#2c1b14]/90 cursor-pointer shadow-lg hover:shadow-xl transition-shadow duration-300 ${
                 expanded === idx ? 'ring-2 ring-brandRed' : ''
               }`}
               onClick={() => setExpanded(expanded === idx ? null : idx)}
               data-aos="fade-up"
               data-aos-delay={idx * 100}
             >
-              <div className="flex flex-col h-full">
+              <div className="flex flex-col">
                 <div className="flex items-start gap-4 mb-2">
                   <div>{item.icon}</div>
                   <div>
@@ -123,8 +123,8 @@ export default function Home() {
                 </div>
 
                 <div
-                  className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                    expanded === idx ? 'max-h-96 opacity-100 mt-3' : 'max-h-0 opacity-0'
+                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                    expanded === idx ? 'max-h-40 opacity-100 mt-3' : 'max-h-0 opacity-0'
                   }`}
                 >
                   <p className="text-sm text-gray-300 border-t border-gray-600 pt-3">
