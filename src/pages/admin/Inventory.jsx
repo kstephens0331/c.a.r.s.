@@ -87,6 +87,7 @@ export default function Inventory() {
                   <th className="p-3 border-b">Description</th>
                   <th className="p-3 border-b">Quantity</th>
                   <th className="p-3 border-b">Price</th>
+                  <th className="p-3 border-b">Supplier</th>
                   <th className="p-3 border-b">Date Added</th>
                 </tr>
               </thead>
@@ -97,6 +98,7 @@ export default function Inventory() {
                     <td className="p-3 border-b">{item.description}</td>
                     <td className="p-3 border-b">{item.quantity}</td>
                     <td className="p-3 border-b">${item.unit_price ? parseFloat(item.unit_price).toFixed(2) : '0.00'}</td>
+                    <td className="p-3 border-b">{item.supplier || 'N/A'}</td>
                     <td className="p-3 border-b">{item.created_at ? new Date(item.created_at).toLocaleDateString() : 'N/A'}</td>
                   </tr>
                 ))}

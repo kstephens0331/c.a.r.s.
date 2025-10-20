@@ -290,7 +290,7 @@ export default function Invoices() {
               description: item.description,
               quantity: item.quantity,
               unit_price: item.unit_price, // Use the unit price from the invoice
-              // Note: supplier column removed - not in inventory table schema
+              supplier: supplier, // Track supplier for reordering and price verification
             });
           if (insertInventoryError) {
             console.error(`Error inserting new inventory item ${item.part_number}:`, insertInventoryError.message);
