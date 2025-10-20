@@ -110,8 +110,6 @@ export default function Home() {
                 expanded === idx ? 'ring-2 ring-brandRed' : ''
               }`}
               onClick={() => setExpanded(expanded === idx ? null : idx)}
-              data-aos="fade-up"
-              data-aos-delay={idx * 100}
             >
               <div className="flex flex-col">
                 <div className="flex items-start gap-4 mb-2">
