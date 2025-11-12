@@ -224,49 +224,95 @@ export default function Invoices() {
           .from('invoice_line_items')
           .insert({
             invoice_id: newInvoiceId,
-            part_number: item.part_number,
+            part_number: item.partNumber || item.part_number,
             description: item.description,
             quantity: item.quantity,
-            unit_price: item.unit_price,
+            unit_price: item.unitPrice || item.unit_price,
           });
 
         if (lineItemError) {
-          console.error(`Error inserting line item ${item.part_number}:`, lineItemError.message);
+          console.error(`Error inserting line item ${item.partNumber || item.part_number}:`, lineItemError.message);
           // Decide how to handle this: continue or rollback? For now, just log and continue.
         }
 
-        // Update inventory: Check if part exists, then update quantity
-        const { data: existingPart, error: partFetchError } = await supabase
-          .from('inventory')
-          .select('id, quantity')
-          .eq('part_number', item.part_number)
-          .single();
+        // ========================================================================
+        // SMART INVENTORY UPDATE WITH SUPPLIER DEDUPLICATION
+        // ========================================================================
+        // Strategy:
+        // 1. Check if part exists with SAME supplier → Update quantity only
+        // 2. Check if part exists with DIFFERENT supplier → Create new record
+        // 3. If part doesn't exist → Create new record
+        // ========================================================================
 
-        if (partFetchError && partFetchError.code !== 'PGRST116') { // PGRST116 means "no rows found"
-          console.error(`Error fetching existing part ${item.part_number}:`, partFetchError.message);
-          // Decide how to handle this
-        } else if (existingPart) {
-          // Update existing part quantity
+        const partNumber = item.partNumber || item.part_number;
+        const unitPrice = item.unitPrice || item.unit_price;
+
+        // Check if part exists from this SAME supplier
+        const { data: existingPartSameSupplier, error: sameSupplierError } = await supabase
+          .from('inventory')
+          .select('id, quantity, unit_price')
+          .eq('part_number', partNumber)
+          .eq('supplier', supplier)
+          .maybeSingle();
+
+        if (sameSupplierError) {
+          console.error(`Error checking inventory for part ${partNumber}:`, sameSupplierError.message);
+          continue; // Skip this item
+        }
+
+        if (existingPartSameSupplier) {
+          // ✅ SAME PART + SAME SUPPLIER: Just add to quantity
+          const newQuantity = existingPartSameSupplier.quantity + item.quantity;
+
           const { error: updateInventoryError } = await supabase
             .from('inventory')
-            .update({ quantity: existingPart.quantity + item.quantity })
-            .eq('id', existingPart.id);
+            .update({
+              quantity: newQuantity,
+              unit_price: unitPrice, // Update price (supplier may have changed price)
+              updated_at: new Date().toISOString()
+            })
+            .eq('id', existingPartSameSupplier.id);
+
           if (updateInventoryError) {
-            console.error(`Error updating inventory for part ${item.part_number}:`, updateInventoryError.message);
+            console.error(`Error updating inventory for part ${partNumber}:`, updateInventoryError.message);
+          } else {
+            console.log(`✅ Updated ${partNumber} from ${supplier}: ${existingPartSameSupplier.quantity} + ${item.quantity} = ${newQuantity}`);
           }
         } else {
-          // Part does not exist in inventory, insert new item
+          // Check if part exists from DIFFERENT supplier
+          const { data: existingPartOtherSupplier, error: otherSupplierError } = await supabase
+            .from('inventory')
+            .select('id, supplier, unit_price')
+            .eq('part_number', partNumber)
+            .neq('supplier', supplier)
+            .maybeSingle();
+
+          if (otherSupplierError && otherSupplierError.code !== 'PGRST116') {
+            console.error(`Error checking other suppliers for part ${partNumber}:`, otherSupplierError.message);
+          }
+
+          // ✅ SAME PART + DIFFERENT SUPPLIER: Create separate inventory record
+          // This allows price comparison between suppliers
           const { error: insertInventoryError } = await supabase
             .from('inventory')
             .insert({
-              part_number: item.part_number,
+              part_number: partNumber,
               description: item.description,
               quantity: item.quantity,
-              unit_price: item.unit_price, // Use the unit price from the invoice
-              supplier: supplier, // Track supplier for reordering and price verification
+              unit_price: unitPrice,
+              supplier: supplier,
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString()
             });
+
           if (insertInventoryError) {
-            console.error(`Error inserting new inventory item ${item.part_number}:`, insertInventoryError.message);
+            console.error(`Error inserting new inventory item ${partNumber}:`, insertInventoryError.message);
+          } else {
+            if (existingPartOtherSupplier) {
+              console.log(`✅ Added ${partNumber} from NEW supplier ${supplier} (was: ${existingPartOtherSupplier.supplier} @ $${existingPartOtherSupplier.unit_price}, now: ${supplier} @ $${unitPrice})`);
+            } else {
+              console.log(`✅ Created new inventory record: ${partNumber} from ${supplier}`);
+            }
           }
         }
       }
