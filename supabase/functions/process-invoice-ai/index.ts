@@ -144,8 +144,8 @@ serve(async (req: Request) => {
     const claudeUrl = 'https://api.anthropic.com/v1/messages';
 
     const claudeRequest = {
-      model: 'claude-3-5-sonnet-latest', // Latest Claude 3.5 Sonnet with vision
-      max_tokens: 1024,
+      model: 'claude-3-haiku-20240307', // Claude 3 Haiku with vision (confirmed working)
+      max_tokens: 2048, // Increased for larger invoices
       messages: [
         {
           role: 'user',
