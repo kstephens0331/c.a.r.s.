@@ -163,17 +163,23 @@ serve(async (req: Request) => {
               text: `You are an invoice data extraction assistant. Carefully analyze this invoice image and extract ALL information accurately.
 
 CRITICAL: For line items, you MUST extract:
-1. Part numbers (may be labeled as "Item#", "Part#", "SKU", or similar)
-2. Descriptions (product names/details)
-3. Quantities (Qty, Quantity, or number column)
-4. Unit prices (Price, Unit Price, Each, or individual item cost)
+1. Part numbers (ITEM#, PART#, SKU, vendor part number, model number)
+2. Descriptions (full product description text)
+3. Quantities (QUANT, ORDER, Qty - the number ordered)
+4. Unit prices - READ CAREFULLY:
+   - If there are multiple price columns (LIST PRICE, YOUR COST, PRICE, COST, etc.)
+   - ALWAYS use "YOUR COST" or "COST" or "NET PRICE" (the actual price paid)
+   - DO NOT use "LIST PRICE" or "MSRP" (those are suggested retail)
+   - If only one price column exists, use that price
+   - The correct price is typically the lower price when multiple columns exist
 
-IMPORTANT PRICING NOTES:
-- Find the individual unit price for EACH item (not the line total)
-- If you see both unit price AND line total, extract the unit price
-- Remove $ symbols and commas from prices
+IMPORTANT PRICING LOGIC:
+- Look for columns labeled: "YOUR COST", "COST", "NET", "PRICE", "UNIT PRICE", "EACH"
+- Ignore columns labeled: "LIST PRICE", "MSRP", "RETAIL", "SUGGESTED"
+- For each line item, find the price in the "your cost" or actual cost column
+- Remove all $ symbols and commas from prices
+- Prices should match what was actually charged (not suggested retail)
 - If quantity is missing, assume 1
-- If unit price is genuinely not shown, calculate it: line total ÷ quantity
 
 Return ONLY this JSON structure with NO additional text:
 
@@ -193,11 +199,12 @@ Return ONLY this JSON structure with NO additional text:
 }
 
 VALIDATION RULES:
-- Invoice date must be in YYYY-MM-DD format (convert from any format shown)
-- All prices must be numbers (remove $, commas, etc.)
-- Extract EVERY line item from the invoice table/list
-- Do not skip items even if data is partially missing
-- Use null only if data is truly not present in the image`,
+- Invoice date: Convert to YYYY-MM-DD format (from any format shown)
+- All prices: Numbers only (remove $, commas)
+- Extract EVERY line item from the invoice table
+- Part numbers: Include vendor/manufacturer part numbers, model numbers
+- Descriptions: Full product description including all details shown
+- Unit prices: Use actual cost paid (YOUR COST column), not list price`,
             },
           ],
         },
