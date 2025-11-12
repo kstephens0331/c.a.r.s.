@@ -126,7 +126,7 @@ export default function CustomerList() {
                   {customers.map((cust) => (
                     <tr key={cust.id} className="hover:bg-gray-50">
                       <td className="p-3 border-b">
-                        <Link to={`/admin/customers/${cust.user_id}`} className="text-brandRed hover:underline font-semibold">
+                        <Link to={`/admin/customers/${cust.id}`} className="text-brandRed hover:underline font-semibold">
                           {cust.name || 'N/A'}
                         </Link>
                       </td>
