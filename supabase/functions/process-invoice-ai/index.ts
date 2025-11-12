@@ -144,7 +144,7 @@ serve(async (req: Request) => {
     const claudeUrl = 'https://api.anthropic.com/v1/messages';
 
     const claudeRequest = {
-      model: 'claude-3-5-sonnet-20240620', // Claude 3.5 Sonnet with vision
+      model: 'claude-3-5-sonnet-latest', // Latest Claude 3.5 Sonnet with vision
       max_tokens: 1024,
       messages: [
         {
