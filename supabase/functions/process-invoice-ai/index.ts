@@ -160,28 +160,42 @@ serve(async (req: Request) => {
             },
             {
               type: 'text',
-              text: `You are an invoice data extraction assistant. Carefully analyze this invoice image and extract ALL information accurately.
+              text: `You are an expert invoice data extraction assistant. Analyze this invoice image systematically.
 
-CRITICAL: For line items, you MUST extract:
-1. Part numbers (ITEM#, PART#, SKU, vendor part number, model number)
-2. Descriptions (full product description text)
-3. Quantities (QUANT, ORDER, Qty - the number ordered)
-4. Unit prices - READ CAREFULLY:
-   - If there are multiple price columns (LIST PRICE, YOUR COST, PRICE, COST, etc.)
-   - ALWAYS use "YOUR COST" or "COST" or "NET PRICE" (the actual price paid)
-   - DO NOT use "LIST PRICE" or "MSRP" (those are suggested retail)
-   - If only one price column exists, use that price
-   - The correct price is typically the lower price when multiple columns exist
+STEP 1 - LOCATE THE LINE ITEMS TABLE:
+- Find the table with columns like: ITEM#, PART#, QUANT, ORDER, DESCRIPTION, PRICE, COST, etc.
+- This table contains the parts/products purchased
+- Each row is one line item
 
-IMPORTANT PRICING LOGIC:
-- Look for columns labeled: "YOUR COST", "COST", "NET", "PRICE", "UNIT PRICE", "EACH"
-- Ignore columns labeled: "LIST PRICE", "MSRP", "RETAIL", "SUGGESTED"
-- For each line item, find the price in the "your cost" or actual cost column
-- Remove all $ symbols and commas from prices
-- Prices should match what was actually charged (not suggested retail)
-- If quantity is missing, assume 1
+STEP 2 - IDENTIFY TABLE COLUMNS:
+Scan the table headers to locate these columns:
+- ITEM# / PART# / SKU → This is the part number (may contain letters and numbers like M1000912V)
+- DESCRIPTION / VENDOR NUMBERS → This is the product description
+- QUANT / ORDER / QTY → This is the quantity ordered
+- YOUR COST / COST / NET / PRICE → This is the unit price (USE THIS!)
+- LIST PRICE / MSRP / RETAIL → Ignore these, they are suggested retail prices
 
-Return ONLY this JSON structure with NO additional text:
+STEP 3 - EXTRACT EACH ROW:
+For EVERY row in the line items table, extract:
+1. Part Number from the ITEM# or PART# column (like M1000912V, M1241366V)
+2. Description from the DESCRIPTION or VENDOR NUMBERS column
+3. Quantity from the QUANT or ORDER column (usually 1)
+4. Unit Price from the YOUR COST or COST column (NOT from LIST PRICE)
+
+CRITICAL PRICE EXTRACTION RULES:
+- If you see multiple price columns, use "YOUR COST" or "COST" (actual price paid)
+- NEVER use "LIST PRICE" or "MSRP" (those are not what was charged)
+- The correct price is usually the LOWER price when multiple prices exist
+- Remove $ and commas from all prices
+- If a price is $41.00, return 41.00 (number, not string)
+
+STEP 4 - HEADER INFORMATION:
+- Invoice Number: Look for "SALES ORDER", "ORDER#", "INVOICE#" at the top
+- Supplier: Company name at the very top of the invoice
+- Invoice Date: Look for "DATE:" field near the top
+- Total Amount: Look for "TOTAL" at the bottom (after tax/shipping)
+
+Return ONLY this JSON (no explanation, no markdown):
 
 {
   "invoiceNumber": "string or null",
@@ -198,13 +212,12 @@ Return ONLY this JSON structure with NO additional text:
   ]
 }
 
-VALIDATION RULES:
-- Invoice date: Convert to YYYY-MM-DD format (from any format shown)
-- All prices: Numbers only (remove $, commas)
-- Extract EVERY line item from the invoice table
-- Part numbers: Include vendor/manufacturer part numbers, model numbers
-- Descriptions: Full product description including all details shown
-- Unit prices: Use actual cost paid (YOUR COST column), not list price`,
+EXAMPLE:
+If the table shows:
+ITEM# M1000912V | QUANT 1 | DESCRIPTION Front Bumper | LIST PRICE $99.00 | YOUR COST $41.00
+
+Extract as:
+{"partNumber": "M1000912V", "description": "Front Bumper", "quantity": 1, "unitPrice": 41.00}`,
             },
           ],
         },
