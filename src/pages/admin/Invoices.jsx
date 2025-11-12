@@ -89,7 +89,7 @@ export default function Invoices() {
       const reader = new FileReader();
       reader.onloadend = async () => {
         const base64Data = reader.result.split(',')[1]; // Get base64 string
-        await processImageWithAI(base64Data);
+        await processImageWithAI(base64Data, selectedFile.type); // Pass MIME type
         setProcessingAi(false);
       };
       reader.onerror = () => {
@@ -104,7 +104,7 @@ export default function Invoices() {
     }
   };
 
-  const processImageWithAI = async (base64ImageData) => {
+  const processImageWithAI = async (base64ImageData, mimeType) => {
     try {
         // Call the secure edge function instead of Gemini API directly
         const edgeFunctionUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/process-invoice-ai`;
@@ -118,7 +118,7 @@ export default function Invoices() {
 
         console.log('Calling AI edge function:', edgeFunctionUrl);
         console.log('Image size:', base64ImageData.length, 'characters');
-        console.log('MIME type:', file?.type);
+        console.log('MIME type:', mimeType);
 
         const response = await fetch(edgeFunctionUrl, {
             method: 'POST',
@@ -128,7 +128,7 @@ export default function Invoices() {
             },
             body: JSON.stringify({
                 imageBase64: base64ImageData,
-                mimeType: file?.type || 'image/jpeg'
+                mimeType: mimeType || 'image/jpeg'
             }),
             signal: AbortSignal.timeout(60000) // 60 second timeout
         });

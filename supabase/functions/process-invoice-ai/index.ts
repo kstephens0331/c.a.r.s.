@@ -31,7 +31,10 @@ serve(async (req: Request) => {
         JSON.stringify({ error: 'Missing authorization header' }),
         {
           status: 401,
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
         }
       );
     }
@@ -56,7 +59,10 @@ serve(async (req: Request) => {
     if (userError || !user) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
         status: 401,
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
       });
     }
 
@@ -72,7 +78,10 @@ serve(async (req: Request) => {
         JSON.stringify({ error: 'Admin access required' }),
         {
           status: 403,
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
         }
       );
     }
@@ -87,7 +96,10 @@ serve(async (req: Request) => {
         JSON.stringify({ error: 'Missing image data' }),
         {
           status: 400,
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
         }
       );
     }
@@ -102,7 +114,10 @@ serve(async (req: Request) => {
         JSON.stringify({ error: 'API key not configured' }),
         {
           status: 500,
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
         }
       );
     }
@@ -118,7 +133,10 @@ serve(async (req: Request) => {
         }),
         {
           status: 400,
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
         }
       );
     }
@@ -193,7 +211,7 @@ Guidelines:
         }),
         {
           status: 500,
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
         }
       );
     }
@@ -225,7 +243,7 @@ Guidelines:
         }),
         {
           status: 500,
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
         }
       );
     }
