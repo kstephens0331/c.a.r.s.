@@ -67,7 +67,7 @@ export default function CustomerDetailsPage() {
       const { data: profile, error: profileError } = await supabase
         .from('customers')
         .select('*')
-        .eq('user_id', customerId)
+        .eq('id', customerId)
         .single();
 
       if (profileError) {
