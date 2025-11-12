@@ -160,9 +160,22 @@ serve(async (req: Request) => {
             },
             {
               type: 'text',
-              text: `You are an invoice data extraction assistant. Extract the following information from the invoice image and return it in valid JSON format.
+              text: `You are an invoice data extraction assistant. Carefully analyze this invoice image and extract ALL information accurately.
 
-Return ONLY the JSON object, with no additional text or explanation.
+CRITICAL: For line items, you MUST extract:
+1. Part numbers (may be labeled as "Item#", "Part#", "SKU", or similar)
+2. Descriptions (product names/details)
+3. Quantities (Qty, Quantity, or number column)
+4. Unit prices (Price, Unit Price, Each, or individual item cost)
+
+IMPORTANT PRICING NOTES:
+- Find the individual unit price for EACH item (not the line total)
+- If you see both unit price AND line total, extract the unit price
+- Remove $ symbols and commas from prices
+- If quantity is missing, assume 1
+- If unit price is genuinely not shown, calculate it: line total ÷ quantity
+
+Return ONLY this JSON structure with NO additional text:
 
 {
   "invoiceNumber": "string or null",
@@ -179,12 +192,12 @@ Return ONLY the JSON object, with no additional text or explanation.
   ]
 }
 
-Guidelines:
-- If any field cannot be found in the image, use null
-- For invoiceDate, convert to YYYY-MM-DD format
-- For totalAmount and prices, use numbers without currency symbols
-- For lineItems, extract all parts listed on the invoice
-- Return valid JSON only, no markdown code blocks`,
+VALIDATION RULES:
+- Invoice date must be in YYYY-MM-DD format (convert from any format shown)
+- All prices must be numbers (remove $, commas, etc.)
+- Extract EVERY line item from the invoice table/list
+- Do not skip items even if data is partially missing
+- Use null only if data is truly not present in the image`,
             },
           ],
         },
