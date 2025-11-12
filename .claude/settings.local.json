@@ -66,7 +66,8 @@
       "Bash(supabase db execute:*)",
       "Bash(supabase db remote commit:*)",
       "Bash(git add:*)",
-      "Bash(.gitignore)"
+      "Bash(.gitignore)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []
