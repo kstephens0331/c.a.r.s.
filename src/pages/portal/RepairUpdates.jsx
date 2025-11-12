@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../../services/supabaseClient.js'; // Ensure path is correct
+import { TimelineSkeleton } from '../../components/LoadingSkeletons';
 
 export default function RepairUpdates() {
   const [customerWorkOrders, setCustomerWorkOrders] = useState([]);
@@ -19,14 +20,18 @@ export default function RepairUpdates() {
   ];
 
   useEffect(() => {
+    let isCancelled = false; // For cleanup
+
     const fetchCustomerWorkOrders = async () => {
       setLoading(true);
       setError(null);
 
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
       if (sessionError || !session?.user) {
-        setError('You must be logged in to view repair updates.');
-        setLoading(false);
+        if (!isCancelled) {
+          setError('You must be logged in to view repair updates.');
+          setLoading(false);
+        }
         return;
       }
 
@@ -42,8 +47,10 @@ export default function RepairUpdates() {
 
         if (customerError) throw new Error(customerError.message);
         if (!customer) {
-          setCustomerWorkOrders([]);
-          setLoading(false);
+          if (!isCancelled) {
+            setCustomerWorkOrders([]);
+            setLoading(false);
+          }
           return;
         }
 
@@ -58,8 +65,10 @@ export default function RepairUpdates() {
         const vehicleIds = vehicles.map(v => v.id);
 
         if (vehicleIds.length === 0) {
-          setCustomerWorkOrders([]);
-          setLoading(false);
+          if (!isCancelled) {
+            setCustomerWorkOrders([]);
+            setLoading(false);
+          }
           return;
         }
 
@@ -91,21 +100,34 @@ export default function RepairUpdates() {
 
         if (woError) throw new Error(woError.message);
 
-        setCustomerWorkOrders(workOrders);
+        // Only update state if component is still mounted
+        if (!isCancelled) {
+          setCustomerWorkOrders(workOrders);
+        }
 
       }
       catch (err) {
-        console.error('Error fetching customer work orders:', err);
-        setError(`Failed to load your repair updates: ${err.message}`);
+        if (!isCancelled) {
+          console.error('Error fetching customer work orders:', err);
+          setError(`Failed to load your repair updates: ${err.message}`);
+        }
       } finally {
-        setLoading(false);
+        if (!isCancelled) {
+          setLoading(false);
+        }
       }
     };
 
     fetchCustomerWorkOrders();
+
+    // Cleanup function to prevent state updates on unmounted component
+    return () => {
+      isCancelled = true;
+    };
   }, []);
 
-  const getStatusClass = (orderStatus, listItemStatus) => {
+  // Memoized status class function to prevent recreation on every render
+  const getStatusClass = useCallback((orderStatus, listItemStatus) => {
     const orderStatusIndex = statuses.indexOf(orderStatus);
     const listItemStatusIndex = statuses.indexOf(listItemStatus);
 
@@ -118,7 +140,7 @@ export default function RepairUpdates() {
     } else {
       return 'text-gray-400';
     }
-  };
+  }, []); // statuses array is constant, no dependencies needed
 
   if (loading) {
     return (
@@ -129,7 +151,8 @@ export default function RepairUpdates() {
         </Helmet>
         <div className="space-y-6 p-4">
           <h1 className="text-3xl font-bold">Repair Progress</h1>
-          <p>Loading your repair updates...</p>
+          <p className="text-gray-600 mb-4">Loading your repair updates...</p>
+          <TimelineSkeleton />
         </div>
       </>
     );

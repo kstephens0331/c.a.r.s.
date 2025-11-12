@@ -1,7 +1,49 @@
 import { Helmet } from 'react-helmet-async';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, useCallback, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../services/supabaseClient.js';
+import { TableSkeleton } from '../../components/LoadingSkeletons';
+
+// Memoized WorkOrderRow component to prevent unnecessary re-renders
+const WorkOrderRow = memo(({ wo, showStatus = true, isOverdue, formatDate, onNavigate }) => {
+  const customerName = wo.customers?.name || 'N/A';
+  const vehicle = `${wo.vehicles?.year || ''} ${wo.vehicles?.make || ''} ${wo.vehicles?.model || ''}`.trim() || 'N/A';
+  const repairStartDate = formatDate(wo.created_at);
+  const estimatedCompletion = formatDate(wo.estimated_completion_date);
+  const overdueStatus = isOverdue(wo);
+
+  return (
+    <tr
+      key={wo.id}
+      className={`border-b hover:bg-gray-50 cursor-pointer ${overdueStatus ? 'bg-red-50' : ''}`}
+      onClick={() => onNavigate(`/admin/work-orders/details/${wo.id}`)}
+    >
+      <td className="p-3 font-medium">{wo.work_order_number}</td>
+      <td className="p-3">{customerName}</td>
+      <td className="p-3">{vehicle}</td>
+      <td className="p-3">{repairStartDate}</td>
+      {showStatus && (
+        <td className="p-3">
+          <span className={`px-2 py-1 rounded text-xs font-semibold ${
+            wo.current_status === 'Complete' || wo.current_status === 'Ready for Pickup'
+              ? 'bg-green-100 text-green-800'
+              : overdueStatus
+              ? 'bg-red-100 text-red-800'
+              : 'bg-blue-100 text-blue-800'
+          }`}>
+            {wo.current_status}
+          </span>
+        </td>
+      )}
+      <td className={`p-3 ${overdueStatus ? 'text-red-600 font-semibold' : ''}`}>
+        {estimatedCompletion}
+        {overdueStatus && <span className="ml-2 text-xs">(OVERDUE)</span>}
+      </td>
+    </tr>
+  );
+});
+
+WorkOrderRow.displayName = 'WorkOrderRow';
 
 export default function WorkOrdersListView() {
   const [workOrders, setWorkOrders] = useState([]);
@@ -82,79 +124,49 @@ export default function WorkOrdersListView() {
     fetchCustomers();
   }, []);
 
-  // Group work orders by status
-  const groupedWorkOrders = statuses.reduce((acc, status) => {
-    acc[status] = workOrders.filter(wo => wo.current_status === status);
-    return acc;
-  }, {});
+  // Group work orders by status (memoized to prevent recalculation on every render)
+  const groupedWorkOrders = useMemo(() => {
+    return statuses.reduce((acc, status) => {
+      acc[status] = workOrders.filter(wo => wo.current_status === status);
+      return acc;
+    }, {});
+  }, [workOrders]);
 
-  // Get overdue work orders
-  const overdueWorkOrders = workOrders.filter(wo => {
+  // Get overdue work orders (memoized to prevent recalculation on every render)
+  const overdueWorkOrders = useMemo(() => {
+    return workOrders.filter(wo => {
+      if (!wo.estimated_completion_date) return false;
+      const estDate = new Date(wo.estimated_completion_date);
+      const today = new Date();
+      return estDate < today && wo.current_status !== 'Complete' && wo.current_status !== 'Ready for Pickup';
+    });
+  }, [workOrders]);
+
+  // Check if a work order is overdue (memoized to prevent recreation on every render)
+  const isOverdue = useCallback((wo) => {
     if (!wo.estimated_completion_date) return false;
     const estDate = new Date(wo.estimated_completion_date);
     const today = new Date();
     return estDate < today && wo.current_status !== 'Complete' && wo.current_status !== 'Ready for Pickup';
-  });
+  }, []);
 
-  // Check if a work order is overdue
-  const isOverdue = (wo) => {
-    if (!wo.estimated_completion_date) return false;
-    const estDate = new Date(wo.estimated_completion_date);
-    const today = new Date();
-    return estDate < today && wo.current_status !== 'Complete' && wo.current_status !== 'Ready for Pickup';
-  };
-
-  // Format date
-  const formatDate = (dateString) => {
+  // Format date (memoized to prevent recreation on every render)
+  const formatDate = useCallback((dateString) => {
     if (!dateString) return 'Not set';
     return new Date(dateString).toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric'
     });
-  };
+  }, []);
 
-  // Render a single work order row
-  const WorkOrderRow = ({ wo, showStatus = true }) => {
-    const customerName = wo.customers?.name || 'N/A';
-    const vehicle = `${wo.vehicles?.year || ''} ${wo.vehicles?.make || ''} ${wo.vehicles?.model || ''}`.trim() || 'N/A';
-    const repairStartDate = formatDate(wo.created_at);
-    const estimatedCompletion = formatDate(wo.estimated_completion_date);
-    const overdueStatus = isOverdue(wo);
+  // Handle navigation (memoized to prevent recreation on every render)
+  const handleNavigate = useCallback((path) => {
+    navigate(path);
+  }, [navigate]);
 
-    return (
-      <tr
-        key={wo.id}
-        className={`border-b hover:bg-gray-50 cursor-pointer ${overdueStatus ? 'bg-red-50' : ''}`}
-        onClick={() => navigate(`/admin/work-orders/details/${wo.id}`)}
-      >
-        <td className="p-3 font-medium">{wo.work_order_number}</td>
-        <td className="p-3">{customerName}</td>
-        <td className="p-3">{vehicle}</td>
-        <td className="p-3">{repairStartDate}</td>
-        {showStatus && (
-          <td className="p-3">
-            <span className={`px-2 py-1 rounded text-xs font-semibold ${
-              wo.current_status === 'Complete' || wo.current_status === 'Ready for Pickup'
-                ? 'bg-green-100 text-green-800'
-                : overdueStatus
-                ? 'bg-red-100 text-red-800'
-                : 'bg-blue-100 text-blue-800'
-            }`}>
-              {wo.current_status}
-            </span>
-          </td>
-        )}
-        <td className={`p-3 ${overdueStatus ? 'text-red-600 font-semibold' : ''}`}>
-          {estimatedCompletion}
-          {overdueStatus && <span className="ml-2 text-xs">(OVERDUE)</span>}
-        </td>
-      </tr>
-    );
-  };
-
-  // Handle customer selection
-  const handleCustomerSelect = () => {
+  // Handle customer selection (memoized to prevent recreation on every render)
+  const handleCustomerSelect = useCallback(() => {
     if (selectedCustomerId === 'new') {
       // Navigate to add new customer page
       navigate('/admin/customers/add');
@@ -164,7 +176,7 @@ export default function WorkOrdersListView() {
     }
     setShowAddModal(false);
     setSelectedCustomerId('');
-  };
+  }, [selectedCustomerId, navigate]);
 
   if (loading) {
     return (
@@ -175,6 +187,7 @@ export default function WorkOrdersListView() {
         <div className="space-y-6">
           <h1 className="text-3xl font-bold">Work Orders</h1>
           <p>Loading work orders...</p>
+          <TableSkeleton rows={10} columns={6} />
         </div>
       </>
     );
@@ -271,7 +284,15 @@ export default function WorkOrdersListView() {
                   </tr>
                 </thead>
                 <tbody>
-                  {overdueWorkOrders.map(wo => <WorkOrderRow key={wo.id} wo={wo} />)}
+                  {overdueWorkOrders.map(wo => (
+                    <WorkOrderRow
+                      key={wo.id}
+                      wo={wo}
+                      isOverdue={isOverdue}
+                      formatDate={formatDate}
+                      onNavigate={handleNavigate}
+                    />
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -308,7 +329,16 @@ export default function WorkOrdersListView() {
                         </tr>
                       </thead>
                       <tbody>
-                        {statusWorkOrders.map(wo => <WorkOrderRow key={wo.id} wo={wo} showStatus={false} />)}
+                        {statusWorkOrders.map(wo => (
+                          <WorkOrderRow
+                            key={wo.id}
+                            wo={wo}
+                            showStatus={false}
+                            isOverdue={isOverdue}
+                            formatDate={formatDate}
+                            onNavigate={handleNavigate}
+                          />
+                        ))}
                       </tbody>
                     </table>
                   </div>
@@ -332,7 +362,15 @@ export default function WorkOrdersListView() {
                   </tr>
                 </thead>
                 <tbody>
-                  {workOrders.map(wo => <WorkOrderRow key={wo.id} wo={wo} />)}
+                  {workOrders.map(wo => (
+                    <WorkOrderRow
+                      key={wo.id}
+                      wo={wo}
+                      isOverdue={isOverdue}
+                      formatDate={formatDate}
+                      onNavigate={handleNavigate}
+                    />
+                  ))}
                 </tbody>
               </table>
             </div>

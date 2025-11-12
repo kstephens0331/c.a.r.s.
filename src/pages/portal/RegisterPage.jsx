@@ -3,16 +3,32 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { supabase } from '../../services/supabaseClient'; // CORRECTED PATH
+import { validateEmail, validatePassword } from '../../utils/validation';
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [fieldErrors, setFieldErrors] = useState({});
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setError(null);
+    setFieldErrors({});
+
+    // Validate inputs
+    const emailValidation = validateEmail(email);
+    const passwordValidation = validatePassword(password);
+
+    if (!emailValidation.isValid || !passwordValidation.isValid) {
+      setFieldErrors({
+        email: emailValidation.error,
+        password: passwordValidation.error
+      });
+      return;
+    }
+
     const { error } = await supabase.auth.signUp({ email, password });
     if (error) {
       setError(error.message);
@@ -50,23 +66,29 @@ export default function RegisterPage() {
 
           {error && <p className="text-red-600 mb-4 text-sm">{error}</p>}
 
-          <input
-            type="email"
-            placeholder="Email"
-            className="w-full mb-4 p-3 border rounded text-gray-900"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <div className="mb-4">
+            <input
+              type="email"
+              placeholder="Email"
+              className={`w-full p-3 border rounded text-gray-900 ${fieldErrors.email ? 'border-red-500' : ''}`}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            {fieldErrors.email && <p className="text-red-600 text-xs mt-1">{fieldErrors.email}</p>}
+          </div>
 
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full mb-6 p-3 border rounded text-gray-900"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div className="mb-6">
+            <input
+              type="password"
+              placeholder="Password (min 8 characters, uppercase, lowercase, numbers)"
+              className={`w-full p-3 border rounded text-gray-900 ${fieldErrors.password ? 'border-red-500' : ''}`}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            {fieldErrors.password && <p className="text-red-600 text-xs mt-1">{fieldErrors.password}</p>}
+          </div>
 
           <button
             type="submit"

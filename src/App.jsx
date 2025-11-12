@@ -3,6 +3,9 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
+// Import Error Boundary
+import ErrorBoundary from './components/ErrorBoundary.jsx';
+
 // Import Public/Portal Page Components
 import HomePage from './pages/portal/HomePage.jsx';
 import CustomerLogin from './pages/portal/CustomerLogin.jsx';
@@ -54,22 +57,23 @@ import Footer from './components/Footer.jsx';
 
 function App() {
   return (
-    <HelmetProvider>
-      <Router>
-        {/* Navbar that appears on most public pages */}
-        <Navbar />
+    <ErrorBoundary>
+      <HelmetProvider>
+        <Router>
+          {/* Navbar that appears on most public pages */}
+          <Navbar />
 
-        <main>
-          <Routes>
-            {/* Public-facing routes */}
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<CustomerLogin />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/services" element={<CollisionRepairPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/repair-gallery" element={<RepairGallery />} />
-            <Route path="/services/collision-repair" element={<CollisionRepair />} />
+          <main>
+            <Routes>
+              {/* Public-facing routes */}
+              <Route path="/" element={<HomePage />} />
+              <Route path="/login" element={<CustomerLogin />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/services" element={<CollisionRepairPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/repair-gallery" element={<RepairGallery />} />
+              <Route path="/services/collision-repair" element={<CollisionRepair />} />
 <Route path="/services/paint-refinish" element={<PaintAndRefinishPage />} />
 <Route path="/services/custom-paint" element={<CustomPaint />} />
 <Route path="/services/paintless-dent-repair" element={<PaintlessDentRepair />} />
@@ -77,40 +81,49 @@ function App() {
 <Route path="/services/light-mechanical" element={<LightMechanicalPage />} />
 <Route path="/financing" element={<FinancingPage />} />
 
-            {/* Admin Routes - Nested under AdminLayout */}
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<AdminDashboardContent />} />
-              <Route path="customers" element={<CustomerList />} />
-              <Route path="customers/:id" element={<CustomerDetailsPage />} />
-              <Route path="customers/add" element={<AddCustomer />} />
-              <Route path="customers/edit/:id" element={<EditCustomer />} />
-              <Route path="work-orders" element={<WorkOrdersListView />} />
-              <Route path="work-orders/details/:id" element={<WorkOrders />} />
-              <Route path="inventory" element={<Inventory />} />
-              <Route path="invoices" element={<Invoices />} />
-              <Route path="photos" element={<PhotoUploads />} />
-            </Route>
+              {/* Admin Routes - Nested under AdminLayout with ErrorBoundary */}
+              <Route path="/admin" element={
+                <ErrorBoundary>
+                  <AdminLayout />
+                </ErrorBoundary>
+              }>
+                <Route index element={<ErrorBoundary><AdminDashboardContent /></ErrorBoundary>} />
+                <Route path="customers" element={<ErrorBoundary><CustomerList /></ErrorBoundary>} />
+                <Route path="customers/:id" element={<ErrorBoundary><CustomerDetailsPage /></ErrorBoundary>} />
+                <Route path="customers/add" element={<ErrorBoundary><AddCustomer /></ErrorBoundary>} />
+                <Route path="customers/edit/:id" element={<ErrorBoundary><EditCustomer /></ErrorBoundary>} />
+                <Route path="work-orders" element={<ErrorBoundary><WorkOrdersListView /></ErrorBoundary>} />
+                <Route path="work-orders/details/:id" element={<ErrorBoundary><WorkOrders /></ErrorBoundary>} />
+                <Route path="inventory" element={<ErrorBoundary><Inventory /></ErrorBoundary>} />
+                <Route path="invoices" element={<ErrorBoundary><Invoices /></ErrorBoundary>} />
+                <Route path="photos" element={<ErrorBoundary><PhotoUploads /></ErrorBoundary>} />
+              </Route>
 
-            {/* Customer Portal Routes - Nested under CustomerPortalLayout */}
-            <Route path="/portal" element={<CustomerPortalLayout />}>
-              <Route index element={<Dashboard />} />
-              <Route path="my-vehicles" element={<MyVehicles />} />
-              <Route path="add-vehicle" element={<AddVehicleForm />} />
-              <Route path="repair-updates" element={<RepairUpdates />} />
-              <Route path="repair-photos" element={<RepairPhotos />} />
-              <Route path="my-documents" element={<MyDocuments />} />
-              <Route path="vehicles/:id" element={<VehicleDetailsPage />} />
-            </Route>
+              {/* Customer Portal Routes - Nested under CustomerPortalLayout with ErrorBoundary */}
+              <Route path="/portal" element={
+                <ErrorBoundary>
+                  <CustomerPortalLayout />
+                </ErrorBoundary>
+              }>
+                <Route index element={<ErrorBoundary><Dashboard /></ErrorBoundary>} />
+                <Route path="my-vehicles" element={<ErrorBoundary><MyVehicles /></ErrorBoundary>} />
+                <Route path="add-vehicle" element={<ErrorBoundary><AddVehicleForm /></ErrorBoundary>} />
+                <Route path="repair-updates" element={<ErrorBoundary><RepairUpdates /></ErrorBoundary>} />
+                <Route path="repair-photos" element={<ErrorBoundary><RepairPhotos /></ErrorBoundary>} />
+                <Route path="my-documents" element={<ErrorBoundary><MyDocuments /></ErrorBoundary>} />
+                <Route path="vehicles/:id" element={<ErrorBoundary><VehicleDetailsPage /></ErrorBoundary>} />
+              </Route>
 
-            {/* Optional: Add a catch-all for 404 Not Found pages */}
-            {/* <Route path="*" element={<NotFoundPage />} /> */}
-          </Routes>
-        </main>
+              {/* Optional: Add a catch-all for 404 Not Found pages */}
+              {/* <Route path="*" element={<NotFoundPage />} /> */}
+            </Routes>
+          </main>
 
-        {/* Footer that appears on most public pages */}
-        <Footer />
-      </Router>
-    </HelmetProvider>
+          {/* Footer that appears on most public pages */}
+          <Footer />
+        </Router>
+      </HelmetProvider>
+    </ErrorBoundary>
   );
 }
 

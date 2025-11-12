@@ -1,6 +1,7 @@
 import { Outlet, useNavigate, Link, useLocation } from 'react-router-dom'; // Import useLocation
 import { useEffect, useState } from 'react';
 import { supabase } from '../services/supabaseClient.js'; // Ensure this path is correct
+import { logger } from '../utils/logger'; // Safe logging utility
 
 export default function AdminLayout() {
   const [session, setSession] = useState(null);
@@ -14,11 +15,11 @@ export default function AdminLayout() {
       setLoading(true);
 
       // DEBUG LOG 1: Initial session data check
-      console.log('AdminLayout DEBUG: --- Starting Auth/Admin Check ---');
-      console.log('AdminLayout DEBUG: Session retrieved:', currentSession);
+      logger.debug('AdminLayout: Starting Auth/Admin Check');
+      logger.debug('AdminLayout: Session retrieved:', currentSession);
 
       if (!currentSession) {
-        console.log('AdminLayout DEBUG: No active session, redirecting to /login');
+        logger.debug('AdminLayout: No active session, redirecting to /login');
         navigate('/login', { replace: true }); // Use replace: true
         setLoading(false);
         return;
@@ -40,7 +41,7 @@ export default function AdminLayout() {
   .maybeSingle();
 
 if (!existingProfile && !fetchError) {
-  console.warn('AdminLayout DEBUG: Profile not found, inserting...');
+  logger.warn('AdminLayout: Profile not found, inserting...');
   const { full_name } = currentSession.user.user_metadata || {};
   await supabase.from('profiles').insert([
     {
@@ -60,7 +61,7 @@ const { data: existingCustomer, error: customerCheckError } = await supabase
   .maybeSingle();
 
 if (!existingCustomer && !customerCheckError) {
-  console.warn('AdminLayout DEBUG: Customer not found, inserting...');
+  logger.warn('AdminLayout: Customer not found, inserting...');
   await supabase.from('customers').insert([
     {
       user_id: currentSession.user.id,
@@ -70,11 +71,11 @@ if (!existingCustomer && !customerCheckError) {
       address: null
     }
   ]);
-  
+
 }
 
       // Fetch user profile to check admin status
-      console.log('AdminLayout DEBUG: Attempting to fetch profile for user ID:', currentSession.user.id);
+      logger.debug('AdminLayout: Attempting to fetch profile for user ID:', currentSession.user.id);
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('is_admin')
@@ -82,41 +83,41 @@ if (!existingCustomer && !customerCheckError) {
         .single();
 
       // DEBUG LOG 2: Profile data and error check
-      console.log('AdminLayout DEBUG: Profile data retrieved:', profile);
-      console.log('AdminLayout DEBUG: Profile error:', profileError);
+      logger.debug('AdminLayout: Profile data retrieved:', profile);
+      logger.debug('AdminLayout: Profile error:', profileError);
 
       if (profileError) {
-        console.error('AdminLayout DEBUG: Error fetching profile:', profileError.message);
-        console.warn('AdminLayout DEBUG: Profile fetch error, redirecting to /portal');
+        logger.error('AdminLayout: Error fetching profile:', profileError.message);
+        logger.warn('AdminLayout: Profile fetch error, redirecting to /portal');
         navigate('/portal', { replace: true }); // Use replace: true
         setIsAdmin(false);
       } else if (!profile || !profile.is_admin) {
-        console.warn('AdminLayout DEBUG: User is NOT an admin. Profile exists:', !!profile, 'is_admin:', profile?.is_admin, 'Redirecting to /portal');
+        logger.warn('AdminLayout: User is NOT an admin. Profile exists:', !!profile, 'is_admin:', profile?.is_admin, 'Redirecting to /portal');
         navigate('/portal', { replace: true }); // Use replace: true
         setIsAdmin(false);
       } else {
-        console.log('AdminLayout DEBUG: User IS an admin. Granting access.');
+        logger.debug('AdminLayout: User IS an admin. Granting access.');
         setIsAdmin(true);
       }
       setLoading(false);
-      console.log('AdminLayout DEBUG: --- Auth/Admin Check Complete ---');
+      logger.debug('AdminLayout: Auth/Admin Check Complete');
     };
 
     // Initial session check
     supabase.auth.getSession().then(({ data: { session }, error }) => {
       checkAuthAndAdminStatus(session);
-      if (error) console.error("Error getting initial session:", error.message);
+      if (error) logger.error("Error getting initial session:", error.message);
     });
 
     // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      console.log('AdminLayout DEBUG: Auth state changed event:', _event, 'New session:', session);
+      logger.debug('AdminLayout: Auth state changed event:', _event, 'New session:', session);
       checkAuthAndAdminStatus(session);
     });
 
     return () => {
       if (subscription) {
-        console.log('AdminLayout DEBUG: Unsubscribing from auth state changes.');
+        logger.debug('AdminLayout: Unsubscribing from auth state changes.');
         subscription.unsubscribe();
       }
     };

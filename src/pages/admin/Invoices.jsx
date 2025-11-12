@@ -1,11 +1,16 @@
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../services/supabaseClient'; // Changed: removed .js extension
+import Pagination from '../../components/Pagination'; // Import pagination component
+
+const ITEMS_PER_PAGE = 50; // Show 50 invoices per page
 
 export default function Invoices() {
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
 
   // Form states for manual input and AI extraction
   const [file, setFile] = useState(null);
@@ -21,29 +26,51 @@ export default function Invoices() {
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
+    let isCancelled = false; // For cleanup
+
     const fetchInvoices = async () => {
       setLoading(true);
       setError(null);
       try {
-        const { data, error: fetchError } = await supabase
+        // Calculate pagination range
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        const end = start + ITEMS_PER_PAGE - 1;
+
+        // Fetch invoices with pagination and total count
+        const { data, error: fetchError, count } = await supabase
           .from('invoices')
-          .select('*')
-          .order('invoice_date', { ascending: false });
+          .select('*', { count: 'exact' })
+          .order('invoice_date', { ascending: false })
+          .range(start, end);
 
         if (fetchError) {
           throw new Error(fetchError.message);
         }
-        setInvoices(data);
+
+        // Only update state if component is still mounted
+        if (!isCancelled) {
+          setInvoices(data || []);
+          setTotalCount(count || 0);
+        }
       } catch (err) {
-        console.error('Error fetching invoices:', err);
-        setError(`Failed to load invoices: ${err.message}`);
+        if (!isCancelled) {
+          console.error('Error fetching invoices:', err);
+          setError(`Failed to load invoices: ${err.message}`);
+        }
       } finally {
-        setLoading(false);
+        if (!isCancelled) {
+          setLoading(false);
+        }
       }
     };
 
     fetchInvoices();
-  }, []);
+
+    // Cleanup function to prevent state updates on unmounted component
+    return () => {
+      isCancelled = true;
+    };
+  }, [currentPage]); // Re-fetch when page changes
 
   const handleFileChange = async (e) => {
     const selectedFile = e.target.files[0];
@@ -78,105 +105,51 @@ export default function Invoices() {
   };
 
   const processImageWithAI = async (base64ImageData) => {
-    const prompt = `Extract the following information from this invoice image as a JSON object:
-    {
-        "invoice_number": "string",
-        "supplier": "string",
-        "invoice_date": "YYYY-MM-DD string",
-        "total_amount": "number",
-        "line_items": [
-            {
-                "part_number": "string",
-                "description": "string",
-                "quantity": "number",
-                "unit_price": "number"
-            }
-        ]
-    }
-    If a field is not found, use null or an empty string for strings, 0 for numbers, or an empty array for line_items.`;
-
     try {
-        let chatHistory = [];
-        const payload = {
-            contents: [
-                {
-                    role: "user",
-                    parts: [
-                        { text: prompt },
-                        {
-                            inlineData: {
-                                mimeType: "image/png", // Or image/jpeg based on actual image type
-                                data: base64ImageData
-                            }
-                        }
-                    ]
-                }
-            ],
-            generationConfig: {
-                responseMimeType: "application/json",
-                responseSchema: { // Define a schema to ensure consistent output format
-                    type: "OBJECT",
-                    properties: {
-                        "invoice_number": { "type": "STRING" },
-                        "supplier": { "type": "STRING" },
-                        "invoice_date": { "type": "STRING", "format": "date" }, // EnsureYYYY-MM-DD
-                        "total_amount": { "type": "NUMBER" },
-                        "line_items": {
-                            "type": "ARRAY",
-                            "items": {
-                                "type": "OBJECT",
-                                "properties": {
-                                    "part_number": { "type": "STRING" },
-                                    "description": { "type": "STRING" },
-                                    "quantity": { "type": "NUMBER" },
-                                    "unit_price": { "type": "NUMBER" }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        };
+        // Call the secure edge function instead of Gemini API directly
+        const edgeFunctionUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/process-invoice-ai`;
 
-        const apiKey = "AIzaSyDFHVnXhRk6xyM4dzaCLe2sBOpfbrx0rE4";
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+        // Get current session token for authorization
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+            setAiMessage('You must be logged in to use AI processing.');
+            return;
+        }
 
-        const response = await fetch(apiUrl, {
+        const response = await fetch(edgeFunctionUrl, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${session.access_token}`
+            },
+            body: JSON.stringify({
+                imageBase64: base64ImageData,
+                mimeType: file?.type || 'image/jpeg'
+            })
         });
 
         const result = await response.json();
-        
-        if (result.candidates && result.candidates.length > 0 &&
-            result.candidates[0].content && result.candidates[0].content.parts &&
-            result.candidates[0].content.parts.length > 0) {
-            const jsonString = result.candidates[0].content.parts[0].text;
-            let parsedJson;
-            try {
-                parsedJson = JSON.parse(jsonString);
-                setAiMessage('Data extracted successfully!');
-            } catch (parseError) {
-                setAiMessage('AI returned invalid JSON. Please check the image quality.');
-                console.error('AI parsing error:', parseError);
-                return;
-            }
+
+        if (!response.ok) {
+            throw new Error(result.error || 'Failed to process invoice');
+        }
+
+        if (result.success && result.data) {
+            const extractedData = result.data;
+            setAiMessage('Data extracted successfully!');
 
             // Populate form fields with extracted data
-            setInvoiceNumber(parsedJson.invoice_number || '');
-            setSupplier(parsedJson.supplier || '');
-            setInvoiceDate(parsedJson.invoice_date || ''); // AssumingYYYY-MM-DD
-            setTotalAmount(parsedJson.total_amount ? parsedJson.total_amount.toString() : '');
-            setExtractedLineItems(parsedJson.line_items || []);
-
+            setInvoiceNumber(extractedData.invoiceNumber || '');
+            setSupplier(extractedData.supplier || '');
+            setInvoiceDate(extractedData.invoiceDate || '');
+            setTotalAmount(extractedData.totalAmount ? extractedData.totalAmount.toString() : '');
+            setExtractedLineItems(extractedData.lineItems || []);
         } else {
             setAiMessage('AI could not extract sufficient data. Please ensure the image is clear or enter details manually.');
-            console.error('AI response structure unexpected:', result);
         }
     } catch (apiError) {
-        setAiMessage(`AI processing failed: ${apiError.message}. Check your API key or network.`);
-        console.error('Gemini API call error:', apiError);
+        setAiMessage(`AI processing failed: ${apiError.message}`);
+        console.error('Edge function call error:', apiError);
     }
   };
 
@@ -466,36 +439,46 @@ export default function Invoices() {
           {invoices.length === 0 ? (
             <p className="text-gray-500 mt-8">No invoices found.</p>
           ) : (
-            <table className="min-w-full border border-gray-300 mt-8">
-              <thead className="bg-accent text-left">
-                <tr>
-                  <th className="p-3 border-b">Invoice #</th>
-                  <th className="p-3 border-b">Supplier</th>
-                  <th className="p-3 border-b">Date</th>
-                  <th className="p-3 border-b">Total</th>
-                  <th className="p-3 border-b">File</th>
-                </tr>
-              </thead>
-              <tbody>
-                {invoices.map((invoice) => (
-                  <tr key={invoice.id} className="hover:bg-gray-50">
-                    <td className="p-3 border-b">{invoice.invoice_number}</td>
-                    <td className="p-3 border-b">{invoice.supplier}</td>
-                    <td className="p-3 border-b">{new Date(invoice.invoice_date).toLocaleDateString()}</td>
-                    <td className="p-3 border-b">${invoice.total_amount ? parseFloat(invoice.total_amount).toFixed(2) : '0.00'}</td>
-                    <td className="p-3 border-b">
-                      {invoice.pdf_url ? (
-                        <a href={invoice.pdf_url} target="_blank" rel="noopener noreferrer" className="text-brandRed hover:underline">
-                          View File
-                        </a>
-                      ) : (
-                        'N/A'
-                      )}
-                    </td>
+            <>
+              <table className="min-w-full border border-gray-300 mt-8">
+                <thead className="bg-accent text-left">
+                  <tr>
+                    <th className="p-3 border-b">Invoice #</th>
+                    <th className="p-3 border-b">Supplier</th>
+                    <th className="p-3 border-b">Date</th>
+                    <th className="p-3 border-b">Total</th>
+                    <th className="p-3 border-b">File</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {invoices.map((invoice) => (
+                    <tr key={invoice.id} className="hover:bg-gray-50">
+                      <td className="p-3 border-b">{invoice.invoice_number}</td>
+                      <td className="p-3 border-b">{invoice.supplier}</td>
+                      <td className="p-3 border-b">{new Date(invoice.invoice_date).toLocaleDateString()}</td>
+                      <td className="p-3 border-b">${invoice.total_amount ? parseFloat(invoice.total_amount).toFixed(2) : '0.00'}</td>
+                      <td className="p-3 border-b">
+                        {invoice.pdf_url ? (
+                          <a href={invoice.pdf_url} target="_blank" rel="noopener noreferrer" className="text-brandRed hover:underline">
+                            View File
+                          </a>
+                        ) : (
+                          'N/A'
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              {/* Pagination Controls */}
+              <Pagination
+                currentPage={currentPage}
+                totalItems={totalCount}
+                itemsPerPage={ITEMS_PER_PAGE}
+                onPageChange={setCurrentPage}
+              />
+            </>
           )}
         </div>
       </div>

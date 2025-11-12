@@ -5,7 +5,7 @@ import BeforeImage from '../../assets/images/1000000697.jpg';
 import AfterImage from '../../assets/images/1000000701.jpg';
 import { Helmet } from 'react-helmet-async';
 import { Wrench, Paintbrush, Truck, RefreshCw } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import TestimonialSlider from '../../components/TestimonialSlider';
@@ -15,6 +15,11 @@ export default function Home() {
 
   useEffect(() => {
     AOS.init({ duration: 800, once: true });
+  }, []);
+
+  // Memoized toggle handler to prevent recreation on every render
+  const handleToggle = useCallback((idx) => {
+    setExpanded((prev) => (prev === idx ? null : idx));
   }, []);
 
   const services = [
@@ -109,7 +114,7 @@ export default function Home() {
               className={`border border-gray-600 rounded-xl p-6 text-left bg-[#2c1b14]/90 cursor-pointer shadow-lg hover:shadow-xl transition-shadow duration-300 ${
                 expanded === idx ? 'ring-2 ring-brandRed' : ''
               }`}
-              onClick={() => setExpanded(expanded === idx ? null : idx)}
+              onClick={() => handleToggle(idx)}
             >
               <div className="flex flex-col">
                 <div className="flex items-start gap-4 mb-2">
