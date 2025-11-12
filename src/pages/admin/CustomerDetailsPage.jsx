@@ -126,7 +126,7 @@ const customerVehicleIds = vehiclesData.map(v => v.id);
           phone: formData.phone,
           address: formData.address,
         })
-        .eq('user_id', customerId);
+        .eq('id', customerId);
 
       if (updateError) throw new Error(updateError.message);
       setMessage('Customer profile updated successfully!');
