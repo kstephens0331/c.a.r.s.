@@ -493,10 +493,10 @@ export default function Invoices() {
                   <tbody>
                     {extractedLineItems.map((item, index) => (
                       <tr key={index}>
-                        <td className="p-2 border-b">{item.part_number || 'N/A'}</td>
+                        <td className="p-2 border-b">{item.partNumber || item.part_number || 'N/A'}</td>
                         <td className="p-2 border-b">{item.description || 'N/A'}</td>
                         <td className="p-2 border-b text-right">{item.quantity || 0}</td>
-                        <td className="p-2 border-b text-right">${item.unit_price ? parseFloat(item.unit_price).toFixed(2) : '0.00'}</td>
+                        <td className="p-2 border-b text-right">${item.unitPrice ? parseFloat(item.unitPrice).toFixed(2) : (item.unit_price ? parseFloat(item.unit_price).toFixed(2) : '0.00')}</td>
                       </tr>
                     ))}
                   </tbody>
