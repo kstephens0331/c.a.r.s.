@@ -116,6 +116,10 @@ export default function Invoices() {
             return;
         }
 
+        console.log('Calling AI edge function:', edgeFunctionUrl);
+        console.log('Image size:', base64ImageData.length, 'characters');
+        console.log('MIME type:', file?.type);
+
         const response = await fetch(edgeFunctionUrl, {
             method: 'POST',
             headers: {
@@ -125,13 +129,27 @@ export default function Invoices() {
             body: JSON.stringify({
                 imageBase64: base64ImageData,
                 mimeType: file?.type || 'image/jpeg'
-            })
+            }),
+            signal: AbortSignal.timeout(60000) // 60 second timeout
         });
 
-        const result = await response.json();
+        console.log('Response status:', response.status);
+        console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+
+        const responseText = await response.text();
+        console.log('Response body:', responseText);
+
+        let result;
+        try {
+            result = JSON.parse(responseText);
+        } catch (parseError) {
+            console.error('Failed to parse response as JSON:', parseError);
+            throw new Error(`Invalid response from AI service: ${responseText.substring(0, 200)}`);
+        }
 
         if (!response.ok) {
-            throw new Error(result.error || 'Failed to process invoice');
+            console.error('AI service error:', result);
+            throw new Error(result.error || result.message || 'Failed to process invoice');
         }
 
         if (result.success && result.data) {
@@ -148,8 +166,16 @@ export default function Invoices() {
             setAiMessage('AI could not extract sufficient data. Please ensure the image is clear or enter details manually.');
         }
     } catch (apiError) {
-        setAiMessage(`AI processing failed: ${apiError.message}`);
         console.error('Edge function call error:', apiError);
+
+        // Provide more specific error messages
+        if (apiError.name === 'AbortError' || apiError.name === 'TimeoutError') {
+            setAiMessage('AI processing timed out. The image may be too large or complex. Try a smaller/clearer image.');
+        } else if (apiError.message.includes('Failed to fetch')) {
+            setAiMessage('Network error: Could not reach AI service. Check your internet connection and try again.');
+        } else {
+            setAiMessage(`AI processing failed: ${apiError.message}`);
+        }
     }
   };
 
