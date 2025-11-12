@@ -412,11 +412,11 @@ export default function Invoices() {
 
         {/* Upload Form */}
         <form onSubmit={handleFormSubmit} className="bg-accent p-4 rounded shadow space-y-4 max-w-xl">
-          <label htmlFor="pdfFile" className="block text-sm font-medium text-gray-700">Upload Invoice File (Image or PDF):</label>
+          <label htmlFor="pdfFile" className="block text-sm font-medium text-gray-700">Upload Invoice File (PNG, JPG, or PDF):</label>
           <input
             type="file"
             id="pdfFile"
-            accept="image/*,application/pdf" // Accept images and PDFs
+            accept=".png,.jpg,.jpeg,.pdf,image/png,image/jpeg,application/pdf" // Accept PNG, JPG, PDF only
             className="block w-full p-2 border rounded"
             onChange={handleFileChange}
             required
