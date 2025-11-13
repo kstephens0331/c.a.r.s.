@@ -1,0 +1,203 @@
+# ============================================================================
+# Netlify Configuration for C.A.R.S Collision & Refinish Shop
+# Website: https://collisionandrefinishshop.com
+# ============================================================================
+# This configuration optimizes the site for Netlify deployment with:
+# - Prerendering for better bot crawling
+# - Redirects and rewrites for SPA routing
+# - Headers for security and caching
+# - Build settings for Vite
+# ============================================================================
+
+# Build Settings
+[build]
+  # Directory with package.json
+  base = "."
+
+  # Build command for Vite
+  command = "npm run build"
+
+  # Directory to publish (Vite default output)
+  publish = "dist"
+
+# ============================================================================
+# PRERENDERING - Generate static HTML for bots
+# ============================================================================
+# Netlify will prerender these routes as static HTML files
+# This allows search engine bots to crawl content without executing JavaScript
+
+[build.processing]
+  skip_processing = false
+
+# Plugin: Prerender for better SEO
+[[plugins]]
+  package = "@netlify/plugin-lighthouse"
+
+# ============================================================================
+# SPA ROUTING - Redirect all routes to index.html
+# ============================================================================
+# Single Page Application routing - all routes serve index.html
+# This is required for React Router to work properly
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  # Don't apply redirect to files that exist (images, CSS, JS, etc.)
+  conditions = {Role = ["*"]}
+  force = false
+
+# ============================================================================
+# SECURITY HEADERS
+# ============================================================================
+# Add security headers to all pages for better security score
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Content Security Policy (relaxed for Google Analytics and Supabase)
+    Content-Security-Policy = """
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://*.supabase.co;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      img-src 'self' data: https: blob:;
+      font-src 'self' https://fonts.gstatic.com;
+      connect-src 'self' https://www.google-analytics.com https://*.supabase.co;
+      frame-src 'self' https://calendly.com;
+      object-src 'none';
+    """
+
+    # Prevent clickjacking
+    X-Frame-Options = "DENY"
+
+    # Prevent MIME type sniffing
+    X-Content-Type-Options = "nosniff"
+
+    # Enable XSS protection
+    X-XSS-Protection = "1; mode=block"
+
+    # Referrer policy
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+    # Permissions policy
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# ============================================================================
+# CACHING HEADERS - Optimize performance
+# ============================================================================
+
+# Cache static assets (images, fonts, etc.) for 1 year
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache images for 1 month
+[[headers]]
+  for = "/*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
+  for = "/*.jpeg"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
+  for = "/*.webp"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
+  for = "/*.gif"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
+  for = "/*.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+# Don't cache HTML (always serve fresh for SPA updates)
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# ============================================================================
+# ENVIRONMENT VARIABLES
+# ============================================================================
+# Set these in Netlify dashboard: Site settings > Environment variables
+
+# Required environment variables:
+# - VITE_SUPABASE_URL (your Supabase project URL)
+# - VITE_SUPABASE_ANON_KEY (your Supabase anon key)
+# - VITE_GOOGLE_GEMINI_API_KEY (for AI invoice extraction)
+
+# ============================================================================
+# REDIRECTS - SEO and URL management
+# ============================================================================
+
+# Redirect www to non-www (if applicable)
+[[redirects]]
+  from = "https://www.collisionandrefinishshop.com/*"
+  to = "https://collisionandrefinishshop.com/:splat"
+  status = 301
+  force = true
+
+# ============================================================================
+# FORMS - Contact form handling (if needed in future)
+# ============================================================================
+# Netlify Forms can be enabled by adding data-netlify="true" to form elements
+
+# ============================================================================
+# FUNCTIONS - Edge Functions (if needed)
+# ============================================================================
+# Directory for Netlify Edge Functions (if migrating from Supabase)
+# [functions]
+#   directory = "netlify/functions"
+
+# ============================================================================
+# DEV SERVER - Local development settings
+# ============================================================================
+[dev]
+  command = "npm run dev"
+  port = 5173
+  targetPort = 5173
+  publish = "dist"
+  autoLaunch = false
+
+# ============================================================================
+# NOTES
+# ============================================================================
+# 1. Install Netlify CLI: npm install -g netlify-cli
+# 2. Login: netlify login
+# 3. Initialize: netlify init
+# 4. Deploy: netlify deploy --prod
+# 5. Set environment variables in Netlify dashboard
+# 6. Configure custom domain in Netlify dashboard
+# 7. Enable HTTPS (automatic with Netlify)
+#
+# BENEFITS OF NETLIFY:
+# - Automatic HTTPS
+# - Global CDN
+# - Instant cache invalidation
+# - Deploy previews for PRs
+# - Continuous deployment from Git
+# - Edge network for faster loading
+# - Prerendering for better SEO
+# - Built-in form handling
+# - Serverless functions support
+#
+# SEO IMPROVEMENTS:
+# - Static HTML generation for bots
+# - Better caching for faster page loads
+# - Security headers improve trust signals
+# - HTTPS by default (ranking factor)
+# - Global CDN reduces latency (ranking factor)
+# ============================================================================
