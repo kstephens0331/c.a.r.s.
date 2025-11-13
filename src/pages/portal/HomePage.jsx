@@ -69,6 +69,10 @@ export default function Home() {
           src={Logo}
           alt="C.A.R.S Logo"
           className="w-64 md:w-80 h-auto mb-6 drop-shadow-xl animate-fade-in"
+          fetchpriority="high"
+          loading="eager"
+          width="320"
+          height="271"
         />
         <h1 className="text-3xl md:text-4xl font-bold max-w-2xl mb-6 leading-snug">
           <span className="block animate-type">Trusted repairs. Industrial precision.</span>
@@ -141,13 +145,19 @@ export default function Home() {
           <div className="relative w-full md:w-1/2 group overflow-hidden rounded-xl shadow-lg">
             <img
               src={BeforeImage}
-              alt="Before repair"
+              alt="Before collision repair - damaged vehicle"
               className="w-full h-auto object-cover group-hover:opacity-0 transition duration-500"
+              loading="lazy"
+              width="676"
+              height="507"
             />
             <img
               src={AfterImage}
-              alt="After repair"
+              alt="After collision repair - restored vehicle"
               className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition duration-500"
+              loading="lazy"
+              width="380"
+              height="507"
             />
             <span className="absolute top-2 left-2 bg-black/70 text-xs text-white px-2 py-1 rounded">
               Hover to Reveal
