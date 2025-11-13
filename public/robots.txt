@@ -1,9 +1,263 @@
-# robots.txt for collisionandrefinishshop.com
+# ============================================================================
+# robots.txt for C.A.R.S Collision & Refinish Shop
+# Website: https://c-a-r-s.vercel.app
+# Production: https://collisionandrefinishshop.com
+# ============================================================================
+# This file tells search engine crawlers which pages they can and cannot access
+# Updated: 2025-01-12
 
+# ============================================================================
+# ALLOW ALL SEARCH ENGINES - PUBLIC PAGES
+# ============================================================================
 User-agent: *
-Disallow:
 
-# Allow all bots full access to the site
+# Allow indexing of all public-facing pages
+Allow: /
+Allow: /about
+Allow: /services
+Allow: /contact
+Allow: /repair-gallery
+Allow: /financing
+Allow: /login
+Allow: /register
 
-# Optional: Add sitemap for better crawling
+# Allow indexing of all service detail pages
+Allow: /services/collision-repair
+Allow: /services/paint-refinish
+Allow: /services/custom-paint
+Allow: /services/paintless-dent-repair
+Allow: /services/bedliners-accessories
+Allow: /services/light-mechanical
+
+# ============================================================================
+# DISALLOW - ADMIN PORTAL (PASSWORD PROTECTED)
+# ============================================================================
+# Block all admin routes - these require authentication
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /admin/customers
+Disallow: /admin/customers/*
+Disallow: /admin/work-orders
+Disallow: /admin/work-orders/*
+Disallow: /admin/inventory
+Disallow: /admin/invoices
+Disallow: /admin/photos
+
+# ============================================================================
+# DISALLOW - CUSTOMER PORTAL (PASSWORD PROTECTED)
+# ============================================================================
+# Block all customer portal routes - these require authentication
+Disallow: /portal
+Disallow: /portal/*
+Disallow: /portal/my-vehicles
+Disallow: /portal/add-vehicle
+Disallow: /portal/repair-updates
+Disallow: /portal/repair-photos
+Disallow: /portal/my-documents
+Disallow: /portal/vehicles/*
+
+# ============================================================================
+# DISALLOW - PRIVATE FILES AND DIRECTORIES
+# ============================================================================
+# Block access to build files and configuration
+Disallow: /node_modules/
+Disallow: /dist/
+Disallow: /build/
+Disallow: /.env
+Disallow: /.env.*
+Disallow: /config/
+Disallow: /src/
+
+# Block access to version control and IDE files
+Disallow: /.git/
+Disallow: /.vscode/
+Disallow: /.idea/
+Disallow: /.claude/
+
+# Block access to temporary and log files
+Disallow: /*.log
+Disallow: /tmp/
+Disallow: /temp/
+
+# Block access to private documents and uploads (if stored locally)
+Disallow: /private/
+Disallow: /uploads/
+Disallow: /documents/
+
+# ============================================================================
+# DISALLOW - API ENDPOINTS AND BACKEND ROUTES
+# ============================================================================
+# Block Supabase edge functions (hosted externally, but just in case)
+Disallow: /api/*
+Disallow: /functions/*
+Disallow: /.netlify/
+Disallow: /.vercel/
+
+# ============================================================================
+# ALLOW - STATIC ASSETS (for faster crawling)
+# ============================================================================
+# Explicitly allow crawling of images, CSS, JS, and other assets
+Allow: /*.css$
+Allow: /*.js$
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.gif$
+Allow: /*.webp$
+Allow: /*.svg$
+Allow: /*.ico$
+Allow: /*.woff$
+Allow: /*.woff2$
+Allow: /*.ttf$
+Allow: /*.mp4$
+Allow: /videos/
+
+# Allow logo and branding assets
+Allow: /logo.png
+Allow: /vite.svg
+
+# ============================================================================
+# SPECIFIC BOT INSTRUCTIONS
+# ============================================================================
+
+# Google Bot - Allow everything public, follow standard rules
+User-agent: Googlebot
+Disallow: /admin
+Disallow: /portal
+Allow: /
+Crawl-delay: 0
+
+# Google Image Bot - Allow images
+User-agent: Googlebot-Image
+Allow: /*.jpg$
+Allow: /*.png$
+Allow: /*.jpeg$
+Allow: /*.gif$
+Allow: /*.webp$
+
+# Google Mobile Bot
+User-agent: Googlebot-Mobile
+Disallow: /admin
+Disallow: /portal
+Allow: /
+
+# Bing Bot
+User-agent: Bingbot
+Disallow: /admin
+Disallow: /portal
+Allow: /
+Crawl-delay: 1
+
+# Yahoo Bot
+User-agent: Slurp
+Disallow: /admin
+Disallow: /portal
+Allow: /
+Crawl-delay: 1
+
+# DuckDuckGo Bot
+User-agent: DuckDuckBot
+Disallow: /admin
+Disallow: /portal
+Allow: /
+Crawl-delay: 1
+
+# Yandex Bot
+User-agent: Yandex
+Disallow: /admin
+Disallow: /portal
+Allow: /
+Crawl-delay: 2
+
+# Baidu Bot
+User-agent: Baiduspider
+Disallow: /admin
+Disallow: /portal
+Allow: /
+Crawl-delay: 2
+
+# Facebook Bot (for link previews)
+User-agent: facebookexternalhit
+Allow: /
+Disallow: /admin
+Disallow: /portal
+
+# Twitter Bot (for card previews)
+User-agent: Twitterbot
+Allow: /
+Disallow: /admin
+Disallow: /portal
+
+# LinkedIn Bot
+User-agent: LinkedInBot
+Allow: /
+Disallow: /admin
+Disallow: /portal
+
+# ============================================================================
+# BLOCK MALICIOUS AND AGGRESSIVE CRAWLERS
+# ============================================================================
+
+# AhrefsBot - Known for aggressive crawling
+User-agent: AhrefsBot
+Disallow: /
+
+# SemrushBot - Can be aggressive
+User-agent: SemrushBot
+Crawl-delay: 10
+Disallow: /admin
+Disallow: /portal
+
+# MJ12bot (Majestic) - Can be aggressive
+User-agent: MJ12bot
+Crawl-delay: 10
+Disallow: /admin
+Disallow: /portal
+
+# DotBot (Moz/OpenSiteExplorer)
+User-agent: dotbot
+Crawl-delay: 10
+
+# Block scrapers and bad bots
+User-agent: HTTrack
+Disallow: /
+
+User-agent: ia_archiver
+Disallow: /
+
+User-agent: WebCopier
+Disallow: /
+
+User-agent: WebStripper
+Disallow: /
+
+User-agent: WebZip
+Disallow: /
+
+User-agent: wget
+Disallow: /
+
+User-agent: curl
+Disallow: /
+
+# ============================================================================
+# SITEMAP LOCATION
+# ============================================================================
+# Point search engines to your XML sitemap
+Sitemap: https://c-a-r-s.vercel.app/sitemap.xml
 Sitemap: https://collisionandrefinishshop.com/sitemap.xml
+
+# ============================================================================
+# ADDITIONAL NOTES
+# ============================================================================
+# - All admin and customer portal pages require authentication via Supabase
+# - Public pages are optimized for SEO with proper meta tags and helmet
+# - Contact page includes structured data for local business
+# - Service pages include detailed descriptions for better search ranking
+# - Images and videos are optimized for web performance
+#
+# For questions about SEO or site access, contact:
+# Email: carscollisionhouston@gmail.com
+# Phone: 832-885-3055
+# Address: 2530 Old Louetta Loop #114, Spring, TX 77388
+# ============================================================================

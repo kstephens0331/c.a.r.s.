@@ -1,39 +1,219 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<!-- ============================================================================
+     Sitemap for C.A.R.S Collision & Refinish Shop
+     Website: https://c-a-r-s.vercel.app (Vercel deployment)
+     Production: https://collisionandrefinishshop.com
 
+     This sitemap includes all public-facing pages for search engine indexing.
+     Admin and customer portal pages are excluded (require authentication).
+
+     Last Updated: 2025-01-12
+     ============================================================================ -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+                            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+  <!-- ============================================================================
+       HOME PAGE - Highest Priority
+       ============================================================================ -->
   <url>
     <loc>https://collisionandrefinishshop.com/</loc>
+    <lastmod>2025-01-12</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.00</priority>
+    <!-- Home page features: Hero section, service overview, testimonials, before/after gallery -->
   </url>
 
+  <!-- ============================================================================
+       MAIN NAVIGATION PAGES - High Priority
+       ============================================================================ -->
+
+  <!-- About Page -->
   <url>
     <loc>https://collisionandrefinishshop.com/about</loc>
-    <priority>0.80</priority>
+    <lastmod>2025-01-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+    <!-- About: Veteran-owned business story, team info, values, certifications -->
   </url>
 
+  <!-- All Services Overview -->
   <url>
     <loc>https://collisionandrefinishshop.com/services</loc>
-    <priority>0.80</priority>
+    <lastmod>2025-01-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+    <!-- Services overview: Complete list of all repair and refinishing services -->
   </url>
 
+  <!-- Contact Page -->
   <url>
     <loc>https://collisionandrefinishshop.com/contact</loc>
-    <priority>0.70</priority>
+    <lastmod>2025-01-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <!-- Contact: Form, phone, email, address, hours, Calendly scheduling, FAQ -->
   </url>
 
+  <!-- Repair Gallery -->
   <url>
-    <loc>https://collisionandrefinishshop.com/appointments</loc>
-    <priority>0.70</priority>
+    <loc>https://collisionandrefinishshop.com/repair-gallery</loc>
+    <lastmod>2025-01-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+    <!-- Gallery: Before/after photos of completed collision repairs and custom work -->
   </url>
 
+  <!-- Financing Options -->
   <url>
-    <loc>https://collisionandrefinishshop.com/customer-portal</loc>
+    <loc>https://collisionandrefinishshop.com/financing</loc>
+    <lastmod>2025-01-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <!-- Financing: Snap Finance partnership, payment plans, approval info -->
+  </url>
+
+  <!-- ============================================================================
+       SERVICE DETAIL PAGES - High Priority for SEO
+       ============================================================================ -->
+
+  <!-- Collision Repair Service -->
+  <url>
+    <loc>https://collisionandrefinishshop.com/services/collision-repair</loc>
+    <lastmod>2025-01-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <!-- Collision repair: Frame straightening, panel replacement, insurance claims, OEM standards -->
+  </url>
+
+  <!-- Paint & Refinish Service -->
+  <url>
+    <loc>https://collisionandrefinishshop.com/services/paint-refinish</loc>
+    <lastmod>2025-01-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <!-- Paint & refinish: Computerized color matching, professional spray booth, multi-surface painting -->
+  </url>
+
+  <!-- Custom Paint Service -->
+  <url>
+    <loc>https://collisionandrefinishshop.com/services/custom-paint</loc>
+    <lastmod>2025-01-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <!-- Custom paint: Custom colors, special effects, graphics, unique finishes -->
+  </url>
+
+  <!-- Paintless Dent Repair Service -->
+  <url>
+    <loc>https://collisionandrefinishshop.com/services/paintless-dent-repair</loc>
+    <lastmod>2025-01-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <!-- PDR: Hail damage, door dings, minor dents without repainting -->
+  </url>
+
+  <!-- Bedliners & Accessories Service -->
+  <url>
+    <loc>https://collisionandrefinishshop.com/services/bedliners-accessories</loc>
+    <lastmod>2025-01-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <!-- Bedliners: Spray-in bedliners, toolboxes, light bars, truck accessories -->
+  </url>
+
+  <!-- Light Mechanical Service -->
+  <url>
+    <loc>https://collisionandrefinishshop.com/services/light-mechanical</loc>
+    <lastmod>2025-01-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <!-- Mechanical: Brakes, suspension, A/C repair, oil changes, routine maintenance -->
+  </url>
+
+  <!-- ============================================================================
+       AUTHENTICATION PAGES - Lower Priority (Login/Register)
+       ============================================================================ -->
+
+  <!-- Customer Login Page -->
+  <url>
+    <loc>https://collisionandrefinishshop.com/login</loc>
+    <lastmod>2025-01-12</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.60</priority>
+    <!-- Login: Customer portal access, email/password and Google OAuth -->
   </url>
 
+  <!-- Customer Registration Page -->
   <url>
-    <loc>https://collisionandrefinishshop.com/privacy-policy</loc>
-    <priority>0.30</priority>
+    <loc>https://collisionandrefinishshop.com/register</loc>
+    <lastmod>2025-01-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+    <!-- Register: Create new customer account to track repairs and view updates -->
   </url>
+
+  <!-- ============================================================================
+       NOTES FOR SEARCH ENGINES
+       ============================================================================
+
+       EXCLUDED FROM SITEMAP (Require Authentication):
+       - /admin/* - Admin portal pages (password protected)
+       - /portal/* - Customer portal pages (require login)
+
+       LOCAL BUSINESS INFORMATION:
+       Business Name: C.A.R.S Collision & Refinish Shop
+       Address: 2530 Old Louetta Loop #114, Spring, TX 77388
+       Phone: 832-885-3055
+       Email: carscollisionhouston@gmail.com
+       Hours: Monday-Friday 8am-6pm, Saturday by appointment
+
+       SERVICE AREAS:
+       - Spring, TX
+       - The Woodlands, TX
+       - Klein, TX
+       - Tomball, TX
+       - Cypress, TX
+       - North Houston, TX
+       - Harris County, TX
+
+       PRIMARY SERVICES:
+       - Collision Repair
+       - Auto Body Repair
+       - Paint & Refinishing
+       - Custom Paint Jobs
+       - Paintless Dent Repair (PDR)
+       - Spray-In Bedliners
+       - Truck Accessories Installation
+       - Light Mechanical Repairs
+       - Insurance Claim Assistance
+       - Free Estimates
+
+       SPECIAL FEATURES:
+       - Veteran & Family Owned
+       - Insurance Claims Accepted
+       - Out-of-Pocket Options
+       - Snap Finance Available
+       - Online Appointment Scheduling (Calendly)
+       - Customer Repair Tracking Portal
+       - Before/After Photo Gallery
+       - OEM Standards Compliance
+       - Computerized Color Matching
+
+       SEO KEYWORDS:
+       - collision repair spring tx
+       - auto body shop the woodlands
+       - car paint refinishing houston
+       - paintless dent repair spring
+       - spray in bedliner installation
+       - custom auto paint spring tx
+       - veteran owned auto body shop
+       - insurance collision repair
+       - truck accessories houston
+       - hail damage repair spring tx
+
+       ============================================================================ -->
 
 </urlset>
