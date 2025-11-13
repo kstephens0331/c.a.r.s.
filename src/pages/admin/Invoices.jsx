@@ -627,16 +627,16 @@ export default function Invoices() {
                         )}
                       </td>
                       <td className="p-3 border-b">
-                        <div className="flex gap-2">
+                        <div className="flex flex-col sm:flex-row gap-2">
                           <button
                             onClick={() => handleEditInvoice(invoice)}
-                            className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+                            className="px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm whitespace-nowrap"
                           >
                             Edit
                           </button>
                           <button
                             onClick={() => handleDeleteInvoice(invoice)}
-                            className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
+                            className="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 text-sm whitespace-nowrap"
                           >
                             Delete
                           </button>
@@ -660,8 +660,8 @@ export default function Invoices() {
 
         {/* Edit Invoice Modal */}
         {showEditModal && editingInvoice && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 max-w-lg w-full">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg p-4 md:p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto">
               <h2 className="text-2xl font-bold mb-4">Edit Invoice</h2>
               <div className="space-y-4">
                 <div>
@@ -702,16 +702,16 @@ export default function Invoices() {
                   />
                 </div>
               </div>
-              <div className="flex gap-3 mt-6">
+              <div className="flex flex-col sm:flex-row gap-3 mt-6">
                 <button
                   onClick={handleSaveEdit}
-                  className="flex-1 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                  className="flex-1 bg-blue-500 text-white px-4 py-3 rounded hover:bg-blue-600 font-semibold"
                 >
                   Save Changes
                 </button>
                 <button
                   onClick={() => {setShowEditModal(false); setEditingInvoice(null);}}
-                  className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+                  className="flex-1 bg-gray-300 text-gray-700 px-4 py-3 rounded hover:bg-gray-400 font-semibold"
                 >
                   Cancel
                 </button>
@@ -722,8 +722,8 @@ export default function Invoices() {
 
         {/* Delete Confirmation Modal */}
         {showDeleteConfirm && invoiceToDelete && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 max-w-md w-full">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg p-4 md:p-6 max-w-md w-full">
               <h2 className="text-2xl font-bold mb-4 text-red-600">Confirm Delete</h2>
               <p className="mb-4">
                 Are you sure you want to delete invoice <strong>{invoiceToDelete.invoice_number}</strong> from <strong>{invoiceToDelete.supplier}</strong>?
@@ -731,16 +731,16 @@ export default function Invoices() {
               <p className="text-sm text-gray-600 mb-6">
                 This will also delete all associated line items. This action cannot be undone.
               </p>
-              <div className="flex gap-3">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <button
                   onClick={confirmDelete}
-                  className="flex-1 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                  className="flex-1 bg-red-500 text-white px-4 py-3 rounded hover:bg-red-600 font-semibold"
                 >
                   Yes, Delete
                 </button>
                 <button
                   onClick={() => {setShowDeleteConfirm(false); setInvoiceToDelete(null);}}
-                  className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+                  className="flex-1 bg-gray-300 text-gray-700 px-4 py-3 rounded hover:bg-gray-400 font-semibold"
                 >
                   Cancel
                 </button>

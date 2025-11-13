@@ -215,35 +215,37 @@ export default function WorkOrdersListView() {
       </Helmet>
 
       <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold">Work Orders Overview</h1>
-          <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+          <h1 className="text-2xl sm:text-3xl font-bold">Work Orders Overview</h1>
+          <div className="flex flex-col sm:flex-row gap-2">
             <button
               onClick={() => setShowAddModal(true)}
-              className="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700 font-semibold"
+              className="px-4 py-3 rounded bg-green-600 text-white hover:bg-green-700 font-semibold whitespace-nowrap"
             >
               + Add Work Order
             </button>
-            <button
-              onClick={() => setViewMode('grouped')}
-              className={`px-4 py-2 rounded ${
-                viewMode === 'grouped'
-                  ? 'bg-primary text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
-            >
-              Grouped by Status
-            </button>
-            <button
-              onClick={() => setViewMode('all')}
-              className={`px-4 py-2 rounded ${
-                viewMode === 'all'
-                  ? 'bg-primary text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
-            >
-              All Work Orders
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setViewMode('grouped')}
+                className={`flex-1 sm:flex-none px-4 py-3 rounded ${
+                  viewMode === 'grouped'
+                    ? 'bg-primary text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                Grouped
+              </button>
+              <button
+                onClick={() => setViewMode('all')}
+                className={`flex-1 sm:flex-none px-4 py-3 rounded ${
+                  viewMode === 'all'
+                    ? 'bg-primary text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                All
+              </button>
+            </div>
           </div>
         </div>
 
@@ -385,8 +387,8 @@ export default function WorkOrdersListView() {
 
         {/* Add Work Order Modal */}
         {showAddModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg p-4 md:p-6 max-w-md w-full">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-bold">Add Work Order</h2>
                 <button

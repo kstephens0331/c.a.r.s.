@@ -13,7 +13,7 @@ export default function Dashboard() {
       </Helmet>
 
       <div className="space-y-6">
-        <h1 className="text-3xl font-bold">Welcome to Your Dashboard</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold">Welcome to Your Dashboard</h1>
 
         <p className="text-lg">
           Here you can track your vehicle repairs, view progress updates, and access your repair photos.

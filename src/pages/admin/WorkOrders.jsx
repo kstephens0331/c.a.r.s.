@@ -674,26 +674,28 @@ export default function WorkOrders() {
                       <h4 className="font-semibold mb-2">Parts Used in this WO:</h4>
                       <div className="space-y-2">
                         {workOrderParts.filter(p => p.work_order_id === order.id).map((part) => (
-                          <div key={part.id} className="flex items-center justify-between bg-gray-50 p-2 rounded">
-                            <div className="flex-1">
-                              <span className="font-medium">{part.part_number}</span>
-                              <span className="text-gray-600"> - {part.inventory?.description || 'N/A'}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <span className="text-sm text-gray-600">Qty:</span>
-                              <input
-                                type="number"
-                                min="1"
-                                value={part.quantity_used}
-                                onChange={(e) => handleUpdatePartQuantity(part.id, part.quantity_used, part.inventory_id, parseInt(e.target.value))}
-                                className="w-16 border border-gray-300 rounded px-2 py-1 text-sm"
-                              />
-                              <button
-                                onClick={() => handleRemovePart(part.id, part.inventory_id, part.quantity_used)}
-                                className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
-                              >
-                                Remove
-                              </button>
+                          <div key={part.id} className="bg-gray-50 p-3 rounded">
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                              <div className="flex-1">
+                                <span className="font-medium block sm:inline">{part.part_number}</span>
+                                <span className="text-gray-600 block sm:inline"> - {part.inventory?.description || 'N/A'}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm text-gray-600">Qty:</span>
+                                <input
+                                  type="number"
+                                  min="1"
+                                  value={part.quantity_used}
+                                  onChange={(e) => handleUpdatePartQuantity(part.id, part.quantity_used, part.inventory_id, parseInt(e.target.value))}
+                                  className="w-16 border border-gray-300 rounded px-2 py-1 text-sm"
+                                />
+                                <button
+                                  onClick={() => handleRemovePart(part.id, part.inventory_id, part.quantity_used)}
+                                  className="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 text-sm whitespace-nowrap"
+                                >
+                                  Remove
+                                </button>
+                              </div>
                             </div>
                           </div>
                         ))}

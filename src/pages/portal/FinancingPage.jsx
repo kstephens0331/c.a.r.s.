@@ -13,7 +13,7 @@ export default function FinancingPage() {
 
       {/* Hero Section with Gradient Overlay */}
       <section className="relative text-center py-16 px-6 bg-gradient-to-b from-gray-900/70 to-transparent">
-        <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white drop-shadow-lg">Financing Options</h1>
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-white drop-shadow-lg">Financing Options</h1>
         <p className="max-w-3xl mx-auto text-lg text-gray-100 mb-4 drop-shadow-md">
           We've partnered with Snap Finance to provide flexible financing for your repairs.
           Apply today and get back on the road with confidence.
@@ -55,8 +55,8 @@ export default function FinancingPage() {
         </div>
 
         {/* How It Works */}
-        <div className="bg-white/60 backdrop-blur-md p-8 rounded-lg shadow-lg mb-12 border border-white/30">
-          <h2 className="text-3xl font-bold mb-6 text-center text-gray-900">How It Works</h2>
+        <div className="bg-white/60 backdrop-blur-md p-6 md:p-8 rounded-lg shadow-lg mb-12 border border-white/30">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-gray-900">How It Works</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="text-center">
               <div className="bg-brandRed text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3 text-xl font-bold">1</div>
@@ -82,8 +82,8 @@ export default function FinancingPage() {
         </div>
 
         {/* Apply Now Section */}
-        <div className="bg-white/60 backdrop-blur-md p-8 rounded-lg shadow-xl text-center border border-white/30">
-          <h2 className="text-3xl font-bold mb-4 text-gray-900">Ready to Get Started?</h2>
+        <div className="bg-white/60 backdrop-blur-md p-6 md:p-8 rounded-lg shadow-xl text-center border border-white/30">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-gray-900">Ready to Get Started?</h2>
           <p className="text-lg text-gray-800 mb-6">
             Click below to apply with Snap Finance and get approved in minutes.
           </p>

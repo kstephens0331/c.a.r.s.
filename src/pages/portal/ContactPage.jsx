@@ -64,7 +64,7 @@ export default function ContactPage() {
       </Helmet>
 
       <section className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold mb-4 text-center">Contact Us</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-center">Contact Us</h1>
         <p className="text-center max-w-2xl mx-auto text-gray-300 mb-10">
           Whether you need an estimate, want to schedule an appointment, or just have a few questions—our team is here to help. Call us at{' '}
           <a href="tel:8328853055" className="text-brandRed hover:underline font-medium">832-885-3055</a>{' '}
@@ -95,7 +95,7 @@ export default function ContactPage() {
 
         {/* Calendly Embed */}
         <div className="mb-20">
-          <h2 className="text-2xl font-bold mb-4 text-center">Schedule an Appointment</h2>
+          <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center">Schedule an Appointment</h2>
           <div className="overflow-hidden rounded-lg shadow-lg">
             <iframe
               src="https://calendly.com/collisionandrefinishshop"
@@ -104,14 +104,14 @@ export default function ContactPage() {
               frameBorder="0"
               scrolling="no"
               title="Schedule with Calendly"
-              className="w-full rounded-md"
+              className="w-full rounded-md min-h-[500px] md:min-h-[700px]"
             ></iframe>
           </div>
         </div>
 
         {/* FAQ Accordion */}
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-center mb-8">Frequently Asked Questions</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-center mb-8">Frequently Asked Questions</h2>
           <div className="space-y-4">
             {faqs.map((faq, i) => (
               <div

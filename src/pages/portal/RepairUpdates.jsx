@@ -184,7 +184,7 @@ export default function RepairUpdates() {
       </Helmet>
 
       <div className="space-y-6 p-4">
-        <h1 className="text-3xl font-bold">Repair Progress</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold">Repair Progress</h1>
         <p className="text-lg">See the latest updates on each of your active work orders.</p>
 
         {customerWorkOrders.length === 0 ? (

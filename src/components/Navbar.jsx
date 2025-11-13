@@ -27,7 +27,10 @@ export default function Navbar() {
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2">
           <img src={Logo} alt="C.A.R.S Logo" className="w-10 h-auto" />
-          <span className="text-2xl font-bold tracking-tight">C.A.R.S Collision & Refinish</span>
+          <span className="text-xl md:text-2xl font-bold tracking-tight">
+            <span className="hidden sm:inline">C.A.R.S Collision & Refinish</span>
+            <span className="sm:hidden">C.A.R.S</span>
+          </span>
         </Link>
 
         {/* Desktop Nav */}
@@ -80,20 +83,20 @@ export default function Navbar() {
 
       {/* Mobile Nav */}
       {menuOpen && (
-        <nav className="md:hidden bg-primary text-white px-4 pb-4 space-y-2 text-sm">
-          <NavLink to="/" onClick={() => setMenuOpen(false)} className={navClass}>Home</NavLink>
-          <NavLink to="/about" onClick={() => setMenuOpen(false)} className={navClass}>About</NavLink>
-          <NavLink to="/services" onClick={() => setMenuOpen(false)} className={navClass}>All Services</NavLink>
-          <NavLink to="/services/collision-repair" onClick={() => setMenuOpen(false)} className={navClass}>Collision Repair</NavLink>
-          <NavLink to="/services/paint-refinish" onClick={() => setMenuOpen(false)} className={navClass}>Paint & Refinish</NavLink>
-          <NavLink to="/services/custom-paint" onClick={() => setMenuOpen(false)} className={navClass}>Custom Paint</NavLink>
-          <NavLink to="/services/paintless-dent-repair" onClick={() => setMenuOpen(false)} className={navClass}>Paintless Dent Repair</NavLink>
-          <NavLink to="/services/bedliners-accessories" onClick={() => setMenuOpen(false)} className={navClass}>Spray-In Bedliners</NavLink>
-          <NavLink to="/services/light-mechanical" onClick={() => setMenuOpen(false)} className={navClass}>Light Mechanical</NavLink>
-          <NavLink to="/contact" onClick={() => setMenuOpen(false)} className={navClass}>Contact</NavLink>
-          <NavLink to="/repair-gallery" onClick={() => setMenuOpen(false)} className={navClass}>Repair Gallery</NavLink>
-          <NavLink to="/financing" onClick={() => setMenuOpen(false)} className={navClass}>Financing</NavLink>
-          <NavLink to="/login" onClick={() => setMenuOpen(false)} className={navClass}>Customer Login</NavLink>
+        <nav className="md:hidden bg-primary text-white px-4 pb-4 space-y-2 text-base">
+          <NavLink to="/" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Home</NavLink>
+          <NavLink to="/about" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">About</NavLink>
+          <NavLink to="/services" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">All Services</NavLink>
+          <NavLink to="/services/collision-repair" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Collision Repair</NavLink>
+          <NavLink to="/services/paint-refinish" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Paint & Refinish</NavLink>
+          <NavLink to="/services/custom-paint" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Custom Paint</NavLink>
+          <NavLink to="/services/paintless-dent-repair" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Paintless Dent Repair</NavLink>
+          <NavLink to="/services/bedliners-accessories" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Spray-In Bedliners</NavLink>
+          <NavLink to="/services/light-mechanical" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Light Mechanical</NavLink>
+          <NavLink to="/contact" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Contact</NavLink>
+          <NavLink to="/repair-gallery" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Repair Gallery</NavLink>
+          <NavLink to="/financing" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Financing</NavLink>
+          <NavLink to="/login" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Customer Login</NavLink>
         </nav>
       )}
     </header>
