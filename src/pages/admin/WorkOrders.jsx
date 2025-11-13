@@ -291,13 +291,162 @@ export default function WorkOrders() {
       }
 
       setMessage(`Added ${partQuantity} x ${partToAdd.description} to work order.`);
-      // Refresh parts for selected work order
-      setSelectedWorkOrderId(selectedWorkOrderId); // Re-trigger useEffect for details
+
+      // Immediately refresh work order parts list
+      const { data: refreshedParts } = await supabase
+        .from('work_order_parts')
+        .select(`
+          id,
+          work_order_id,
+          inventory_id,
+          part_number,
+          quantity_used,
+          unit_price_at_time,
+          inventory (
+            description
+          )
+        `)
+        .eq('work_order_id', selectedWorkOrderId);
+
+      setWorkOrderParts(refreshedParts || []);
+
+      // Refresh available parts to update inventory quantities
+      const { data: refreshedInventory } = await supabase
+        .from('inventory')
+        .select('*')
+        .order('part_number', { ascending: true });
+      setAvailableParts(refreshedInventory || []);
+
       setSelectedPartId('');
       setPartQuantity(1);
     } catch (err) {
       console.error('Error adding part to work order:', err);
       setMessage(`Error adding part: ${err.message}`);
+    }
+  };
+
+  const handleUpdatePartQuantity = async (workOrderPartId, currentQty, inventoryId, newQty) => {
+    if (newQty <= 0) {
+      setMessage('Quantity must be greater than 0');
+      return;
+    }
+
+    try {
+      const qtyDifference = newQty - currentQty;
+
+      // Check inventory availability if increasing quantity
+      if (qtyDifference > 0) {
+        const { data: inventoryItem } = await supabase
+          .from('inventory')
+          .select('quantity')
+          .eq('id', inventoryId)
+          .single();
+
+        if (!inventoryItem || inventoryItem.quantity < qtyDifference) {
+          setMessage(`Not enough inventory. Available: ${inventoryItem?.quantity || 0}`);
+          return;
+        }
+      }
+
+      // Update work_order_parts quantity
+      const { error: updateError } = await supabase
+        .from('work_order_parts')
+        .update({ quantity_used: newQty })
+        .eq('id', workOrderPartId);
+
+      if (updateError) throw updateError;
+
+      // Update inventory (decrease if qty increased, increase if qty decreased)
+      const { error: inventoryError } = await supabase
+        .from('inventory')
+        .update({ quantity: supabase.sql`quantity - ${qtyDifference}` })
+        .eq('id', inventoryId);
+
+      if (inventoryError) throw inventoryError;
+
+      setMessage('Quantity updated successfully');
+
+      // Refresh parts list
+      const { data: refreshedParts } = await supabase
+        .from('work_order_parts')
+        .select(`
+          id,
+          work_order_id,
+          inventory_id,
+          part_number,
+          quantity_used,
+          unit_price_at_time,
+          inventory (
+            description
+          )
+        `)
+        .eq('work_order_id', selectedWorkOrderId);
+
+      setWorkOrderParts(refreshedParts || []);
+
+      // Refresh available parts
+      const { data: refreshedInventory } = await supabase
+        .from('inventory')
+        .select('*')
+        .order('part_number', { ascending: true});
+      setAvailableParts(refreshedInventory || []);
+
+    } catch (err) {
+      console.error('Error updating quantity:', err);
+      setMessage(`Error: ${err.message}`);
+    }
+  };
+
+  const handleRemovePart = async (workOrderPartId, inventoryId, quantityUsed) => {
+    if (!confirm('Remove this part from the work order?')) return;
+
+    try {
+      // Delete from work_order_parts
+      const { error: deleteError } = await supabase
+        .from('work_order_parts')
+        .delete()
+        .eq('id', workOrderPartId);
+
+      if (deleteError) throw deleteError;
+
+      // Return quantity to inventory
+      const { error: inventoryError } = await supabase
+        .from('inventory')
+        .update({ quantity: supabase.sql`quantity + ${quantityUsed}` })
+        .eq('id', inventoryId);
+
+      if (inventoryError) throw inventoryError;
+
+      setMessage('Part removed successfully');
+
+      // Refresh parts list
+      const { data: refreshedParts } = await supabase
+        .from('work_order_parts')
+        .select(`
+          id,
+          work_order_id,
+          inventory_id,
+          part_number,
+          quantity_used,
+          unit_price_at_time,
+          inventory (
+            description
+          )
+        `)
+        .eq('work_order_id', selectedWorkOrderId);
+
+      setWorkOrderParts(refreshedParts || []);
+
+      // Refresh available parts
+      const { data: refreshedInventory } = await supabase
+        .from('inventory')
+        .select('*')
+        .order('part_number', { ascending: true});
+      setAvailableParts(refreshedInventory || []);
+
+    } catch (err) {
+      console.error('Error removing part:', err);
+      setMessage(`Error: ${err.message}`);
     }
   };
 
@@ -523,13 +672,32 @@ export default function WorkOrders() {
                   {workOrderParts.filter(p => p.work_order_id === order.id).length > 0 && (
                     <div className="mt-4">
                       <h4 className="font-semibold mb-2">Parts Used in this WO:</h4>
-                      <ul className="list-disc list-inside text-sm">
-                        {workOrderParts.filter(p => p.work_order_id === order.id).map((part, index) => (
-                          <li key={index}>
-                            {part.part_number} - {part.description} (Qty: {part.quantity_used})
-                          </li>
+                      <div className="space-y-2">
+                        {workOrderParts.filter(p => p.work_order_id === order.id).map((part) => (
+                          <div key={part.id} className="flex items-center justify-between bg-gray-50 p-2 rounded">
+                            <div className="flex-1">
+                              <span className="font-medium">{part.part_number}</span>
+                              <span className="text-gray-600"> - {part.inventory?.description || 'N/A'}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm text-gray-600">Qty:</span>
+                              <input
+                                type="number"
+                                min="1"
+                                value={part.quantity_used}
+                                onChange={(e) => handleUpdatePartQuantity(part.id, part.quantity_used, part.inventory_id, parseInt(e.target.value))}
+                                className="w-16 border border-gray-300 rounded px-2 py-1 text-sm"
+                              />
+                              <button
+                                onClick={() => handleRemovePart(part.id, part.inventory_id, part.quantity_used)}
+                                className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          </div>
                         ))}
-                      </ul>
+                      </div>
                     </div>
                   )}
                 </div>
