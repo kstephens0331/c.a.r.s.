@@ -67,7 +67,15 @@
       "Bash(supabase db remote commit:*)",
       "Bash(git add:*)",
       "Bash(.gitignore)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(supabase functions logs:*)",
+      "Bash(psql:*)",
+      "Bash(node test-ai-invoice.mjs:*)",
+      "Bash(del test-ai-invoice.mjs diagnose-rls.mjs check-rls-state.sql check-profiles-schema.js 2)",
+      "Bash(nul)",
+      "Bash(curl:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(del prerender.js PRERENDER-GUIDE.md)"
     ],
     "deny": [],
     "ask": []
