@@ -25,6 +25,12 @@ export default function Invoices() {
   const [uploadMessage, setUploadMessage] = useState('');
   const [uploading, setUploading] = useState(false);
 
+  // Edit/Delete modal states
+  const [editingInvoice, setEditingInvoice] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [invoiceToDelete, setInvoiceToDelete] = useState(null);
+
   useEffect(() => {
     let isCancelled = false; // For cleanup
 
@@ -366,6 +372,87 @@ export default function Invoices() {
     }
   };
 
+  // Handle Edit Invoice
+  const handleEditInvoice = (invoice) => {
+    setEditingInvoice({...invoice});
+    setShowEditModal(true);
+  };
+
+  // Handle Save Edited Invoice
+  const handleSaveEdit = async () => {
+    try {
+      const { error } = await supabase
+        .from('invoices')
+        .update({
+          invoice_number: editingInvoice.invoice_number,
+          supplier: editingInvoice.supplier,
+          invoice_date: editingInvoice.invoice_date,
+          total_amount: parseFloat(editingInvoice.total_amount)
+        })
+        .eq('id', editingInvoice.id);
+
+      if (error) throw error;
+
+      // Update local state
+      setInvoices(prev => prev.map(inv =>
+        inv.id === editingInvoice.id ? editingInvoice : inv
+      ));
+
+      setShowEditModal(false);
+      setEditingInvoice(null);
+      alert('Invoice updated successfully!');
+    } catch (err) {
+      console.error('Error updating invoice:', err);
+      alert(`Failed to update invoice: ${err.message}`);
+    }
+  };
+
+  // Handle Delete Invoice
+  const handleDeleteInvoice = (invoice) => {
+    setInvoiceToDelete(invoice);
+    setShowDeleteConfirm(true);
+  };
+
+  // Confirm Delete
+  const confirmDelete = async () => {
+    try {
+      // Delete associated line items first
+      const { error: lineItemsError } = await supabase
+        .from('invoice_line_items')
+        .delete()
+        .eq('invoice_id', invoiceToDelete.id);
+
+      if (lineItemsError) throw lineItemsError;
+
+      // Delete the invoice
+      const { error: invoiceError } = await supabase
+        .from('invoices')
+        .delete()
+        .eq('id', invoiceToDelete.id);
+
+      if (invoiceError) throw invoiceError;
+
+      // Delete file from storage if exists
+      if (invoiceToDelete.pdf_url) {
+        const filePath = invoiceToDelete.pdf_url.split('invoice-files/')[1];
+        if (filePath) {
+          await supabase.storage.from('invoice-files').remove([filePath]);
+        }
+      }
+
+      // Update local state
+      setInvoices(prev => prev.filter(inv => inv.id !== invoiceToDelete.id));
+      setTotalCount(prev => prev - 1);
+
+      setShowDeleteConfirm(false);
+      setInvoiceToDelete(null);
+      alert('Invoice deleted successfully!');
+    } catch (err) {
+      console.error('Error deleting invoice:', err);
+      alert(`Failed to delete invoice: ${err.message}`);
+    }
+  };
+
   if (loading) {
     return (
       <>
@@ -520,6 +607,7 @@ export default function Invoices() {
                     <th className="p-3 border-b">Date</th>
                     <th className="p-3 border-b">Total</th>
                     <th className="p-3 border-b">File</th>
+                    <th className="p-3 border-b">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -538,6 +626,22 @@ export default function Invoices() {
                           'N/A'
                         )}
                       </td>
+                      <td className="p-3 border-b">
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleEditInvoice(invoice)}
+                            className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => handleDeleteInvoice(invoice)}
+                            className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -553,6 +657,97 @@ export default function Invoices() {
             </>
           )}
         </div>
+
+        {/* Edit Invoice Modal */}
+        {showEditModal && editingInvoice && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 max-w-lg w-full">
+              <h2 className="text-2xl font-bold mb-4">Edit Invoice</h2>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">Invoice Number</label>
+                  <input
+                    type="text"
+                    value={editingInvoice.invoice_number || ''}
+                    onChange={(e) => setEditingInvoice({...editingInvoice, invoice_number: e.target.value})}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Supplier</label>
+                  <input
+                    type="text"
+                    value={editingInvoice.supplier || ''}
+                    onChange={(e) => setEditingInvoice({...editingInvoice, supplier: e.target.value})}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Invoice Date</label>
+                  <input
+                    type="date"
+                    value={editingInvoice.invoice_date || ''}
+                    onChange={(e) => setEditingInvoice({...editingInvoice, invoice_date: e.target.value})}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Total Amount</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={editingInvoice.total_amount || ''}
+                    onChange={(e) => setEditingInvoice({...editingInvoice, total_amount: e.target.value})}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                  />
+                </div>
+              </div>
+              <div className="flex gap-3 mt-6">
+                <button
+                  onClick={handleSaveEdit}
+                  className="flex-1 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                >
+                  Save Changes
+                </button>
+                <button
+                  onClick={() => {setShowEditModal(false); setEditingInvoice(null);}}
+                  className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Delete Confirmation Modal */}
+        {showDeleteConfirm && invoiceToDelete && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 max-w-md w-full">
+              <h2 className="text-2xl font-bold mb-4 text-red-600">Confirm Delete</h2>
+              <p className="mb-4">
+                Are you sure you want to delete invoice <strong>{invoiceToDelete.invoice_number}</strong> from <strong>{invoiceToDelete.supplier}</strong>?
+              </p>
+              <p className="text-sm text-gray-600 mb-6">
+                This will also delete all associated line items. This action cannot be undone.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={confirmDelete}
+                  className="flex-1 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                >
+                  Yes, Delete
+                </button>
+                <button
+                  onClick={() => {setShowDeleteConfirm(false); setInvoiceToDelete(null);}}
+                  className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
