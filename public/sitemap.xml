@@ -19,8 +19,8 @@
        HOME PAGE - Highest Priority
        ============================================================================ -->
   <url>
-    <loc>https://collisionandrefinishshop.com/</loc>
-    <lastmod>2025-01-12</lastmod>
+    <loc>https://www.carscollisionandrefinishshop.com/</loc>
+    <lastmod>2025-01-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.00</priority>
     <!-- Home page features: Hero section, service overview, testimonials, before/after gallery -->
@@ -32,8 +32,8 @@
 
   <!-- About Page -->
   <url>
-    <loc>https://collisionandrefinishshop.com/about</loc>
-    <lastmod>2025-01-12</lastmod>
+    <loc>https://www.carscollisionandrefinishshop.com/about</loc>
+    <lastmod>2025-01-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
     <!-- About: Veteran-owned business story, team info, values, certifications -->
@@ -41,8 +41,8 @@
 
   <!-- All Services Overview -->
   <url>
-    <loc>https://collisionandrefinishshop.com/services</loc>
-    <lastmod>2025-01-12</lastmod>
+    <loc>https://www.carscollisionandrefinishshop.com/services</loc>
+    <lastmod>2025-01-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
     <!-- Services overview: Complete list of all repair and refinishing services -->
@@ -50,8 +50,8 @@
 
   <!-- Contact Page -->
   <url>
-    <loc>https://collisionandrefinishshop.com/contact</loc>
-    <lastmod>2025-01-12</lastmod>
+    <loc>https://www.carscollisionandrefinishshop.com/contact</loc>
+    <lastmod>2025-01-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
     <!-- Contact: Form, phone, email, address, hours, Calendly scheduling, FAQ -->
@@ -59,8 +59,8 @@
 
   <!-- Repair Gallery -->
   <url>
-    <loc>https://collisionandrefinishshop.com/repair-gallery</loc>
-    <lastmod>2025-01-12</lastmod>
+    <loc>https://www.carscollisionandrefinishshop.com/repair-gallery</loc>
+    <lastmod>2025-01-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
     <!-- Gallery: Before/after photos of completed collision repairs and custom work -->
@@ -68,8 +68,8 @@
 
   <!-- Financing Options -->
   <url>
-    <loc>https://collisionandrefinishshop.com/financing</loc>
-    <lastmod>2025-01-12</lastmod>
+    <loc>https://www.carscollisionandrefinishshop.com/financing</loc>
+    <lastmod>2025-01-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
     <!-- Financing: Snap Finance partnership, payment plans, approval info -->
@@ -81,8 +81,8 @@
 
   <!-- Collision Repair Service -->
   <url>
-    <loc>https://collisionandrefinishshop.com/services/collision-repair</loc>
-    <lastmod>2025-01-12</lastmod>
+    <loc>https://www.carscollisionandrefinishshop.com/services/collision-repair</loc>
+    <lastmod>2025-01-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
     <!-- Collision repair: Frame straightening, panel replacement, insurance claims, OEM standards -->
@@ -90,8 +90,8 @@
 
   <!-- Paint & Refinish Service -->
   <url>
-    <loc>https://collisionandrefinishshop.com/services/paint-refinish</loc>
-    <lastmod>2025-01-12</lastmod>
+    <loc>https://www.carscollisionandrefinishshop.com/services/paint-refinish</loc>
+    <lastmod>2025-01-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
     <!-- Paint & refinish: Computerized color matching, professional spray booth, multi-surface painting -->
@@ -99,8 +99,8 @@
 
   <!-- Custom Paint Service -->
   <url>
-    <loc>https://collisionandrefinishshop.com/services/custom-paint</loc>
-    <lastmod>2025-01-12</lastmod>
+    <loc>https://www.carscollisionandrefinishshop.com/services/custom-paint</loc>
+    <lastmod>2025-01-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
     <!-- Custom paint: Custom colors, special effects, graphics, unique finishes -->
@@ -108,8 +108,8 @@
 
   <!-- Paintless Dent Repair Service -->
   <url>
-    <loc>https://collisionandrefinishshop.com/services/paintless-dent-repair</loc>
-    <lastmod>2025-01-12</lastmod>
+    <loc>https://www.carscollisionandrefinishshop.com/services/paintless-dent-repair</loc>
+    <lastmod>2025-01-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
     <!-- PDR: Hail damage, door dings, minor dents without repainting -->
@@ -117,8 +117,8 @@
 
   <!-- Bedliners & Accessories Service -->
   <url>
-    <loc>https://collisionandrefinishshop.com/services/bedliners-accessories</loc>
-    <lastmod>2025-01-12</lastmod>
+    <loc>https://www.carscollisionandrefinishshop.com/services/bedliners-accessories</loc>
+    <lastmod>2025-01-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
     <!-- Bedliners: Spray-in bedliners, toolboxes, light bars, truck accessories -->
@@ -126,8 +126,8 @@
 
   <!-- Light Mechanical Service -->
   <url>
-    <loc>https://collisionandrefinishshop.com/services/light-mechanical</loc>
-    <lastmod>2025-01-12</lastmod>
+    <loc>https://www.carscollisionandrefinishshop.com/services/light-mechanical</loc>
+    <lastmod>2025-01-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
     <!-- Mechanical: Brakes, suspension, A/C repair, oil changes, routine maintenance -->
@@ -139,8 +139,8 @@
 
   <!-- Customer Login Page -->
   <url>
-    <loc>https://collisionandrefinishshop.com/login</loc>
-    <lastmod>2025-01-12</lastmod>
+    <loc>https://www.carscollisionandrefinishshop.com/login</loc>
+    <lastmod>2025-01-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.60</priority>
     <!-- Login: Customer portal access, email/password and Google OAuth -->
@@ -148,8 +148,8 @@
 
   <!-- Customer Registration Page -->
   <url>
-    <loc>https://collisionandrefinishshop.com/register</loc>
-    <lastmod>2025-01-12</lastmod>
+    <loc>https://www.carscollisionandrefinishshop.com/register</loc>
+    <lastmod>2025-01-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.60</priority>
     <!-- Register: Create new customer account to track repairs and view updates -->

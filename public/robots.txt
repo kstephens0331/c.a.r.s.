@@ -244,8 +244,8 @@ Disallow: /
 # SITEMAP LOCATION
 # ============================================================================
 # Point search engines to your XML sitemap
+Sitemap: https://www.carscollisionandrefinishshop.com/sitemap.xml
 Sitemap: https://c-a-r-s.vercel.app/sitemap.xml
-Sitemap: https://collisionandrefinishshop.com/sitemap.xml
 
 # ============================================================================
 # ADDITIONAL NOTES
