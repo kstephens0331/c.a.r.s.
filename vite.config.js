@@ -25,6 +25,9 @@ export default defineConfig({
     // Generate source maps for debugging production issues (optional)
     sourcemap: false,
 
+    // Target modern browsers to avoid unnecessary transpilation
+    target: 'es2015',
+
     // Optimize build output
     rollupOptions: {
       output: {
