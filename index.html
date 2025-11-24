@@ -179,6 +179,50 @@
     <!-- Alternate for multilingual (if needed in future) -->
     <link rel="alternate" hreflang="en" href="https://collisionandrefinishshop.com/" />
     <link rel="alternate" hreflang="x-default" href="https://collisionandrefinishshop.com/" />
+
+    <!-- Critical CSS - Inlined for faster initial render -->
+    <style>
+      /* Reset and base styles */
+      *,::before,::after{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}
+      ::before,::after{--tw-content:''}
+      html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:Inter,system-ui,sans-serif;font-feature-settings:normal;font-variation-settings:normal}
+      body{margin:0;line-height:inherit}
+
+      /* Critical layout styles */
+      #root{min-height:100vh;background:linear-gradient(to bottom right,#2c1b14,#3e1f1c,#000);color:#f8f1e7}
+
+      /* Navbar critical styles */
+      header{background-color:#212121;color:#fff;box-shadow:0 1px 3px 0 rgba(0,0,0,.1);z-index:50}
+
+      /* Hero section critical styles */
+      .min-h-\[85vh\]{min-height:85vh}
+      .min-h-\[90vh\]{min-height:90vh}
+      .flex{display:flex}
+      .flex-col{flex-direction:column}
+      .items-center{align-items:center}
+      .justify-center{justify-content:center}
+      .text-center{text-align:center}
+
+      /* Typography */
+      .text-3xl{font-size:1.875rem;line-height:2.25rem}
+      .text-4xl{font-size:2.25rem;line-height:2.5rem}
+      .font-bold{font-weight:700}
+      .font-extrabold{font-weight:800}
+
+      /* Spacing */
+      .px-4{padding-left:1rem;padding-right:1rem}
+      .px-6{padding-left:1.5rem;padding-right:1.5rem}
+      .py-20{padding-top:5rem;padding-bottom:5rem}
+      .mb-4{margin-bottom:1rem}
+      .mb-6{margin-bottom:1.5rem}
+
+      /* Colors */
+      .bg-primary{background-color:#212121}
+      .text-white{color:#fff}
+
+      /* Prevent flash of unstyled content */
+      #root{opacity:1}
+    </style>
   </head>
 
   <body>
