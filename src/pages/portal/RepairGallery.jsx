@@ -102,7 +102,7 @@ export default function RepairGallery() {
               {section.button && (
                 <a
                   href="/contact"
-                  className="inline-block mt-2 bg-brandRed text-white px-6 py-3 rounded hover:bg-red-700 transition"
+                  className="inline-block mt-2 bg-brandRedDark text-white px-6 py-3 rounded hover:bg-red-700 transition"
                 >
                   Get an Estimate
                 </a>

@@ -74,7 +74,7 @@ export default function CustomerProfileEditor({ customer, onUpdate }) {
           className="w-full p-2 border rounded"
         />
       </div>
-      <button type="submit" className="bg-brandRed text-white px-4 py-2 rounded hover:bg-red-600">
+      <button type="submit" className="bg-brandRedDark text-white px-4 py-2 rounded hover:bg-red-600">
         Update Profile
       </button>
     </form>

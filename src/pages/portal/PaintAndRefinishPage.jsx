@@ -96,7 +96,7 @@ export default function PaintRefinishPage() {
                   Ready to bring your vision to life? Whether it’s a repaint or an off-menu item you’d like coated, we’d love to help.
                 </p>
                 <div className="flex gap-4 flex-wrap">
-                  <a href="/contact" className="bg-brandRed text-white px-5 py-3 rounded hover:bg-red-700 transition">Get an Estimate</a>
+                  <a href="/contact" className="bg-brandRedDark text-white px-5 py-3 rounded hover:bg-red-700 transition">Get an Estimate</a>
                   <a href="/contact" className="bg-white text-brandRed px-5 py-3 rounded hover:bg-gray-100 transition">Schedule Now</a>
                 </div>
               </div>

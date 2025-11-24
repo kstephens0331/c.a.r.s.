@@ -59,22 +59,22 @@ export default function FinancingPage() {
           <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-gray-900">How It Works</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="text-center">
-              <div className="bg-brandRed text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3 text-xl font-bold">1</div>
+              <div className="bg-brandRedDark text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3 text-xl font-bold">1</div>
               <h4 className="font-semibold mb-2 text-gray-900">Apply Online</h4>
               <p className="text-sm text-gray-800">Click the banner below or visit snapfinance.com</p>
             </div>
             <div className="text-center">
-              <div className="bg-brandRed text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3 text-xl font-bold">2</div>
+              <div className="bg-brandRedDark text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3 text-xl font-bold">2</div>
               <h4 className="font-semibold mb-2 text-gray-900">Get Approved</h4>
               <p className="text-sm text-gray-800">Receive a decision in minutes, up to $5,000</p>
             </div>
             <div className="text-center">
-              <div className="bg-brandRed text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3 text-xl font-bold">3</div>
+              <div className="bg-brandRedDark text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3 text-xl font-bold">3</div>
               <h4 className="font-semibold mb-2 text-gray-900">Schedule Service</h4>
               <p className="text-sm text-gray-800">Bring your vehicle in for the repairs you need</p>
             </div>
             <div className="text-center">
-              <div className="bg-brandRed text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3 text-xl font-bold">4</div>
+              <div className="bg-brandRedDark text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3 text-xl font-bold">4</div>
               <h4 className="font-semibold mb-2 text-gray-900">Pay Over Time</h4>
               <p className="text-sm text-gray-800">Make affordable payments that fit your budget</p>
             </div>

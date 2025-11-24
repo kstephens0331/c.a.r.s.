@@ -90,7 +90,7 @@ export default function Home() {
         <div className="flex flex-wrap gap-4 justify-center">
           <Link
             to="/contact"
-            className="bg-brandRed text-white px-6 py-3 rounded font-semibold hover:bg-red-700 transition animate-fade-in"
+            className="bg-brandRedDark text-white px-6 py-3 rounded font-semibold hover:bg-red-900 transition animate-fade-in"
           >
             Schedule Estimate
           </Link>

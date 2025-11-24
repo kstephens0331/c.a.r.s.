@@ -174,7 +174,7 @@ export default function ContactPage() {
               href="https://www.google.com/maps/dir/?api=1&destination=2530+Old+Louetta+Loop+%23114,+Spring,+TX+77388"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block mt-2 bg-brandRed text-white px-6 py-3 rounded hover:bg-red-700 transition"
+              className="inline-block mt-2 bg-brandRedDark text-white px-6 py-3 rounded hover:bg-red-700 transition"
             >
               Get Directions
             </a>

@@ -84,7 +84,7 @@ export default function AboutPage() {
         <p className="max-w-3xl mx-auto text-gray-200 mb-6">
           Want to see what we’re capable of? Check out our real repair photos, before-and-after shots, and final finish examples. Every job is handled with pride and attention to detail.
         </p>
-        <Link to="/repair-photos" className="inline-block bg-brandRed text-white px-6 py-3 rounded font-semibold hover:bg-red-700 transition">
+        <Link to="/repair-photos" className="inline-block bg-brandRedDark text-white px-6 py-3 rounded font-semibold hover:bg-red-700 transition">
           View Repair Gallery
         </Link>
       </section>

@@ -74,7 +74,7 @@ export default function CustomPaint() {
               If you have something unique in mind or a surface that needs professional finishing, bring it by for a custom quote.
               You can also send pictures through our Contact form.
             </p>
-            <a href="/contact" className="inline-block bg-brandRed text-white px-6 py-3 rounded hover:bg-red-700 transition">
+            <a href="/contact" className="inline-block bg-brandRedDark text-white px-6 py-3 rounded hover:bg-red-700 transition">
               Request a Quote
             </a>
           </motion.div>

@@ -129,7 +129,7 @@ export default function Pagination({ currentPage, totalItems, itemsPerPage, onPa
                 className={`
                   px-3 py-2 rounded-md text-sm font-medium
                   ${currentPage === pageNum
-                    ? 'bg-brandRed text-white'
+                    ? 'bg-brandRedDark text-white'
                     : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
                   }
                 `}

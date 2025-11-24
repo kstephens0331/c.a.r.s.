@@ -116,7 +116,7 @@ export default function BedlinersPage() {
           >
             <a
               href="/contact"
-              className="inline-block bg-brandRed text-white px-6 py-3 rounded hover:bg-red-700 transition"
+              className="inline-block bg-brandRedDark text-white px-6 py-3 rounded hover:bg-red-700 transition"
             >
               Schedule Your Bedliner Install
             </a>

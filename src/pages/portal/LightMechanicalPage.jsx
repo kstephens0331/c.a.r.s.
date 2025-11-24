@@ -87,7 +87,7 @@ export default function LightMechanicalPage() {
             </p>
             <a
               href="/contact"
-              className="inline-block mt-4 bg-brandRed text-white px-6 py-3 rounded hover:bg-red-700 transition"
+              className="inline-block mt-4 bg-brandRedDark text-white px-6 py-3 rounded hover:bg-red-700 transition"
             >
               Schedule or Get an Estimate
             </a>
