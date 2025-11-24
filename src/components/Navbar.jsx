@@ -1,6 +1,6 @@
 import { Link, NavLink } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import Logo from '../assets/logo.webp';
+import Logo from '../assets/logo-navbar.webp';
 import LogoPNG from '../assets/logo.png';
 
 export default function Navbar() {
