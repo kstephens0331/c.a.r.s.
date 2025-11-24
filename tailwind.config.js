@@ -10,7 +10,7 @@ module.exports = {
       colors: {
         primary: '#212121', // Dark Gray
         accent: '#f5f5f5',   // Light neutral background
-        brandRed: '#d32f2f', // Vivid accent (WCAG AA compliant contrast with white text)
+        brandRed: '#ef5350', // Lighter red for WCAG AA contrast compliance on dark backgrounds
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
