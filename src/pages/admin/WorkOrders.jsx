@@ -1,9 +1,250 @@
 import { Helmet } from 'react-helmet-async';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, memo } from 'react';
 import { supabase } from '../../services/supabaseClient.js'; // Ensure this path is correct
 import Pagination from '../../components/Pagination'; // Import pagination component
+import { generateEstimatePDF, generateInvoicePDF } from '../../utils/pdfGenerator';
 
 const ITEMS_PER_PAGE = 50; // Show 50 work orders per page
+
+// Memoized WorkOrderCard component to prevent unnecessary re-renders
+const WorkOrderCard = memo(({
+  order,
+  statuses,
+  selectedWorkOrderId,
+  availableParts,
+  selectedPartId,
+  partQuantity,
+  workOrderParts,
+  documentFile,
+  documentType,
+  documentUploadMessage,
+  documentUploading,
+  customerDocuments,
+  onStatusChange,
+  onEstimatedDateChange,
+  onTogglePartManagement,
+  onAddPartToWorkOrder,
+  onSetSelectedPartId,
+  onSetPartQuantity,
+  onUpdatePartQuantity,
+  onRemovePart,
+  onDocumentUpload,
+  onSetDocumentFile,
+  onSetDocumentType,
+  onGenerateEstimate,
+  onGenerateInvoice
+}) => {
+  return (
+    <div key={order.id} className="border p-4 rounded shadow">
+      <h2 className="text-xl font-semibold">
+        Work Order #{order.work_order_number} – {order.vehicles?.year} {order.vehicles?.make} {order.vehicles?.model}
+      </h2>
+      <div className="mb-4 mt-2">
+        <p className="text-sm text-gray-700">
+          <span className="font-medium">Customer:</span> {order.customers?.name || order.vehicles?.profiles?.full_name || 'N/A'}
+        </p>
+        <p className="text-sm text-gray-700">
+          <span className="font-medium">Email:</span> {order.customers?.email || 'N/A'}
+        </p>
+        <p className="text-sm text-gray-700">
+          <span className="font-medium">Phone:</span> {order.customers?.phone || 'N/A'}
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div>
+          <label htmlFor={`status-${order.id}`} className="block mb-2 font-medium">
+            Current Status
+          </label>
+          <select
+            id={`status-${order.id}`}
+            className="border rounded px-3 py-2 w-full"
+            value={order.current_status}
+            onChange={(e) => onStatusChange(order.id, e.target.value)}
+          >
+            {statuses.map((status) => (
+              <option key={status} value={status}>
+                {status}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor={`est-date-${order.id}`} className="block mb-2 font-medium">
+            Estimated Completion Date
+          </label>
+          <input
+            type="date"
+            id={`est-date-${order.id}`}
+            className="border rounded px-3 py-2 w-full"
+            value={order.estimated_completion_date || ''}
+            onChange={(e) => onEstimatedDateChange(order.id, e.target.value)}
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            {order.estimated_completion_date
+              ? `Due: ${new Date(order.estimated_completion_date).toLocaleDateString()}`
+              : 'No date set'}
+          </p>
+        </div>
+      </div>
+
+      {/* --- Add Parts Section --- */}
+      <div className="mt-6 pt-4 border-t border-gray-200">
+        <h3 className="text-lg font-semibold mb-3">Parts for Work Order</h3>
+        {selectedWorkOrderId === order.id && (
+          <form onSubmit={(e) => onAddPartToWorkOrder(e, order.id)} className="space-y-3 mb-4">
+            <div className="flex flex-col md:flex-row gap-2">
+              <select
+                className="flex-1 border p-2 rounded"
+                value={selectedPartId}
+                onChange={(e) => onSetSelectedPartId(e.target.value)}
+                required
+              >
+                <option value="">Select a Part</option>
+                {availableParts.map(part => (
+                  <option key={part.id} value={part.id} disabled={part.quantity <= 0}>
+                    {part.part_number} - {part.description} (Qty: {part.quantity})
+                  </option>
+                ))}
+              </select>
+              <input
+                type="number"
+                placeholder="Qty"
+                className="w-20 border p-2 rounded"
+                value={partQuantity}
+                onChange={(e) => onSetPartQuantity(parseInt(e.target.value) || 1)}
+                min="1"
+                required
+              />
+              <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                Add Part
+              </button>
+            </div>
+          </form>
+        )}
+        <button
+          onClick={() => onTogglePartManagement(order.id)}
+          className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 text-sm"
+        >
+          {selectedWorkOrderId === order.id ? 'Hide Part Management' : 'Manage Parts'}
+        </button>
+
+        {workOrderParts.filter(p => p.work_order_id === order.id).length > 0 && (
+          <div className="mt-4">
+            <h4 className="font-semibold mb-2">Parts Used in this WO:</h4>
+            <div className="space-y-2">
+              {workOrderParts.filter(p => p.work_order_id === order.id).map((part) => (
+                <div key={part.id} className="bg-gray-50 p-3 rounded">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <div className="flex-1">
+                      <span className="font-medium block sm:inline">{part.part_number}</span>
+                      <span className="text-gray-600 block sm:inline"> - {part.inventory?.description || 'N/A'}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-gray-600">Qty:</span>
+                      <input
+                        type="number"
+                        min="1"
+                        value={part.quantity_used}
+                        onChange={(e) => onUpdatePartQuantity(part.id, part.quantity_used, part.inventory_id, parseInt(e.target.value))}
+                        className="w-16 border border-gray-300 rounded px-2 py-1 text-sm"
+                      />
+                      <button
+                        onClick={() => onRemovePart(part.id, part.inventory_id, part.quantity_used)}
+                        className="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 text-sm whitespace-nowrap"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* --- Customer Documents Upload Section --- */}
+      <div className="mt-6 pt-4 border-t border-gray-200">
+        <h3 className="text-lg font-semibold mb-3">Customer Documents</h3>
+        <form onSubmit={(e) => onDocumentUpload(e, order.id)} className="space-y-3">
+          <input
+            type="file"
+            accept="application/pdf,image/*"
+            onChange={(e) => onSetDocumentFile(e.target.files[0])}
+            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+            required
+            disabled={documentUploading}
+          />
+          <select
+            value={documentType}
+            onChange={(e) => onSetDocumentType(e.target.value)}
+            className="w-full border p-2 rounded"
+            required
+            disabled={documentUploading}
+          >
+            <option value="quote">Quote</option>
+            <option value="paid_invoice">Paid Invoice</option>
+          </select>
+          <button
+            type="submit"
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+            disabled={documentUploading}
+          >
+            {documentUploading ? 'Uploading...' : 'Upload Document'}
+          </button>
+          {documentUploadMessage && <p className={`text-sm mt-2 ${documentUploadMessage.includes('Error') ? 'text-red-500' : 'text-green-500'}`}>{documentUploadMessage}</p>}
+        </form>
+
+        {customerDocuments.filter(doc => doc.work_order_id === order.id).length > 0 && (
+          <div className="mt-4">
+            <h4 className="font-semibold mb-2">Uploaded Documents:</h4>
+            <ul className="list-disc list-inside text-sm">
+              {customerDocuments.filter(doc => doc.work_order_id === order.id).map((doc, index) => (
+                <li key={index}>
+                  <a href={doc.document_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                    {doc.file_name || doc.document_type.toUpperCase()} ({doc.document_type})
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+
+      {/* --- PDF Generation Section --- */}
+      <div className="mt-6 pt-4 border-t border-gray-200">
+        <h3 className="text-lg font-semibold mb-3">Generate Documents</h3>
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => onGenerateEstimate(order)}
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors flex items-center gap-2"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clipRule="evenodd" />
+            </svg>
+            Download Estimate
+          </button>
+          <button
+            onClick={() => onGenerateInvoice(order)}
+            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors flex items-center gap-2"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clipRule="evenodd" />
+            </svg>
+            Download Invoice
+          </button>
+        </div>
+        <p className="text-xs text-gray-500 mt-2">
+          Generate professional PDF documents with your company logo and branding.
+        </p>
+      </div>
+    </div>
+  );
+});
+
+WorkOrderCard.displayName = 'WorkOrderCard';
 
 export default function WorkOrders() {
   const [workOrders, setWorkOrders] = useState([]);
@@ -180,6 +421,7 @@ export default function WorkOrders() {
       }
 
       // Send email notification to customer
+      const notifications = { email: false, sms: false };
       try {
         const { data: { session } } = await supabase.auth.getSession();
         const emailResponse = await fetch(
@@ -202,11 +444,46 @@ export default function WorkOrders() {
           console.warn('Email notification failed:', errorData);
           // Don't fail the status update if email fails
         } else {
-          console.log('Email notification sent successfully');
+          notifications.email = true;
         }
       } catch (emailError) {
         console.warn('Email notification error:', emailError);
         // Don't fail the status update if email fails
+      }
+
+      // Send SMS notification to customer (if phone number available)
+      try {
+        const workOrder = workOrders.find(o => o.id === workOrderId);
+        const customerPhone = workOrder?.customers?.phone;
+
+        if (customerPhone) {
+          const { data: { session } } = await supabase.auth.getSession();
+          const smsResponse = await fetch(
+            `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-sms`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${session?.access_token || ''}`
+              },
+              body: JSON.stringify({
+                workOrderId: workOrderId,
+                phoneNumber: customerPhone
+              })
+            }
+          );
+
+          if (!smsResponse.ok) {
+            const errorData = await smsResponse.json();
+            console.warn('SMS notification failed:', errorData);
+            // Don't fail the status update if SMS fails
+          } else {
+            notifications.sms = true;
+          }
+        }
+      } catch (smsError) {
+        console.warn('SMS notification error:', smsError);
+        // Don't fail the status update if SMS fails
       }
 
       setWorkOrders((prevOrders) =>
@@ -214,7 +491,20 @@ export default function WorkOrders() {
           order.id === workOrderId ? { ...order, current_status: newStatus } : order
         )
       );
-      setMessage(`Status for WO #${workOrders.find(o => o.id === workOrderId)?.work_order_number || workOrderId} updated successfully. Customer notified via email.`);
+
+      // Build notification message
+      let notificationMsg = '';
+      if (notifications.email && notifications.sms) {
+        notificationMsg = 'Customer notified via email and SMS.';
+      } else if (notifications.email) {
+        notificationMsg = 'Customer notified via email.';
+      } else if (notifications.sms) {
+        notificationMsg = 'Customer notified via SMS.';
+      } else {
+        notificationMsg = 'Notification delivery uncertain.';
+      }
+
+      setMessage(`Status for WO #${workOrders.find(o => o.id === workOrderId)?.work_order_number || workOrderId} updated successfully. ${notificationMsg}`);
       setTimeout(() => setMessage(''), 3000);
     } catch (err) {
       console.error('Error updating status:', err);
@@ -518,6 +808,134 @@ export default function WorkOrders() {
     }
   };
 
+  // PDF Generation Handlers
+  const handleGenerateEstimate = async (order) => {
+    try {
+      // Fetch parts for this work order
+      const { data: partsData, error: partsError } = await supabase
+        .from('work_order_parts')
+        .select(`
+          part_number,
+          quantity_used,
+          inventory (
+            description,
+            unit_price
+          )
+        `)
+        .eq('work_order_id', order.id);
+
+      if (partsError) throw partsError;
+
+      // Format parts for PDF
+      const parts = partsData?.map(part => ({
+        part_number: part.part_number,
+        description: part.inventory?.description || 'N/A',
+        quantity: part.quantity_used,
+        unit_price: part.inventory?.unit_price || 0
+      })) || [];
+
+      // Format work order data
+      const workOrder = {
+        work_order_number: order.work_order_number,
+        description: order.description || 'Collision repair services',
+        current_status: order.current_status,
+        estimated_completion_date: order.estimated_completion_date,
+        created_at: order.created_at
+      };
+
+      // Format customer data
+      const customer = {
+        name: order.customers?.name || 'N/A',
+        phone: order.customers?.phone || 'N/A',
+        email: order.customers?.email || 'N/A',
+        address: order.customers?.address || ''
+      };
+
+      // Format vehicle data
+      const vehicle = {
+        year: order.vehicles?.year || 'N/A',
+        make: order.vehicles?.make || 'N/A',
+        model: order.vehicles?.model || 'N/A',
+        vin: order.vehicles?.vin || 'N/A',
+        license_plate: order.vehicles?.license_plate || 'N/A',
+        color: order.vehicles?.color || ''
+      };
+
+      // Generate PDF
+      await generateEstimatePDF(workOrder, customer, vehicle, parts);
+      setMessage(`Estimate PDF generated for Work Order #${order.work_order_number}`);
+      setTimeout(() => setMessage(''), 3000);
+    } catch (error) {
+      console.error('Error generating estimate PDF:', error);
+      setMessage(`Error generating estimate: ${error.message}`);
+    }
+  };
+
+  const handleGenerateInvoice = async (order) => {
+    try {
+      // Fetch parts for this work order
+      const { data: partsData, error: partsError } = await supabase
+        .from('work_order_parts')
+        .select(`
+          part_number,
+          quantity_used,
+          inventory (
+            description,
+            unit_price
+          )
+        `)
+        .eq('work_order_id', order.id);
+
+      if (partsError) throw partsError;
+
+      // Format parts for PDF
+      const parts = partsData?.map(part => ({
+        part_number: part.part_number,
+        description: part.inventory?.description || 'N/A',
+        quantity: part.quantity_used,
+        unit_price: part.inventory?.unit_price || 0
+      })) || [];
+
+      // Format work order data
+      const workOrder = {
+        work_order_number: order.work_order_number,
+        description: order.description || 'Collision repair services',
+        current_status: order.current_status,
+        estimated_completion_date: order.estimated_completion_date,
+        created_at: order.created_at
+      };
+
+      // Format customer data
+      const customer = {
+        name: order.customers?.name || 'N/A',
+        phone: order.customers?.phone || 'N/A',
+        email: order.customers?.email || 'N/A',
+        address: order.customers?.address || ''
+      };
+
+      // Format vehicle data
+      const vehicle = {
+        year: order.vehicles?.year || 'N/A',
+        make: order.vehicles?.make || 'N/A',
+        model: order.vehicles?.model || 'N/A',
+        vin: order.vehicles?.vin || 'N/A',
+        license_plate: order.vehicles?.license_plate || 'N/A',
+        color: order.vehicles?.color || ''
+      };
+
+      // Labor cost (can be made dynamic later)
+      const laborCost = 0; // Set to 0 for now, can add labor tracking later
+
+      // Generate PDF
+      await generateInvoicePDF(workOrder, customer, vehicle, parts, laborCost);
+      setMessage(`Invoice PDF generated for Work Order #${order.work_order_number}`);
+      setTimeout(() => setMessage(''), 3000);
+    } catch (error) {
+      console.error('Error generating invoice PDF:', error);
+      setMessage(`Error generating invoice: ${error.message}`);
+    }
+  };
+
   if (loading) {
     return (
       <>
@@ -750,6 +1168,34 @@ export default function WorkOrders() {
                       </ul>
                     </div>
                   )}
+                </div>
+
+                {/* --- PDF Generation Section --- */}
+                <div className="mt-6 pt-4 border-t border-gray-200">
+                  <h3 className="text-lg font-semibold mb-3">Generate Documents</h3>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => handleGenerateEstimate(order)}
+                      className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors flex items-center gap-2"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clipRule="evenodd" />
+                      </svg>
+                      Download Estimate
+                    </button>
+                    <button
+                      onClick={() => handleGenerateInvoice(order)}
+                      className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors flex items-center gap-2"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clipRule="evenodd" />
+                      </svg>
+                      Download Invoice
+                    </button>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-2">
+                    Generate professional PDF documents with your company logo and branding.
+                  </p>
                 </div>
 
               </div>

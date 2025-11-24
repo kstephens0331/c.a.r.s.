@@ -1,4 +1,5 @@
 import React from 'react';
+import * as Sentry from '@sentry/react';
 
 /**
  * ErrorBoundary Component
@@ -45,8 +46,20 @@ class ErrorBoundary extends React.Component {
       errorCount: this.state.errorCount + 1
     });
 
-    // In production, send to error tracking service like Sentry
-    // Example: Sentry.captureException(error, { contexts: { react: { componentStack: errorInfo.componentStack } } });
+    // Send to Sentry in production
+    if (import.meta.env.PROD && import.meta.env.VITE_SENTRY_DSN) {
+      Sentry.captureException(error, {
+        contexts: {
+          react: {
+            componentStack: errorInfo.componentStack
+          }
+        },
+        tags: {
+          errorBoundary: true,
+          errorCount: this.state.errorCount + 1
+        }
+      });
+    }
   }
 
   /**

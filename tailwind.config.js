@@ -4,12 +4,13 @@ module.exports = {
     './index.html',
     './src/**/*.{js,ts,jsx,tsx}',
   ],
+  darkMode: 'class', // Enable dark mode via class strategy
   theme: {
     extend: {
       colors: {
         primary: '#212121', // Dark Gray
         accent: '#f5f5f5',   // Light neutral background
-        brandRed: '#e53935', // Vivid accent
+        brandRed: '#d32f2f', // Vivid accent (WCAG AA compliant contrast with white text)
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],

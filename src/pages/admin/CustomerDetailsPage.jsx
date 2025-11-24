@@ -79,8 +79,7 @@ export default function CustomerDetailsPage() {
       setCustomer(profile);
 
       // Fetch customer's vehicles
-      console.log("Sending customerId to function:", profile.id);
-const vehiclesData = await fetchCustomerVehicles(profile.id);
+      const vehiclesData = await fetchCustomerVehicles(profile.id);
 if (!Array.isArray(vehiclesData)) {
   throw new Error('Invalid vehicle data format.');
 }

@@ -21,7 +21,7 @@ export default function AdminDashboardContent() {
         // Fetch Active Work Orders (not 'Complete' or 'Ready for Pickup')
         const { count: activeWoCount, error: activeWoError } = await supabase
           .from('work_orders')
-          .select('*', { count: 'exact' })
+          .select('id', { count: 'exact', head: true })
           .not('current_status', 'in', '("Complete", "Ready for Pickup")'); // Adjust statuses as needed
 
         if (activeWoError) throw new Error(activeWoError.message);
@@ -34,7 +34,7 @@ export default function AdminDashboardContent() {
 
         const { count: completedTodayCount, error: completedTodayError } = await supabase
           .from('work_orders')
-          .select('*', { count: 'exact' })
+          .select('id', { count: 'exact', head: true })
           .eq('current_status', 'Complete') // Or 'Ready for Pickup'
           .gte('updated_at', today.toISOString())
           .lt('updated_at', tomorrow.toISOString());
@@ -44,14 +44,14 @@ export default function AdminDashboardContent() {
         // Fetch Total Customers
         const { count: totalCustomersCount, error: customersError } = await supabase
           .from('profiles') // Assuming profiles table has all customers
-          .select('*', { count: 'exact' });
+          .select('id', { count: 'exact', head: true });
 
         if (customersError) throw new Error(customersError.message);
 
         // Fetch Vehicles Added Today
         const { count: vehiclesTodayCount, error: vehiclesTodayError } = await supabase
           .from('vehicles')
-          .select('*', { count: 'exact' })
+          .select('id', { count: 'exact', head: true })
           .gte('created_at', today.toISOString())
           .lt('created_at', tomorrow.toISOString());
 

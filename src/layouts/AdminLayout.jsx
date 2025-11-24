@@ -124,7 +124,6 @@ if (!existingCustomer && !customerCheckError) {
   }, [navigate, location.hash]); // Re-run effect if hash changes
 
   const handleLogout = async () => {
-    console.log('AdminLayout DEBUG: Logging out...');
     await supabase.auth.signOut();
     navigate('/login', { replace: true }); // Use replace: true
   };

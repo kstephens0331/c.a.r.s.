@@ -122,10 +122,6 @@ export default function Invoices() {
             return;
         }
 
-        console.log('Calling AI edge function:', edgeFunctionUrl);
-        console.log('Image size:', base64ImageData.length, 'characters');
-        console.log('MIME type:', mimeType);
-
         const response = await fetch(edgeFunctionUrl, {
             method: 'POST',
             headers: {
@@ -139,11 +135,7 @@ export default function Invoices() {
             signal: AbortSignal.timeout(60000) // 60 second timeout
         });
 
-        console.log('Response status:', response.status);
-        console.log('Response headers:', Object.fromEntries(response.headers.entries()));
-
         const responseText = await response.text();
-        console.log('Response body:', responseText);
 
         let result;
         try {
@@ -307,8 +299,6 @@ export default function Invoices() {
 
           if (updateInventoryError) {
             console.error(`Error updating inventory for part ${partNumber}:`, updateInventoryError.message);
-          } else {
-            console.log(`✅ Updated ${partNumber} from ${supplier}: ${existingPartSameSupplier.quantity} + ${item.quantity} = ${newQuantity}`);
           }
         } else {
           // Check if part exists from DIFFERENT supplier
@@ -339,12 +329,6 @@ export default function Invoices() {
 
           if (insertInventoryError) {
             console.error(`Error inserting new inventory item ${partNumber}:`, insertInventoryError.message);
-          } else {
-            if (existingPartOtherSupplier) {
-              console.log(`✅ Added ${partNumber} from NEW supplier ${supplier} (was: ${existingPartOtherSupplier.supplier} @ $${existingPartOtherSupplier.unit_price}, now: ${supplier} @ $${unitPrice})`);
-            } else {
-              console.log(`✅ Created new inventory record: ${partNumber} from ${supplier}`);
-            }
           }
         }
       }

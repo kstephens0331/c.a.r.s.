@@ -1,7 +1,9 @@
 /**
  * Safe logging utility for development
  * Prevents sensitive data from appearing in production console logs
+ * Sends errors to Sentry in production
  */
+import * as Sentry from '@sentry/react';
 
 const isDevelopment = import.meta.env.DEV;
 
@@ -25,16 +27,31 @@ export const logger = {
   },
 
   /**
-   * Log errors (always shown, but sanitized)
+   * Log errors (always shown) and send to Sentry in production
    */
   error: (...args) => {
-    // Always log errors, but in production, send to monitoring service
+    // Always log errors to console
     console.error(...args);
 
-    // TODO: In production, send to error tracking service like Sentry
-    // if (!isDevelopment) {
-    //   sendToSentry(args);
-    // }
+    // Send to Sentry in production
+    if (!isDevelopment && import.meta.env.VITE_SENTRY_DSN) {
+      // If first argument is an Error object, capture it
+      if (args[0] instanceof Error) {
+        Sentry.captureException(args[0], {
+          extra: {
+            additionalData: args.slice(1)
+          }
+        });
+      } else {
+        // Otherwise, capture as a message
+        Sentry.captureMessage(
+          args.map(arg =>
+            typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
+          ).join(' '),
+          'error'
+        );
+      }
+    }
   },
 
   /**

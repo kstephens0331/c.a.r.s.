@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../../services/supabaseClient.js'; // Adjust path as needed
+import { generateEstimatePDF, generateInvoicePDF } from '../../../utils/pdfGenerator';
 
 export default function AdminWorkOrderManager({ workOrder, customerId, onAddPart, onUploadDocument, message, setMessage }) {
   // Parts Management States
@@ -73,6 +74,84 @@ export default function AdminWorkOrderManager({ workOrder, customerId, onAddPart
     e.preventDefault();
     // This handler will pass its own state (documentFile, documentType, etc.) to the parent handler
     onUploadDocument(workOrder.id, customerId, documentFile, documentType, setMessage, setDocumentUploading, setDocumentFile, setDocumentType);
+  };
+
+  // PDF Generation Handlers
+  const handleGenerateEstimate = async () => {
+    try {
+      // Fetch customer and vehicle data
+      const { data: customerData, error: customerError } = await supabase
+        .from('customers')
+        .select('name, email, phone, address')
+        .eq('id', customerId)
+        .single();
+
+      if (customerError) throw customerError;
+
+      const { data: vehicleData, error: vehicleError } = await supabase
+        .from('vehicles')
+        .select('year, make, model, vin, license_plate, color')
+        .eq('id', workOrder.vehicle_id)
+        .single();
+
+      if (vehicleError) throw vehicleError;
+
+      // Format parts for PDF
+      const parts = currentWorkOrderParts.map(part => ({
+        part_number: part.part_number,
+        description: part.inventory?.description || part.description || 'N/A',
+        quantity: part.quantity_used,
+        unit_price: part.unit_price_at_time || 0
+      }));
+
+      // Generate PDF
+      await generateEstimatePDF(workOrder, customerData, vehicleData, parts);
+      setMessage(`Estimate PDF generated for Work Order #${workOrder.work_order_number}`);
+      setTimeout(() => setMessage(''), 3000);
+    } catch (error) {
+      console.error('Error generating estimate PDF:', error);
+      setMessage(`Error generating estimate: ${error.message}`);
+    }
+  };
+
+  const handleGenerateInvoice = async () => {
+    try {
+      // Fetch customer and vehicle data
+      const { data: customerData, error: customerError } = await supabase
+        .from('customers')
+        .select('name, email, phone, address')
+        .eq('id', customerId)
+        .single();
+
+      if (customerError) throw customerError;
+
+      const { data: vehicleData, error: vehicleError } = await supabase
+        .from('vehicles')
+        .select('year, make, model, vin, license_plate, color')
+        .eq('id', workOrder.vehicle_id)
+        .single();
+
+      if (vehicleError) throw vehicleError;
+
+      // Format parts for PDF
+      const parts = currentWorkOrderParts.map(part => ({
+        part_number: part.part_number,
+        description: part.inventory?.description || part.description || 'N/A',
+        quantity: part.quantity_used,
+        unit_price: part.unit_price_at_time || 0
+      }));
+
+      // Labor cost (can be made dynamic later)
+      const laborCost = 0; // Set to 0 for now
+
+      // Generate PDF
+      await generateInvoicePDF(workOrder, customerData, vehicleData, parts, laborCost);
+      setMessage(`Invoice PDF generated for Work Order #${workOrder.work_order_number}`);
+      setTimeout(() => setMessage(''), 3000);
+    } catch (error) {
+      console.error('Error generating invoice PDF:', error);
+      setMessage(`Error generating invoice: ${error.message}`);
+    }
   };
 
   return (
@@ -178,6 +257,35 @@ export default function AdminWorkOrderManager({ workOrder, customerId, onAddPart
     </div>
   )}
 </div>
+
+      {/* PDF Generation Section */}
+      <div className="mt-4 pt-4 border-t border-gray-100">
+        <h6 className="font-semibold mb-2">Generate Documents:</h6>
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={handleGenerateEstimate}
+            className="px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm flex items-center gap-1"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clipRule="evenodd" />
+            </svg>
+            Download Estimate
+          </button>
+          <button
+            onClick={handleGenerateInvoice}
+            className="px-3 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors text-sm flex items-center gap-1"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clipRule="evenodd" />
+            </svg>
+            Download Invoice
+          </button>
+        </div>
+        <p className="text-xs text-gray-500 mt-2">
+          Generate professional PDF documents with company branding.
+        </p>
+      </div>
+
     </div>
   );
 }

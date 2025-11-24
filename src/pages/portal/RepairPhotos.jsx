@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../services/supabaseClient.js'; // <= Verify this path and filename/extension
+import LazyImage from '../../components/LazyImage';
 
 export default function RepairPhotos() {
   const [groupedPhotos, setGroupedPhotos] = useState({});
@@ -136,12 +137,12 @@ export default function RepairPhotos() {
               {groupedPhotos[workOrderId].photos.length > 0 ? (
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {groupedPhotos[workOrderId].photos.map((photoUrl, index) => (
-                    <img
+                    <LazyImage
                       key={index}
                       src={photoUrl}
                       alt={`Repair photo ${index + 1} for ${groupedPhotos[workOrderId].title}`}
                       className="rounded shadow-lg w-full h-48 object-cover transition-transform duration-200 hover:scale-105"
-                      // Fallback for broken images, use a placeholder
+                      placeholderClassName="rounded"
                       onError={(e) => {
                         e.target.onerror = null; // Prevent infinite loop
                         e.target.src = `https://placehold.co/300x200/cccccc/000000?text=Image+Error`;

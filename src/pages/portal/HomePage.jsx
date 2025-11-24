@@ -2,7 +2,9 @@ import { Link } from 'react-router-dom';
 import Logo from '../../assets/logo-no-bg-gold.png';
 import TonyImage from '../../assets/tony.png';
 import BeforeImage from '../../assets/images/1000000697.jpg';
+import BeforeImageWebP from '../../assets/images/1000000697.webp';
 import AfterImage from '../../assets/images/1000000701.jpg';
+import AfterImageWebP from '../../assets/images/1000000701.webp';
 import { Helmet } from 'react-helmet-async';
 import { Wrench, Paintbrush, Truck, RefreshCw } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
@@ -143,22 +145,28 @@ export default function Home() {
       <section className="pt-0 pb-20 px-4 text-center" data-aos="fade-up">
         <div className="flex flex-col md:flex-row gap-6 justify-center items-center max-w-5xl mx-auto">
           <div className="relative w-full md:w-1/2 group overflow-hidden rounded-xl shadow-lg">
-            <img
-              src={BeforeImage}
-              alt="Before collision repair - damaged vehicle"
-              className="w-full h-auto object-cover group-hover:opacity-0 transition duration-500"
-              loading="lazy"
-              width="676"
-              height="507"
-            />
-            <img
-              src={AfterImage}
-              alt="After collision repair - restored vehicle"
-              className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition duration-500"
-              loading="lazy"
-              width="380"
-              height="507"
-            />
+            <picture>
+              <source srcSet={BeforeImageWebP} type="image/webp" />
+              <img
+                src={BeforeImage}
+                alt="Before collision repair - damaged vehicle"
+                className="w-full h-auto object-cover group-hover:opacity-0 transition duration-500"
+                loading="lazy"
+                width="676"
+                height="507"
+              />
+            </picture>
+            <picture className="absolute inset-0">
+              <source srcSet={AfterImageWebP} type="image/webp" />
+              <img
+                src={AfterImage}
+                alt="After collision repair - restored vehicle"
+                className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition duration-500"
+                loading="lazy"
+                width="380"
+                height="507"
+              />
+            </picture>
             <span className="absolute top-2 left-2 bg-black/70 text-xs text-white px-2 py-1 rounded">
               Hover to Reveal
             </span>

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../../services/supabaseClient.js'; // Ensure path is correct
 import Pagination from '../../components/Pagination';
 import { TableSkeleton } from '../../components/LoadingSkeletons';
+import AddInventoryItemForm from '../../components/admin/AddInventoryItemForm';
 
 const ITEMS_PER_PAGE = 50; // Show 50 inventory items per page
 
@@ -18,6 +19,9 @@ export default function Inventory() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
+
+  // Add item state
+  const [showAddForm, setShowAddForm] = useState(false);
 
   useEffect(() => {
     let isCancelled = false;
@@ -127,6 +131,15 @@ export default function Inventory() {
     }
   };
 
+  // Handle Add Item Success
+  const handleAddSuccess = (newItem) => {
+    // Add to local state
+    setInventoryItems(prev => [newItem, ...prev]);
+    setTotalCount(prev => prev + 1);
+    setShowAddForm(false);
+    alert('Inventory item added successfully!');
+  };
+
   if (loading) {
     return (
       <>
@@ -169,8 +182,29 @@ export default function Inventory() {
       </Helmet>
 
       <div className="space-y-6">
-        <h1 className="text-3xl font-bold">Parts Inventory</h1>
-        <p className="text-lg">Monitor available parts and add or adjust inventory as needed.</p>
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold">Parts Inventory</h1>
+            <p className="text-lg text-gray-600">Monitor available parts and add or adjust inventory as needed.</p>
+          </div>
+          <button
+            onClick={() => setShowAddForm(!showAddForm)}
+            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+            </svg>
+            {showAddForm ? 'Hide Form' : 'Add Item'}
+          </button>
+        </div>
+
+        {/* Add Item Form */}
+        {showAddForm && (
+          <AddInventoryItemForm
+            onSuccess={handleAddSuccess}
+            onCancel={() => setShowAddForm(false)}
+          />
+        )}
 
         {inventoryItems.length === 0 ? (
           <p className="text-gray-500">No inventory items found. Add some from the backend!</p>

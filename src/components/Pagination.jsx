@@ -78,20 +78,26 @@ export default function Pagination({ currentPage, totalItems, itemsPerPage, onPa
   const endItem = Math.min(currentPage * itemsPerPage, totalItems);
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 pt-4 border-t border-gray-200">
+    <nav
+      className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 pt-4 border-t border-gray-200"
+      role="navigation"
+      aria-label="Pagination navigation"
+    >
       {/* Results info */}
-      <div className="text-sm text-gray-600">
+      <div className="text-sm text-gray-600" aria-live="polite" aria-atomic="true">
         Showing <span className="font-semibold text-gray-900">{startItem}</span> to{' '}
         <span className="font-semibold text-gray-900">{endItem}</span> of{' '}
         <span className="font-semibold text-gray-900">{totalItems}</span> results
       </div>
 
       {/* Pagination controls */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2" role="group" aria-label="Pagination controls">
         {/* Previous button */}
         <button
           onClick={handlePrevious}
           disabled={currentPage === 1}
+          aria-label="Go to previous page"
+          aria-disabled={currentPage === 1}
           className={`
             px-3 py-2 rounded-md text-sm font-medium
             ${currentPage === 1
@@ -118,6 +124,8 @@ export default function Pagination({ currentPage, totalItems, itemsPerPage, onPa
               <button
                 key={pageNum}
                 onClick={() => handlePageClick(pageNum)}
+                aria-label={`Go to page ${pageNum}`}
+                aria-current={currentPage === pageNum ? 'page' : undefined}
                 className={`
                   px-3 py-2 rounded-md text-sm font-medium
                   ${currentPage === pageNum
@@ -141,6 +149,8 @@ export default function Pagination({ currentPage, totalItems, itemsPerPage, onPa
         <button
           onClick={handleNext}
           disabled={currentPage === totalPages}
+          aria-label="Go to next page"
+          aria-disabled={currentPage === totalPages}
           className={`
             px-3 py-2 rounded-md text-sm font-medium
             ${currentPage === totalPages
@@ -152,6 +162,6 @@ export default function Pagination({ currentPage, totalItems, itemsPerPage, onPa
           Next
         </button>
       </div>
-    </div>
+    </nav>
   );
 }
