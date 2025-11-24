@@ -1,6 +1,7 @@
 import { Link, NavLink } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import Logo from '../assets/logo.png';
+import Logo from '../assets/logo.webp';
+import LogoPNG from '../assets/logo.png';
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -26,7 +27,10 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center relative">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2">
-          <img src={Logo} alt="C.A.R.S Logo" className="w-10 h-auto" />
+          <picture>
+            <source srcSet={Logo} type="image/webp" />
+            <img src={LogoPNG} alt="C.A.R.S Logo" className="w-10 h-auto" />
+          </picture>
           <span className="text-xl md:text-2xl font-bold tracking-tight">
             <span className="hidden sm:inline">C.A.R.S Collision & Refinish</span>
             <span className="sm:hidden">C.A.R.S</span>

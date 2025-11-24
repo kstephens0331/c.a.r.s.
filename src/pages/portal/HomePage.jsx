@@ -1,10 +1,14 @@
 import { Link } from 'react-router-dom';
-import Logo from '../../assets/logo-no-bg-gold.png';
-import TonyImage from '../../assets/tony.png';
+import Logo from '../../assets/logo-no-bg-gold.webp';
+import LogoPNG from '../../assets/logo-no-bg-gold.png';
+import TonyImage from '../../assets/tony.webp';
+import TonyPNG from '../../assets/tony.png';
 import BeforeImage from '../../assets/images/1000000697.jpg';
 import BeforeImageWebP from '../../assets/images/1000000697.webp';
+import BeforeImageWebPMobile from '../../assets/images/1000000697-mobile.webp';
 import AfterImage from '../../assets/images/1000000701.jpg';
 import AfterImageWebP from '../../assets/images/1000000701.webp';
+import AfterImageWebPMobile from '../../assets/images/1000000701-mobile.webp';
 import { Helmet } from 'react-helmet-async';
 import { Wrench, Paintbrush, Truck, RefreshCw } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
@@ -67,15 +71,18 @@ export default function Home() {
       </Helmet>
 
       <section className="relative z-10 min-h-[85vh] flex flex-col justify-center items-center text-center px-4 py-20">
-        <img
-          src={Logo}
-          alt="C.A.R.S Logo"
-          className="w-64 md:w-80 h-auto mb-6 drop-shadow-xl animate-fade-in"
-          fetchpriority="high"
-          loading="eager"
-          width="320"
-          height="271"
-        />
+        <picture>
+          <source srcSet={Logo} type="image/webp" />
+          <img
+            src={LogoPNG}
+            alt="C.A.R.S Logo"
+            className="w-64 md:w-80 h-auto mb-6 drop-shadow-xl animate-fade-in"
+            fetchpriority="high"
+            loading="eager"
+            width="320"
+            height="271"
+          />
+        </picture>
         <h1 className="text-3xl md:text-4xl font-bold max-w-2xl mb-6 leading-snug">
           <span className="block animate-type">Trusted repairs. Industrial precision.</span>
           <span className="block animate-type2">Backed by craftsmanship and pride.</span>
@@ -146,6 +153,7 @@ export default function Home() {
         <div className="flex flex-col md:flex-row gap-6 justify-center items-center max-w-5xl mx-auto">
           <div className="relative w-full md:w-1/2 group overflow-hidden rounded-xl shadow-lg">
             <picture>
+              <source srcSet={BeforeImageWebPMobile} type="image/webp" media="(max-width: 768px)" />
               <source srcSet={BeforeImageWebP} type="image/webp" />
               <img
                 src={BeforeImage}
@@ -157,6 +165,7 @@ export default function Home() {
               />
             </picture>
             <picture className="absolute inset-0">
+              <source srcSet={AfterImageWebPMobile} type="image/webp" media="(max-width: 768px)" />
               <source srcSet={AfterImageWebP} type="image/webp" />
               <img
                 src={AfterImage}
@@ -195,7 +204,10 @@ export default function Home() {
       <section className="pt-0 pb-16 px-6 text-center relative" data-aos="fade-up">
         <h2 className="text-2xl font-bold mb-6">Meet the Owner</h2>
         <div className="relative w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden grayscale hover:grayscale-0 transition duration-500 shadow-lg">
-          <img src={TonyImage} alt="Tony - Owner" className="w-full h-full object-cover" />
+          <picture>
+            <source srcSet={TonyImage} type="image/webp" />
+            <img src={TonyPNG} alt="Tony - Owner" className="w-full h-full object-cover" />
+          </picture>
         </div>
         <p className="max-w-3xl mx-auto text-gray-200 text-lg leading-relaxed">
           “I started C.A.R.S. to bring honesty and precision back to collision

@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import Logo from '../../assets/logo-no-bg-gold.png';
+import Logo from '../../assets/logo-no-bg-gold.webp';
+import LogoPNG from '../../assets/logo-no-bg-gold.png';
 
 export default function AboutPage() {
   useEffect(() => {
@@ -18,7 +19,10 @@ export default function AboutPage() {
       </Helmet>
 
       <section className="text-center px-6 py-20">
-        <img src={Logo} alt="C.A.R.S. Logo" className="w-32 mx-auto mb-6 animate-fade-in" />
+        <picture>
+          <source srcSet={Logo} type="image/webp" />
+          <img src={LogoPNG} alt="C.A.R.S. Logo" className="w-32 mx-auto mb-6 animate-fade-in" />
+        </picture>
         <h1 className="text-4xl font-bold mb-4" data-aos="fade-up">About C.A.R.S. Collision & Refinish</h1>
         <p className="max-w-3xl mx-auto text-lg text-gray-200 leading-relaxed" data-aos="fade-up">
           C.A.R.S. Collision & Refinish is a veteran-owned, family-operated auto repair and refinishing shop proudly serving Spring, TX and surrounding communities. With decades of combined experience, we specialize in full collision repair, custom refinishing, truck accessories, and mechanical services that go beyond what most body shops offer.

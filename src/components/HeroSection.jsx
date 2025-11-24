@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import logo from '../assets/logo-no-bg-gold.png';
+import logo from '../assets/logo-no-bg-gold.webp';
+import logoPNG from '../assets/logo-no-bg-gold.png';
 
 export default function HeroSection() {
   return (
@@ -8,11 +9,14 @@ export default function HeroSection() {
       <div className="absolute inset-0 bg-[url('/textures/rust-grain.png')] bg-cover bg-center opacity-10 pointer-events-none z-0" />
 
       {/* Logo */}
-      <img
-        src={logo}
-        alt="C.A.R.S Logo"
-        className="relative z-10 w-48 md:w-64 mb-6 drop-shadow-xl"
-      />
+      <picture>
+        <source srcSet={logo} type="image/webp" />
+        <img
+          src={logoPNG}
+          alt="C.A.R.S Logo"
+          className="relative z-10 w-48 md:w-64 mb-6 drop-shadow-xl"
+        />
+      </picture>
 
       {/* Headline */}
       <h1 className="relative z-10 text-4xl md:text-6xl font-extrabold tracking-wide mb-4">
