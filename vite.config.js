@@ -25,8 +25,8 @@ export default defineConfig({
     // Generate source maps for debugging production issues (optional)
     sourcemap: false,
 
-    // Target modern browsers to avoid unnecessary transpilation
-    target: 'es2015',
+    // Target modern browsers to avoid unnecessary transpilation (ES2020 eliminates more polyfills)
+    target: 'es2020',
 
     // Optimize build output
     rollupOptions: {

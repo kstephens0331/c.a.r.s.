@@ -29,7 +29,7 @@ export default function Navbar() {
         <Link to="/" className="flex items-center space-x-2">
           <picture>
             <source srcSet={Logo} type="image/webp" />
-            <img src={LogoPNG} alt="C.A.R.S Logo" className="w-10 h-auto" />
+            <img src={LogoPNG} alt="C.A.R.S Logo" className="w-10 h-auto" width="70" height="46" />
           </picture>
           <span className="text-xl md:text-2xl font-bold tracking-tight">
             <span className="hidden sm:inline">C.A.R.S Collision & Refinish</span>

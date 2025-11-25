@@ -6,9 +6,11 @@ import TonyPNG from '../../assets/tony.png';
 import BeforeImage from '../../assets/images/1000000697.jpg';
 import BeforeImageWebP from '../../assets/images/1000000697.webp';
 import BeforeImageWebPMobile from '../../assets/images/1000000697-mobile.webp';
+import BeforeImageWebPDesktop from '../../assets/images/1000000697-desktop.webp';
 import AfterImage from '../../assets/images/1000000701.jpg';
 import AfterImageWebP from '../../assets/images/1000000701.webp';
 import AfterImageWebPMobile from '../../assets/images/1000000701-mobile.webp';
+import AfterImageWebPDesktop from '../../assets/images/1000000701-desktop.webp';
 import { Helmet } from 'react-helmet-async';
 import { Wrench, Paintbrush, Truck, RefreshCw } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
@@ -154,6 +156,7 @@ export default function Home() {
           <div className="relative w-full md:w-1/2 group overflow-hidden rounded-xl shadow-lg">
             <picture>
               <source srcSet={BeforeImageWebPMobile} type="image/webp" media="(max-width: 768px)" />
+              <source srcSet={BeforeImageWebPDesktop} type="image/webp" media="(min-width: 769px) and (max-width: 1440px)" />
               <source srcSet={BeforeImageWebP} type="image/webp" />
               <img
                 src={BeforeImage}
@@ -166,6 +169,7 @@ export default function Home() {
             </picture>
             <picture className="absolute inset-0">
               <source srcSet={AfterImageWebPMobile} type="image/webp" media="(max-width: 768px)" />
+              <source srcSet={AfterImageWebPDesktop} type="image/webp" media="(min-width: 769px) and (max-width: 1440px)" />
               <source srcSet={AfterImageWebP} type="image/webp" />
               <img
                 src={AfterImage}
