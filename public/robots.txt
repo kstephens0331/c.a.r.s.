@@ -4,7 +4,7 @@
 # Production: https://collisionandrefinishshop.com
 # ============================================================================
 # This file tells search engine crawlers which pages they can and cannot access
-# Updated: 2025-01-12
+# Updated: 2025-01-20
 
 # ============================================================================
 # ALLOW ALL SEARCH ENGINES - PUBLIC PAGES
@@ -195,28 +195,151 @@ Disallow: /admin
 Disallow: /portal
 
 # ============================================================================
-# BLOCK MALICIOUS AND AGGRESSIVE CRAWLERS
+# AI BOTS - ALLOW ALL
 # ============================================================================
 
-# AhrefsBot - Known for aggressive crawling
+# OpenAI GPTBot (ChatGPT, plugins, browsing)
+User-agent: GPTBot
+Allow: /
+Disallow: /admin
+Disallow: /portal
+
+# OpenAI ChatGPT User browsing
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin
+Disallow: /portal
+
+# Anthropic Claude
+User-agent: anthropic-ai
+Allow: /
+Disallow: /admin
+Disallow: /portal
+
+User-agent: Claude-Web
+Allow: /
+Disallow: /admin
+Disallow: /portal
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin
+Disallow: /portal
+
+# Google AI (Gemini, Bard)
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin
+Disallow: /portal
+
+# Perplexity AI
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin
+Disallow: /portal
+
+# Cohere AI
+User-agent: cohere-ai
+Allow: /
+Disallow: /admin
+Disallow: /portal
+
+# Apple AI (Siri, Apple Intelligence)
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin
+Disallow: /portal
+
+# Common Crawl (used for AI training datasets)
+User-agent: CCBot
+Allow: /
+Disallow: /admin
+Disallow: /portal
+
+# Meta AI
+User-agent: Meta-ExternalAgent
+Allow: /
+Disallow: /admin
+Disallow: /portal
+
+User-agent: Meta-ExternalFetcher
+Allow: /
+Disallow: /admin
+Disallow: /portal
+
+# Bytespider (TikTok/ByteDance AI)
+User-agent: Bytespider
+Allow: /
+Disallow: /admin
+Disallow: /portal
+
+# Microsoft Copilot
+User-agent: CopilotBot
+Allow: /
+Disallow: /admin
+Disallow: /portal
+
+# ============================================================================
+# SEO & BACKLINKING BOTS - ALLOW ALL
+# ============================================================================
+
+# AhrefsBot - SEO and backlink analysis
 User-agent: AhrefsBot
-Disallow: /
+Allow: /
+Disallow: /admin
+Disallow: /portal
+Crawl-delay: 2
 
-# SemrushBot - Can be aggressive
+# SemrushBot - SEO and competitive analysis
 User-agent: SemrushBot
-Crawl-delay: 10
+Allow: /
 Disallow: /admin
 Disallow: /portal
+Crawl-delay: 2
 
-# MJ12bot (Majestic) - Can be aggressive
+# MJ12bot (Majestic) - Backlink analysis
 User-agent: MJ12bot
-Crawl-delay: 10
+Allow: /
+Disallow: /admin
+Disallow: /portal
+Crawl-delay: 2
+
+# DotBot (Moz/OpenSiteExplorer) - SEO analysis
+User-agent: dotbot
+Allow: /
+Disallow: /admin
+Disallow: /portal
+Crawl-delay: 2
+
+# Screaming Frog SEO Spider
+User-agent: Screaming Frog SEO Spider
+Allow: /
 Disallow: /admin
 Disallow: /portal
 
-# DotBot (Moz/OpenSiteExplorer)
-User-agent: dotbot
-Crawl-delay: 10
+# Sistrix Crawler
+User-agent: sistrix
+Allow: /
+Disallow: /admin
+Disallow: /portal
+Crawl-delay: 2
+
+# Serpstat Bot
+User-agent: serpstatbot
+Allow: /
+Disallow: /admin
+Disallow: /portal
+Crawl-delay: 2
+
+# SpyFu Bot
+User-agent: spyfu
+Allow: /
+Disallow: /admin
+Disallow: /portal
+
+# ============================================================================
+# BLOCK MALICIOUS SCRAPERS
+# ============================================================================
 
 # Block scrapers and bad bots
 User-agent: HTTrack
@@ -255,6 +378,8 @@ Sitemap: https://c-a-r-s.vercel.app/sitemap.xml
 # - Contact page includes structured data for local business
 # - Service pages include detailed descriptions for better search ranking
 # - Images and videos are optimized for web performance
+# - AI bots (GPTBot, ClaudeBot, PerplexityBot, etc.) are allowed for indexing
+# - SEO/Backlink bots (Ahrefs, Semrush, Majestic, Moz) are allowed with crawl-delay
 #
 # For questions about SEO or site access, contact:
 # Email: carscollisionhouston@gmail.com
