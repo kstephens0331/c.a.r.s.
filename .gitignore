@@ -18,6 +18,12 @@ dist-ssr
 .env.production
 .env.development
 
+# Smart Submitter runtime files
+smart-submitter/node_modules
+smart-submitter/submission-log.json
+smart-submitter/logs/
+smart-submitter/screenshots/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

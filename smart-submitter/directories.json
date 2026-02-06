@@ -1,0 +1,2396 @@
+[
+  {
+    "name": "Apple Business Connect",
+    "url": "https://businessconnect.apple.com/",
+    "dr": 97,
+    "tier": "high"
+  },
+  {
+    "name": "Yelp",
+    "url": "https://business.yelp.com/",
+    "dr": 95,
+    "tier": "high"
+  },
+  {
+    "name": "Yelp Business",
+    "url": "https://biz.yelp.com/",
+    "dr": 95,
+    "tier": "high"
+  },
+  {
+    "name": "TripAdvisor",
+    "url": "https://www.tripadvisor.com/",
+    "dr": 93,
+    "tier": "high"
+  },
+  {
+    "name": "BBB",
+    "url": "https://www.bbb.org/get-listed",
+    "dr": 93,
+    "tier": "high"
+  },
+  {
+    "name": "Facebook Business",
+    "url": "https://www.facebook.com/pages/create",
+    "dr": 92,
+    "tier": "high"
+  },
+  {
+    "name": "Bing Places",
+    "url": "https://www.bingplaces.com/",
+    "dr": 92,
+    "tier": "high"
+  },
+  {
+    "name": "Indeed",
+    "url": "https://www.indeed.com/",
+    "dr": 92,
+    "tier": "high"
+  },
+  {
+    "name": "Foursquare",
+    "url": "https://business.foursquare.com/",
+    "dr": 91,
+    "tier": "high"
+  },
+  {
+    "name": "LinkedIn Company",
+    "url": "https://www.linkedin.com/company/setup/new/",
+    "dr": 91,
+    "tier": "high"
+  },
+  {
+    "name": "Glassdoor",
+    "url": "https://www.glassdoor.com/",
+    "dr": 90,
+    "tier": "high"
+  },
+  {
+    "name": "TrustPilot",
+    "url": "https://business.trustpilot.com/",
+    "dr": 90,
+    "tier": "high"
+  },
+  {
+    "name": "CrunchBase",
+    "url": "https://www.crunchbase.com/",
+    "dr": 90,
+    "tier": "high"
+  },
+  {
+    "name": "Houzz",
+    "url": "https://www.houzz.com/",
+    "dr": 89,
+    "tier": "high"
+  },
+  {
+    "name": "MapQuest",
+    "url": "https://www.mapquest.com/add-place",
+    "dr": 87,
+    "tier": "high"
+  },
+  {
+    "name": "Yellowpages",
+    "url": "https://www.yellowpages.com/",
+    "dr": 86,
+    "tier": "high"
+  },
+  {
+    "name": "YP.com",
+    "url": "https://www.yp.com/",
+    "dr": 85,
+    "tier": "high"
+  },
+  {
+    "name": "BizJournals",
+    "url": "https://www.bizjournals.com/",
+    "dr": 85,
+    "tier": "high"
+  },
+  {
+    "name": "Manta",
+    "url": "https://www.manta.com/claim",
+    "dr": 85,
+    "tier": "high"
+  },
+  {
+    "name": "Whitepages",
+    "url": "https://www.whitepages.com/",
+    "dr": 85,
+    "tier": "high"
+  },
+  {
+    "name": "Angi",
+    "url": "https://www.angi.com/",
+    "dr": 84,
+    "tier": "high"
+  },
+  {
+    "name": "ChamberOfCommerce",
+    "url": "https://www.chamberofcommerce.com/",
+    "dr": 83,
+    "tier": "high"
+  },
+  {
+    "name": "HomeAdvisor",
+    "url": "https://www.homeadvisor.com/",
+    "dr": 82,
+    "tier": "high"
+  },
+  {
+    "name": "Citysearch",
+    "url": "https://www.citysearch.com/",
+    "dr": 82,
+    "tier": "high"
+  },
+  {
+    "name": "Nextdoor Business",
+    "url": "https://business.nextdoor.com/",
+    "dr": 82,
+    "tier": "high"
+  },
+  {
+    "name": "Superpages",
+    "url": "https://www.superpages.com/",
+    "dr": 81,
+    "tier": "high"
+  },
+  {
+    "name": "Business.com",
+    "url": "https://www.business.com/",
+    "dr": 81,
+    "tier": "high"
+  },
+  {
+    "name": "DandB",
+    "url": "https://www.dnb.com/",
+    "dr": 80,
+    "tier": "high"
+  },
+  {
+    "name": "Thumbtack",
+    "url": "https://www.thumbtack.com/",
+    "dr": 80,
+    "tier": "high"
+  },
+  {
+    "name": "Patch",
+    "url": "https://www.patch.com/",
+    "dr": 80,
+    "tier": "high"
+  },
+  {
+    "name": "AngiesList",
+    "url": "https://www.angieslist.com/",
+    "dr": 80,
+    "tier": "high"
+  },
+  {
+    "name": "VetBiz",
+    "url": "https://vetbiz.va.gov/",
+    "dr": 80,
+    "tier": "niche-veteran"
+  },
+  {
+    "name": "DexKnows",
+    "url": "https://www.dexknows.com/",
+    "dr": 79,
+    "tier": "high"
+  },
+  {
+    "name": "Local.com",
+    "url": "https://www.local.com/",
+    "dr": 78,
+    "tier": "high"
+  },
+  {
+    "name": "DigitalJournal",
+    "url": "https://www.digitaljournal.com/",
+    "dr": 78,
+    "tier": "high"
+  },
+  {
+    "name": "Yellowbook",
+    "url": "https://www.yellowbook.com/",
+    "dr": 77,
+    "tier": "high"
+  },
+  {
+    "name": "CityData",
+    "url": "https://www.city-data.com/",
+    "dr": 75,
+    "tier": "high"
+  },
+  {
+    "name": "Blogarama",
+    "url": "https://www.blogarama.com/",
+    "dr": 75,
+    "tier": "high"
+  },
+  {
+    "name": "ThomasNet",
+    "url": "https://www.thomasnet.com/",
+    "dr": 75,
+    "tier": "high"
+  },
+  {
+    "name": "BOTW",
+    "url": "https://botw.org/",
+    "dr": 74,
+    "tier": "high"
+  },
+  {
+    "name": "Entireweb",
+    "url": "https://www.entireweb.com/",
+    "dr": 73,
+    "tier": "high"
+  },
+  {
+    "name": "Viesearch",
+    "url": "https://viesearch.com/",
+    "dr": 73,
+    "tier": "high"
+  },
+  {
+    "name": "LinkCentre",
+    "url": "https://www.linkcentre.com/",
+    "dr": 72,
+    "tier": "high"
+  },
+  {
+    "name": "BlogFlux",
+    "url": "https://www.blogflux.com/",
+    "dr": 72,
+    "tier": "high"
+  },
+  {
+    "name": "PRLog",
+    "url": "https://www.prlog.org/",
+    "dr": 72,
+    "tier": "high"
+  },
+  {
+    "name": "Alignable",
+    "url": "https://www.alignable.com/",
+    "dr": 70,
+    "tier": "high"
+  },
+  {
+    "name": "ProvenExpert",
+    "url": "https://www.provenexpert.com/",
+    "dr": 70,
+    "tier": "high"
+  },
+  {
+    "name": "Kompass",
+    "url": "https://www.kompass.com/",
+    "dr": 70,
+    "tier": "high"
+  },
+  {
+    "name": "Birdeye",
+    "url": "https://birdeye.com/",
+    "dr": 70,
+    "tier": "high"
+  },
+  {
+    "name": "Tupalo",
+    "url": "https://tupalo.com/en/register",
+    "dr": 70,
+    "tier": "high"
+  },
+  {
+    "name": "Porch",
+    "url": "https://porch.com/",
+    "dr": 70,
+    "tier": "high"
+  },
+  {
+    "name": "Brownbook",
+    "url": "https://www.brownbook.net/add-company/",
+    "dr": 68,
+    "tier": "mid"
+  },
+  {
+    "name": "JasmineDirectory",
+    "url": "https://www.jasminedirectory.com/",
+    "dr": 65,
+    "tier": "mid"
+  },
+  {
+    "name": "MerchantCircle",
+    "url": "https://www.merchantcircle.com/signup",
+    "dr": 65,
+    "tier": "mid"
+  },
+  {
+    "name": "DealerRater",
+    "url": "https://www.dealerrater.com/",
+    "dr": 65,
+    "tier": "mid"
+  },
+  {
+    "name": "Oodle",
+    "url": "https://www.oodle.com/",
+    "dr": 65,
+    "tier": "mid"
+  },
+  {
+    "name": "Bark",
+    "url": "https://www.bark.com/",
+    "dr": 65,
+    "tier": "mid"
+  },
+  {
+    "name": "OpenPR",
+    "url": "https://www.openpr.com/",
+    "dr": 65,
+    "tier": "mid"
+  },
+  {
+    "name": "SubmissionWebDir",
+    "url": "https://www.submissionwebdirectory.com/",
+    "dr": 64,
+    "tier": "mid"
+  },
+  {
+    "name": "Somuch",
+    "url": "https://www.somuch.com/",
+    "dr": 63,
+    "tier": "mid"
+  },
+  {
+    "name": "BritainBizDir",
+    "url": "https://www.britainbusinessdirectory.com/",
+    "dr": 63,
+    "tier": "mid"
+  },
+  {
+    "name": "ELocal",
+    "url": "https://www.elocal.com/",
+    "dr": 63,
+    "tier": "mid"
+  },
+  {
+    "name": "Thalesdirectory",
+    "url": "https://www.thalesdirectory.com/",
+    "dr": 61,
+    "tier": "mid"
+  },
+  {
+    "name": "MarketingInternetDir",
+    "url": "https://www.marketinginternetdirectory.com/",
+    "dr": 61,
+    "tier": "mid"
+  },
+  {
+    "name": "Biz2Credit",
+    "url": "https://www.biz2credit.com/",
+    "dr": 60,
+    "tier": "mid"
+  },
+  {
+    "name": "ABCDirectory",
+    "url": "https://www.abc-directory.com/",
+    "dr": 60,
+    "tier": "mid"
+  },
+  {
+    "name": "RepairPal",
+    "url": "https://repairpal.com/",
+    "dr": 60,
+    "tier": "niche-auto"
+  },
+  {
+    "name": "MapMyIndia",
+    "url": "https://www.mapmyindia.com/",
+    "dr": 60,
+    "tier": "mid"
+  },
+  {
+    "name": "1888PressRelease",
+    "url": "https://www.1888pressrelease.com/",
+    "dr": 60,
+    "tier": "mid"
+  },
+  {
+    "name": "HotFrog",
+    "url": "https://www.hotfrog.com/add-a-business",
+    "dr": 57,
+    "tier": "mid"
+  },
+  {
+    "name": "TSection",
+    "url": "https://www.tsection.com/",
+    "dr": 56,
+    "tier": "mid"
+  },
+  {
+    "name": "AliveDirectory",
+    "url": "https://www.alive-directory.com/",
+    "dr": 56,
+    "tier": "mid"
+  },
+  {
+    "name": "Weboworld",
+    "url": "https://www.weboworld.com/",
+    "dr": 55,
+    "tier": "mid"
+  },
+  {
+    "name": "Showmelocal",
+    "url": "https://www.showmelocal.com/Submit.aspx",
+    "dr": 55,
+    "tier": "mid"
+  },
+  {
+    "name": "AmericanTowns",
+    "url": "https://www.americantowns.com/",
+    "dr": 55,
+    "tier": "mid"
+  },
+  {
+    "name": "ConnectAmericas",
+    "url": "https://connectamericas.com/",
+    "dr": 55,
+    "tier": "mid"
+  },
+  {
+    "name": "InsiderPages",
+    "url": "https://www.insiderpages.com/",
+    "dr": 55,
+    "tier": "mid"
+  },
+  {
+    "name": "Infobel",
+    "url": "https://www.infobel.com/",
+    "dr": 55,
+    "tier": "mid"
+  },
+  {
+    "name": "DirJournal",
+    "url": "https://www.dirjournal.com/",
+    "dr": 55,
+    "tier": "mid"
+  },
+  {
+    "name": "ClassifiedAds",
+    "url": "https://www.classifiedads.com/",
+    "dr": 55,
+    "tier": "mid"
+  },
+  {
+    "name": "HomeStars",
+    "url": "https://www.homestars.com/",
+    "dr": 55,
+    "tier": "mid"
+  },
+  {
+    "name": "FreePress",
+    "url": "https://www.free-press-release.com/",
+    "dr": 55,
+    "tier": "mid"
+  },
+  {
+    "name": "PressReleasePoint",
+    "url": "https://www.pressreleasepoint.com/",
+    "dr": 55,
+    "tier": "mid"
+  },
+  {
+    "name": "BizVibe",
+    "url": "https://www.bizvibe.com/",
+    "dr": 55,
+    "tier": "mid"
+  },
+  {
+    "name": "FashionListings",
+    "url": "https://www.fashionlistings.org/",
+    "dr": 54,
+    "tier": "mid"
+  },
+  {
+    "name": "GMAWebDir",
+    "url": "https://www.gmawebdirectory.com/",
+    "dr": 53,
+    "tier": "mid"
+  },
+  {
+    "name": "FreePRWebDir",
+    "url": "https://www.freeprwebdirectory.com/",
+    "dr": 53,
+    "tier": "mid"
+  },
+  {
+    "name": "Lacartes",
+    "url": "https://www.lacartes.com/register",
+    "dr": 52,
+    "tier": "mid"
+  },
+  {
+    "name": "AlistDirectory",
+    "url": "https://www.alistdirectory.com/",
+    "dr": 51,
+    "tier": "mid"
+  },
+  {
+    "name": "FireDirectory",
+    "url": "https://www.fire-directory.com/",
+    "dr": 51,
+    "tier": "mid"
+  },
+  {
+    "name": "GoGuides",
+    "url": "https://www.goguides.org/",
+    "dr": 50,
+    "tier": "mid"
+  },
+  {
+    "name": "Spoke",
+    "url": "https://www.spoke.com/register",
+    "dr": 50,
+    "tier": "mid"
+  },
+  {
+    "name": "OntopList",
+    "url": "https://www.ontoplist.com/",
+    "dr": 50,
+    "tier": "mid"
+  },
+  {
+    "name": "Geebo",
+    "url": "https://www.geebo.com/",
+    "dr": 50,
+    "tier": "mid"
+  },
+  {
+    "name": "PRFree",
+    "url": "https://www.prfree.com/",
+    "dr": 50,
+    "tier": "mid"
+  },
+  {
+    "name": "IssueWire",
+    "url": "https://www.issuewire.com/",
+    "dr": 50,
+    "tier": "mid"
+  },
+  {
+    "name": "Mfg",
+    "url": "https://www.mfg.com/",
+    "dr": 50,
+    "tier": "mid"
+  },
+  {
+    "name": "SiteIndices",
+    "url": "https://www.siteindices.com/",
+    "dr": 48,
+    "tier": "mid"
+  },
+  {
+    "name": "Aviva",
+    "url": "https://www.avivadirectory.com/",
+    "dr": 48,
+    "tier": "mid"
+  },
+  {
+    "name": "UKInternetDir",
+    "url": "https://www.ukinternetdirectory.net/",
+    "dr": 48,
+    "tier": "mid"
+  },
+  {
+    "name": "Citysquares",
+    "url": "https://citysquares.com/signup",
+    "dr": 48,
+    "tier": "mid"
+  },
+  {
+    "name": "ExpressBizDir",
+    "url": "https://www.expressbusinessdirectory.com/AddCompany.aspx",
+    "dr": 47,
+    "tier": "mid"
+  },
+  {
+    "name": "NaVOBA",
+    "url": "https://www.navoba.org/",
+    "dr": 45,
+    "tier": "niche-veteran"
+  },
+  {
+    "name": "CarWise",
+    "url": "https://www.carwise.com/",
+    "dr": 45,
+    "tier": "niche-auto"
+  },
+  {
+    "name": "JoeAnt",
+    "url": "https://www.joeant.com/",
+    "dr": 45,
+    "tier": "mid"
+  },
+  {
+    "name": "BrownBookUS",
+    "url": "https://www.brownbook.net/",
+    "dr": 45,
+    "tier": "mid"
+  },
+  {
+    "name": "ProlinkDirectory",
+    "url": "https://www.prolinkdirectory.com/",
+    "dr": 45,
+    "tier": "mid"
+  },
+  {
+    "name": "PRBuzz",
+    "url": "https://www.prbuzz.com/",
+    "dr": 45,
+    "tier": "mid"
+  },
+  {
+    "name": "NewsWireToday",
+    "url": "https://www.newswiretoday.com/",
+    "dr": 45,
+    "tier": "mid"
+  },
+  {
+    "name": "OfficialUSA",
+    "url": "https://www.officialusa.com/",
+    "dr": 45,
+    "tier": "mid"
+  },
+  {
+    "name": "Cipinet",
+    "url": "https://www.cipinet.com/",
+    "dr": 44,
+    "tier": "mid"
+  },
+  {
+    "name": "QualityInternetDir",
+    "url": "https://www.qualityinternetdirectory.com/",
+    "dr": 43,
+    "tier": "mid"
+  },
+  {
+    "name": "Yalwa",
+    "url": "https://www.yalwa.com/",
+    "dr": 42,
+    "tier": "mid"
+  },
+  {
+    "name": "CanadaWebDir",
+    "url": "https://www.canadawebdir.com/",
+    "dr": 42,
+    "tier": "mid"
+  },
+  {
+    "name": "DirectorySEO",
+    "url": "https://www.directoryseo.biz/",
+    "dr": 42,
+    "tier": "mid"
+  },
+  {
+    "name": "SonicRun",
+    "url": "https://www.sonicrun.com/",
+    "dr": 40,
+    "tier": "mid"
+  },
+  {
+    "name": "EBusinessPages",
+    "url": "https://www.ebusinesspages.com/",
+    "dr": 40,
+    "tier": "mid"
+  },
+  {
+    "name": "AutoMD",
+    "url": "https://www.automd.com/",
+    "dr": 40,
+    "tier": "niche-auto"
+  },
+  {
+    "name": "VeteranOwnedBiz",
+    "url": "https://www.veteranownedbusiness.com/",
+    "dr": 40,
+    "tier": "niche-veteran"
+  },
+  {
+    "name": "LocalSites",
+    "url": "https://www.localsites.ca/",
+    "dr": 40,
+    "tier": "mid"
+  },
+  {
+    "name": "iGlobal",
+    "url": "https://www.iglobal.co/",
+    "dr": 40,
+    "tier": "mid"
+  },
+  {
+    "name": "iGlobalDir",
+    "url": "https://www.iglobal.co/united-states",
+    "dr": 40,
+    "tier": "mid"
+  },
+  {
+    "name": "ClickPress",
+    "url": "https://www.clickpress.com/",
+    "dr": 40,
+    "tier": "mid"
+  },
+  {
+    "name": "MechanicAdvisor",
+    "url": "https://www.mechanicadvisor.com/",
+    "dr": 38,
+    "tier": "niche-auto"
+  },
+  {
+    "name": "DirectoryAC",
+    "url": "https://www.directory.ac/",
+    "dr": 36,
+    "tier": "low"
+  },
+  {
+    "name": "DirectoryVault",
+    "url": "https://www.directoryvault.com/",
+    "dr": 36,
+    "tier": "low"
+  },
+  {
+    "name": "DirectoryFire",
+    "url": "https://www.directoryfire.com/",
+    "dr": 35,
+    "tier": "low"
+  },
+  {
+    "name": "DigaBusiness",
+    "url": "https://www.digabusiness.com/",
+    "dr": 35,
+    "tier": "low"
+  },
+  {
+    "name": "FreeInternetWebDir",
+    "url": "https://www.freeinternetwebdirectory.com/",
+    "dr": 35,
+    "tier": "low"
+  },
+  {
+    "name": "AutoBodyReview",
+    "url": "https://www.autobody-review.com/",
+    "dr": 35,
+    "tier": "niche-auto"
+  },
+  {
+    "name": "OpenBay",
+    "url": "https://www.openbay.com/",
+    "dr": 35,
+    "tier": "niche-auto"
+  },
+  {
+    "name": "TownSquared",
+    "url": "https://townsquared.com/",
+    "dr": 35,
+    "tier": "low"
+  },
+  {
+    "name": "MagicYellow",
+    "url": "https://www.magicyellow.com/",
+    "dr": 35,
+    "tier": "low"
+  },
+  {
+    "name": "StartLocal",
+    "url": "https://www.startlocal.com.au/",
+    "dr": 35,
+    "tier": "low"
+  },
+  {
+    "name": "AddURL",
+    "url": "https://www.addurl.nu/",
+    "dr": 35,
+    "tier": "low"
+  },
+  {
+    "name": "FreePressIndex",
+    "url": "https://www.freepressindex.com/",
+    "dr": 35,
+    "tier": "low"
+  },
+  {
+    "name": "Nonar",
+    "url": "https://www.nonar.com/",
+    "dr": 33,
+    "tier": "low"
+  },
+  {
+    "name": "1WebsDirectory",
+    "url": "https://www.1websdirectory.com/",
+    "dr": 32,
+    "tier": "low"
+  },
+  {
+    "name": "GTAWebDir",
+    "url": "https://www.gtawebdirectory.com/",
+    "dr": 31,
+    "tier": "low"
+  },
+  {
+    "name": "Gimpsy",
+    "url": "https://www.gimpsy.com/",
+    "dr": 30,
+    "tier": "low"
+  },
+  {
+    "name": "AddYP",
+    "url": "https://addyp.com/",
+    "dr": 30,
+    "tier": "low"
+  },
+  {
+    "name": "HireVeterans",
+    "url": "https://www.hireveterans.com/",
+    "dr": 30,
+    "tier": "niche-veteran"
+  },
+  {
+    "name": "Bizify",
+    "url": "https://www.bizify.co.uk/",
+    "dr": 30,
+    "tier": "low"
+  },
+  {
+    "name": "FindOpen",
+    "url": "https://www.findopen.com/",
+    "dr": 30,
+    "tier": "low"
+  },
+  {
+    "name": "B2BYellowPages",
+    "url": "https://www.b2byellowpages.com/",
+    "dr": 30,
+    "tier": "low"
+  },
+  {
+    "name": "BizNar",
+    "url": "https://biznar.com/",
+    "dr": 30,
+    "tier": "low"
+  },
+  {
+    "name": "LocalPages",
+    "url": "https://www.localpages.com/",
+    "dr": 30,
+    "tier": "low"
+  },
+  {
+    "name": "Pegasus",
+    "url": "https://www.pegasusdirectory.com/",
+    "dr": 30,
+    "tier": "low"
+  },
+  {
+    "name": "DirectoryWorld",
+    "url": "https://www.directoryworld.net/",
+    "dr": 30,
+    "tier": "low"
+  },
+  {
+    "name": "SmartGuy",
+    "url": "https://smartguy.com/",
+    "dr": 30,
+    "tier": "low"
+  },
+  {
+    "name": "HDVConnect",
+    "url": "https://www.hdvconnect.com/",
+    "dr": 29,
+    "tier": "low"
+  },
+  {
+    "name": "AllBizDirectory",
+    "url": "https://www.allbusinessdirectory.biz/",
+    "dr": 29,
+    "tier": "low"
+  },
+  {
+    "name": "CanadianDirectory",
+    "url": "https://www.canadiandirectory.org/",
+    "dr": 28,
+    "tier": "low"
+  },
+  {
+    "name": "MarketingWebDir",
+    "url": "https://www.marketingwebdirectory.com/",
+    "dr": 28,
+    "tier": "low"
+  },
+  {
+    "name": "UKDirectory",
+    "url": "https://ukdirectory.com.ar/",
+    "dr": 28,
+    "tier": "low"
+  },
+  {
+    "name": "DiscoverOurTown",
+    "url": "https://www.discoverourtown.com/",
+    "dr": 28,
+    "tier": "low"
+  },
+  {
+    "name": "10Directory",
+    "url": "https://www.10directory.com/",
+    "dr": 27,
+    "tier": "low"
+  },
+  {
+    "name": "PRDirectory",
+    "url": "https://prdirectory.com.ar/",
+    "dr": 27,
+    "tier": "low"
+  },
+  {
+    "name": "CorpDirectory",
+    "url": "https://corpdirectory.info/",
+    "dr": 27,
+    "tier": "low"
+  },
+  {
+    "name": "Cylex",
+    "url": "https://www.cylex.us.com/add-your-company",
+    "dr": 25,
+    "tier": "low"
+  },
+  {
+    "name": "A1WebDirectory",
+    "url": "https://www.a1webdirectory.org/",
+    "dr": 25,
+    "tier": "low"
+  },
+  {
+    "name": "GetFave",
+    "url": "https://www.getfave.com/",
+    "dr": 25,
+    "tier": "low"
+  },
+  {
+    "name": "FreeWebDir",
+    "url": "https://www.freewebsubmission.com/",
+    "dr": 25,
+    "tier": "low"
+  },
+  {
+    "name": "OurBis",
+    "url": "https://www.ourbis.ca/",
+    "dr": 25,
+    "tier": "low"
+  },
+  {
+    "name": "ListedIn",
+    "url": "https://www.listedin.us/",
+    "dr": 25,
+    "tier": "low"
+  },
+  {
+    "name": "FreeDir",
+    "url": "https://www.freedirectory.com/",
+    "dr": 25,
+    "tier": "low"
+  },
+  {
+    "name": "SearchSight",
+    "url": "https://www.searchsight.com/",
+    "dr": 25,
+    "tier": "low"
+  },
+  {
+    "name": "YellowPageCity",
+    "url": "https://www.yellowpagecity.com/",
+    "dr": 25,
+    "tier": "low"
+  },
+  {
+    "name": "EuropeanBizDir",
+    "url": "https://www.europeanbusinessdirectory.com/",
+    "dr": 25,
+    "tier": "low"
+  },
+  {
+    "name": "FindYello",
+    "url": "https://www.findyello.com/",
+    "dr": 25,
+    "tier": "low"
+  },
+  {
+    "name": "GlobalCatalog",
+    "url": "https://www.globalcatalog.com/",
+    "dr": 25,
+    "tier": "low"
+  },
+  {
+    "name": "SEOFriendly",
+    "url": "https://seofriendly.com.ar/",
+    "dr": 23,
+    "tier": "low"
+  },
+  {
+    "name": "USBizDirectory",
+    "url": "https://www.usbusinessdirectory.com/",
+    "dr": 22,
+    "tier": "low"
+  },
+  {
+    "name": "InfoTiger",
+    "url": "https://www.infotiger.com/",
+    "dr": 22,
+    "tier": "low"
+  },
+  {
+    "name": "Intercambioseo",
+    "url": "https://intercambioseo.com/",
+    "dr": 21,
+    "tier": "low"
+  },
+  {
+    "name": "Cybo",
+    "url": "https://www.cybo.com/add-business",
+    "dr": 20,
+    "tier": "low"
+  },
+  {
+    "name": "USCity",
+    "url": "https://www.uscity.net/add-listing",
+    "dr": 20,
+    "tier": "low"
+  },
+  {
+    "name": "ShowNearby",
+    "url": "https://www.shownearby.com/",
+    "dr": 20,
+    "tier": "low"
+  },
+  {
+    "name": "YellowMoxie",
+    "url": "https://www.yellowmoxie.com/",
+    "dr": 20,
+    "tier": "low"
+  },
+  {
+    "name": "SEOLink",
+    "url": "https://www.seolink-directory.com/",
+    "dr": 20,
+    "tier": "low"
+  },
+  {
+    "name": "USDirectory",
+    "url": "https://www.usdirectory.com/",
+    "dr": 20,
+    "tier": "low"
+  },
+  {
+    "name": "LocalBD",
+    "url": "https://www.localbd.com.au/",
+    "dr": 20,
+    "tier": "low"
+  },
+  {
+    "name": "Submit",
+    "url": "https://www.submit.biz/",
+    "dr": 20,
+    "tier": "low"
+  },
+  {
+    "name": "OpenDir",
+    "url": "https://www.opendirectory.org/",
+    "dr": 20,
+    "tier": "low"
+  },
+  {
+    "name": "Cylex Canada",
+    "url": "https://www.cylex.ca/",
+    "dr": 20,
+    "tier": "low"
+  },
+  {
+    "name": "Nexdu",
+    "url": "https://www.nexdu.com/",
+    "dr": 20,
+    "tier": "low"
+  },
+  {
+    "name": "Salespider",
+    "url": "https://www.salespider.com/register",
+    "dr": 18,
+    "tier": "low"
+  },
+  {
+    "name": "ThreeBestRated",
+    "url": "https://threebestrated.com/add-business",
+    "dr": 18,
+    "tier": "low"
+  },
+  {
+    "name": "CompaniesInUSA",
+    "url": "https://www.companiesinusa.com/",
+    "dr": 18,
+    "tier": "low"
+  },
+  {
+    "name": "BizVotes",
+    "url": "https://www.bizvotes.com/",
+    "dr": 18,
+    "tier": "low"
+  },
+  {
+    "name": "TrustedBusiness",
+    "url": "https://www.trusted-business.com/",
+    "dr": 18,
+    "tier": "low"
+  },
+  {
+    "name": "GreenDir",
+    "url": "https://www.greendirectory.net/",
+    "dr": 18,
+    "tier": "low"
+  },
+  {
+    "name": "ZipLeaf",
+    "url": "https://www.zipleaf.us/",
+    "dr": 18,
+    "tier": "low"
+  },
+  {
+    "name": "PostFreeClassified",
+    "url": "https://www.postfreeclassified.com/",
+    "dr": 18,
+    "tier": "low"
+  },
+  {
+    "name": "BizHub",
+    "url": "https://www.bizhub.com/",
+    "dr": 18,
+    "tier": "low"
+  },
+  {
+    "name": "VIPDirectory",
+    "url": "https://vipdirectory.com.ar/",
+    "dr": 15,
+    "tier": "low"
+  },
+  {
+    "name": "CityByWeb",
+    "url": "https://www.citybyweb.com/",
+    "dr": 15,
+    "tier": "low"
+  },
+  {
+    "name": "AllStar",
+    "url": "https://www.alliancedirectory.com/",
+    "dr": 15,
+    "tier": "low"
+  },
+  {
+    "name": "SitePromotion",
+    "url": "https://www.sitepromotion-directory.com/",
+    "dr": 15,
+    "tier": "low"
+  },
+  {
+    "name": "FreeListingUSA",
+    "url": "https://www.freelistingusa.com/",
+    "dr": 15,
+    "tier": "low"
+  },
+  {
+    "name": "Gaining",
+    "url": "https://www.gaining.com/",
+    "dr": 15,
+    "tier": "low"
+  },
+  {
+    "name": "MyLocalServices",
+    "url": "https://www.mylocalservices.com/",
+    "dr": 15,
+    "tier": "low"
+  },
+  {
+    "name": "NetDir",
+    "url": "https://www.netdirectory.com/",
+    "dr": 15,
+    "tier": "low"
+  },
+  {
+    "name": "TopDir",
+    "url": "https://www.topdirectory.org/",
+    "dr": 15,
+    "tier": "low"
+  },
+  {
+    "name": "CitySlick",
+    "url": "https://www.cityslick.net/",
+    "dr": 15,
+    "tier": "low"
+  },
+  {
+    "name": "TheBizList",
+    "url": "https://www.thebizlist.com/",
+    "dr": 15,
+    "tier": "low"
+  },
+  {
+    "name": "WallClassifieds",
+    "url": "https://www.wallclassifieds.com/",
+    "dr": 15,
+    "tier": "low"
+  },
+  {
+    "name": "FreeAdLists",
+    "url": "https://www.freeadlists.com/",
+    "dr": 15,
+    "tier": "low"
+  },
+  {
+    "name": "ZipLocal",
+    "url": "https://www.ziplocal.com/",
+    "dr": 15,
+    "tier": "low"
+  },
+  {
+    "name": "EZlocal",
+    "url": "https://www.ezlocal.com/add-listing",
+    "dr": 14,
+    "tier": "low"
+  },
+  {
+    "name": "24Directory",
+    "url": "https://24directory.com.ar/",
+    "dr": 13,
+    "tier": "low"
+  },
+  {
+    "name": "Tuugo",
+    "url": "https://www.tuugo.us/Register",
+    "dr": 12,
+    "tier": "low"
+  },
+  {
+    "name": "Opendi",
+    "url": "https://www.opendi.us/add-company",
+    "dr": 12,
+    "tier": "low"
+  },
+  {
+    "name": "YellowBot",
+    "url": "https://www.yellowbot.com/add-business",
+    "dr": 12,
+    "tier": "low"
+  },
+  {
+    "name": "FreeBizDir",
+    "url": "https://www.freebusinessdirectory.com/",
+    "dr": 12,
+    "tier": "low"
+  },
+  {
+    "name": "Amray",
+    "url": "https://www.amray.com/",
+    "dr": 12,
+    "tier": "low"
+  },
+  {
+    "name": "USLocalBiz",
+    "url": "https://www.uslocalbiz.com/",
+    "dr": 12,
+    "tier": "low"
+  },
+  {
+    "name": "SpiderDir",
+    "url": "https://www.spiderdirectory.com/",
+    "dr": 12,
+    "tier": "low"
+  },
+  {
+    "name": "ClickDir",
+    "url": "https://www.clickdir.com/",
+    "dr": 12,
+    "tier": "low"
+  },
+  {
+    "name": "StartDir",
+    "url": "https://www.startdirectory.com/",
+    "dr": 12,
+    "tier": "low"
+  },
+  {
+    "name": "GlobalDir",
+    "url": "https://www.globaldirectories.info/",
+    "dr": 12,
+    "tier": "low"
+  },
+  {
+    "name": "BizOwnerHQ",
+    "url": "https://www.bizownerhq.com/",
+    "dr": 12,
+    "tier": "low"
+  },
+  {
+    "name": "DirectoryLink",
+    "url": "https://www.directorylink.com/",
+    "dr": 12,
+    "tier": "low"
+  },
+  {
+    "name": "BusinessLink",
+    "url": "https://www.businesslink.org/",
+    "dr": 12,
+    "tier": "low"
+  },
+  {
+    "name": "SmallBizHub",
+    "url": "https://www.smallbizhub.com/",
+    "dr": 12,
+    "tier": "low"
+  },
+  {
+    "name": "ViewFreeAds",
+    "url": "https://www.viewfreeads.com/",
+    "dr": 11,
+    "tier": "low"
+  },
+  {
+    "name": "Fyple",
+    "url": "https://www.fyple.com/add-business/",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "FindUSLocal",
+    "url": "https://www.finduslocal.com/add-business",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "2FindLocal",
+    "url": "https://www.2findlocal.com/add-listing",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "GoLocal247",
+    "url": "https://www.golocal247.com/biz/signup",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "iBegin",
+    "url": "https://www.ibegin.com/directory/account/signup/",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "n49",
+    "url": "https://www.n49.com/add-business",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "Enrollbusiness",
+    "url": "https://www.enrollbusiness.com/add-company",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "WebLister",
+    "url": "https://weblister.com.ar/",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "TexasDirectory",
+    "url": "https://www.texasdirectory.us/",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "AtoZDirectory",
+    "url": "https://www.atozdirectory.com/",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "SmallBizPages",
+    "url": "https://www.smallbizpages.us/",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "USLocalPlus",
+    "url": "https://www.uslocalplus.com/",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "ClickDir2",
+    "url": "https://www.clicksortdirectory.com/",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "MaxDir",
+    "url": "https://www.maxdirectory.org/",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "TopLinkDir",
+    "url": "https://www.toplinkdirectory.com/",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "AllDir",
+    "url": "https://www.alldirectory.org/",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "ProDir",
+    "url": "https://www.prodirectory.org/",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "BizDir",
+    "url": "https://www.bizdirectory.org/",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "PrimeDir",
+    "url": "https://www.primedirectory.org/",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "DirFactory",
+    "url": "https://www.directory-factory.com/",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "ListDir",
+    "url": "https://www.listdirectory.com/",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "OnTopLocal",
+    "url": "https://www.ontoplocal.com/",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "USListings",
+    "url": "https://www.uslistings.org/",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "BizToBiz",
+    "url": "https://www.biztobiz.org/",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "DirectoryBest",
+    "url": "https://www.directorybest.com/",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "BizDex",
+    "url": "https://www.bizdex.com/",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "DirectoryMax",
+    "url": "https://www.directorymax.com/",
+    "dr": 10,
+    "tier": "micro"
+  },
+  {
+    "name": "BestFinancialDir",
+    "url": "https://www.best-financial-directory.com/",
+    "dr": 9,
+    "tier": "micro"
+  },
+  {
+    "name": "Hub.biz",
+    "url": "https://hub.biz/register",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "ABLocal",
+    "url": "https://www.ablocal.com/add-business",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "Cataloxy",
+    "url": "https://www.cataloxy.us/add-company",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "Callupcontact",
+    "url": "https://www.callupcontact.com/register",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "Bizwiki",
+    "url": "https://www.bizwiki.com/add-business",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "USYellowPages",
+    "url": "https://www.usyellowpages.com/add-business",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "Where2Go",
+    "url": "https://www.where2go.com/add-business",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "MyHuckleberry",
+    "url": "https://www.myhuckleberry.com/add-listing.aspx",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "LocalStack",
+    "url": "https://localstack.com/signup",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "Wand",
+    "url": "https://www.wand.com/add-business",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "Dealerbaba",
+    "url": "https://www.dealerbaba.com/register",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "WorkDirectory",
+    "url": "https://workdirectory.info/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "MyWebDirectory",
+    "url": "https://mywebdirectory.com.ar/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "AnnuaireUS",
+    "url": "https://www.annuaire.us/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "BizListings",
+    "url": "https://www.bizlistings.com.au/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "PeerRate",
+    "url": "https://www.peerrate.com/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "WeMod",
+    "url": "https://www.wemod.directory/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "QuickDir",
+    "url": "https://www.quickdirectory.org/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "SiteMason",
+    "url": "https://www.sitemason.com/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "QuickWeb",
+    "url": "https://www.quickwebdirectory.com/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "CloudDir",
+    "url": "https://www.clouddirectory.net/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "FreeLink",
+    "url": "https://www.freelinkdirectory.net/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "QuickLink",
+    "url": "https://www.quicklinkdir.com/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "EasyDir",
+    "url": "https://www.easydirectory.org/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "PlusDir",
+    "url": "https://www.plusdirectory.org/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "SmartDir",
+    "url": "https://www.smartdirectory.org/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "TopWeb",
+    "url": "https://www.topwebdir.net/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "SpotDir",
+    "url": "https://www.spotdir.com/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "QuickRegister",
+    "url": "https://www.quickregister.us/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "LocalBizFinder",
+    "url": "https://www.localbizfinder.com/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "Wisebuyerdir",
+    "url": "https://www.wisebuyerdir.com/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "LocalBizUS",
+    "url": "https://www.localbizus.com/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "BusinessListUS",
+    "url": "https://www.businesslistus.com/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "USBizConnect",
+    "url": "https://www.usbizconnect.com/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "LocalProUSA",
+    "url": "https://www.localprousa.com/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "PowerDir",
+    "url": "https://www.powerdirectory.com/",
+    "dr": 8,
+    "tier": "micro"
+  },
+  {
+    "name": "VBDirectory",
+    "url": "https://vbdirectory.info/",
+    "dr": 7,
+    "tier": "micro"
+  },
+  {
+    "name": "LocalBizNetwork",
+    "url": "https://www.localbiznetwork.com/add-business",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "BizAdee",
+    "url": "https://www.bizadee.com/add-business",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "Bizhwy",
+    "url": "https://www.bizhwy.com/add-listing.php",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "Bizexposed",
+    "url": "https://www.bizexposed.com/Free-Listing.php",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "LocalDatabase",
+    "url": "https://www.localdatabase.com/submit.asp",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "TeleAdreson",
+    "url": "https://www.teleadreson.com/register",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "Bunity",
+    "url": "https://www.bunity.com/add-business",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "LocalFave",
+    "url": "https://www.localfave.com/add-business",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "CompanyList",
+    "url": "https://www.companylist.org/add",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "FirstLinkOnline",
+    "url": "https://firstlinkonline.info/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "CompanyListNYC",
+    "url": "https://www.companylistingnyc.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "YellowHotline",
+    "url": "https://www.yellowhotline.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "BizCovering",
+    "url": "https://www.bizcovering.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "MasterDir",
+    "url": "https://www.masterdirectory.org/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "WebDir2",
+    "url": "https://www.webdirectoryonline.info/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "FastDir",
+    "url": "https://www.fastdirectory.org/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "LinkDir",
+    "url": "https://www.linkdirectory.org/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "OneDir",
+    "url": "https://www.onedirectory.org/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "InfoDir",
+    "url": "https://www.infodirectory.org/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "SuperDir",
+    "url": "https://www.superdirectory.org/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "StarDir",
+    "url": "https://www.stardirectory.org/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "CoreDir",
+    "url": "https://www.coredirectory.org/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "EliteDir",
+    "url": "https://www.elitedirectory.org/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "BizCom",
+    "url": "https://www.bizcom.org/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "DirectoryPatch",
+    "url": "https://www.directorypatch.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "DirectoryBug",
+    "url": "https://www.directorybug.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "USABizFinder",
+    "url": "https://www.usabizfinder.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "BizDirLib",
+    "url": "https://www.bizdirlib.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "GlobalBiz",
+    "url": "https://www.globalbiz.info/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "YellowPages24",
+    "url": "https://www.yellowpages24.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "NetBizDir",
+    "url": "https://www.netbizdir.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "SmartBizDir",
+    "url": "https://www.smartbizdir.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "TopBizList",
+    "url": "https://www.topbizlist.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "StarBizDir",
+    "url": "https://www.starbizdir.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "SuperBizDir",
+    "url": "https://www.superbizdir.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "MegaDir",
+    "url": "https://www.megadirectory.org/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "FastLocalDir",
+    "url": "https://www.fastlocaldir.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "EliteLocalDir",
+    "url": "https://www.elitelocaldir.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "CoreLocalDir",
+    "url": "https://www.corelocaldir.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "TopUSDir",
+    "url": "https://www.topusdir.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "ProUSDir",
+    "url": "https://www.prousdir.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "StarUSDir",
+    "url": "https://www.starusdir.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "MaxUSDir",
+    "url": "https://www.maxusdir.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "LinkProDir",
+    "url": "https://www.linkprodir.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "LinkLocalDir",
+    "url": "https://www.linklocaldir.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "USBizList",
+    "url": "https://www.usbizlist.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "LinkUSDir",
+    "url": "https://www.linkusdir.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "LocalBizTop",
+    "url": "https://www.localbiztop.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "LocalBizPrime",
+    "url": "https://www.localbizprime.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "LocalBizFast",
+    "url": "https://www.localbizfast.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "BizFinderUS",
+    "url": "https://www.bizfinderus.com/",
+    "dr": 6,
+    "tier": "micro"
+  },
+  {
+    "name": "DirectoryEngine",
+    "url": "https://www.directoryengine.net/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "QuickBizList",
+    "url": "https://www.quickbizlist.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "LocalPageUS",
+    "url": "https://www.localpageus.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "LocalBizBot",
+    "url": "https://www.localbizbot.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "TopBizDir",
+    "url": "https://www.topbizdir.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "QuickBiz",
+    "url": "https://www.quickbiz.org/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "USBizHub",
+    "url": "https://www.usbizhub.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "ProBizList",
+    "url": "https://www.probizlist.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "CoreBizDir",
+    "url": "https://www.corebizdir.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "EliteBizDir",
+    "url": "https://www.elitebizdir.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "BizLink",
+    "url": "https://www.bizlink.org/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "UltraDir",
+    "url": "https://www.ultradirectory.org/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "SmartLocalDir",
+    "url": "https://www.smartlocaldir.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "PrimeLocalDir",
+    "url": "https://www.primelocaldir.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "AllLocalDir",
+    "url": "https://www.alllocaldir.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "FastUSDir",
+    "url": "https://www.fastusdir.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "EliteUSDir",
+    "url": "https://www.eliteusdir.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "CoreUSDir",
+    "url": "https://www.coreusdir.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "BizPlusDir",
+    "url": "https://www.bizplusdir.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "NetLocalDir",
+    "url": "https://www.netlocaldir.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "NetBizList",
+    "url": "https://www.netbizlist.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "NetUSDir",
+    "url": "https://www.netusdir.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "LocalBizMax",
+    "url": "https://www.localbizmax.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "LocalBizAll",
+    "url": "https://www.localbizall.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "LocalBizElite",
+    "url": "https://www.localbizelite.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "USBizDir2",
+    "url": "https://www.usbizdir2.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "BizSearchUS",
+    "url": "https://www.bizsearchus.com/",
+    "dr": 5,
+    "tier": "micro"
+  },
+  {
+    "name": "BizSheet",
+    "url": "https://www.bizsheet.com/add-listing",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "DirectoryLib",
+    "url": "https://www.directorylib.com/add-listing",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "SureHits",
+    "url": "https://www.surehits.com/add-listing",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "AddBusiness",
+    "url": "https://www.addbusiness.net/add-business",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "AmazingPage",
+    "url": "https://www.amazingpage.com/add-business",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "Wrapistry",
+    "url": "https://www.wrapistry.com/add-business",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "WebDirectory",
+    "url": "https://www.webdirectory.info/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "LocalConnections",
+    "url": "https://www.local-connections.com/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "WNDir",
+    "url": "https://www.worldnoor.com/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "FastBizDir",
+    "url": "https://www.fastbizdir.com/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "LocalBizStar",
+    "url": "https://www.localbizstar.com/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "AllBizList",
+    "url": "https://www.allbizlist.com/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "PrimeBizList",
+    "url": "https://www.primebizlist.com/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "MegaBizList",
+    "url": "https://www.megabizlist.com/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "TopLocalDir",
+    "url": "https://www.toplocaldir.com/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "ProLocalDir",
+    "url": "https://www.prolocaldir.com/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "StarLocalDir",
+    "url": "https://www.starlocaldir.com/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "MaxLocalDir",
+    "url": "https://www.maxlocaldir.com/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "SmartUSDir",
+    "url": "https://www.smartusdir.com/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "PrimeUSDir",
+    "url": "https://www.primeusdir.com/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "AllUSDir",
+    "url": "https://www.allusdir.com/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "BizGoDir",
+    "url": "https://www.bizgodir.com/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "WebBizDir",
+    "url": "https://www.webbizdir.com/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "WebLocalDir",
+    "url": "https://www.weblocaldir.com/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "WebUSDir",
+    "url": "https://www.webusdir.com/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "LocalBizPro",
+    "url": "https://www.localbizpro.com/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "LocalBizCore",
+    "url": "https://www.localbizcore.com/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "LocalBizSmart",
+    "url": "https://www.localbizsmart.com/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "USBizTop",
+    "url": "https://www.usbiztop.com/",
+    "dr": 4,
+    "tier": "micro"
+  },
+  {
+    "name": "BizLocateUS",
+    "url": "https://www.bizlocateus.com/",
+    "dr": 4,
+    "tier": "micro"
+  }
+]

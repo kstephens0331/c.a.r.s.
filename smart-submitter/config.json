@@ -1,0 +1,66 @@
+{
+  "business": {
+    "name": "C.A.R.S. Collision & Refinish Shop",
+    "address": "2530 Old Louetta Loop, Ste 114",
+    "city": "Spring",
+    "state": "TX",
+    "state_full": "Texas",
+    "zip": "77388",
+    "country": "United States",
+    "phone": "(832) 885-3055",
+    "website": "https://www.carscollisionandrefinishshop.com",
+    "email": "marketing@carscollisionandrefinishshop.com",
+    "owner_first": "Tony",
+    "owner_last": "Velasquez",
+    "description_short": "Veteran & family owned collision repair and auto body shop in Spring, TX. Expert collision repair, custom paint, paintless dent repair, and spray-in bedliners.",
+    "description_long": "C.A.R.S. Collision & Refinish Shop is a veteran and family owned auto body shop serving Spring, The Woodlands, Klein, Tomball, and North Houston. We specialize in collision repair, custom paint and refinishing, paintless dent repair, spray-in bedliners, and light mechanical repairs. Insurance accepted. Free estimates. Over 30 years of industry experience.",
+    "categories": [
+      "Auto Body Shop",
+      "Collision Repair",
+      "Auto Painting",
+      "Auto Dent Removal Service",
+      "Auto Repair Shop"
+    ],
+    "year_established": "2024",
+    "num_employees": "1-10",
+    "payment_methods": "Cash, Credit Card, Debit Card, Insurance",
+    "hours": {
+      "monday": "9:00 AM - 6:00 PM",
+      "tuesday": "9:00 AM - 6:00 PM",
+      "wednesday": "9:00 AM - 6:00 PM",
+      "thursday": "9:00 AM - 6:00 PM",
+      "friday": "9:00 AM - 6:00 PM",
+      "saturday": "9:00 AM - 1:00 PM",
+      "sunday": "Closed"
+    },
+    "service_area": "Spring, The Woodlands, Klein, Tomball, Cypress, North Houston",
+    "services": [
+      "Collision Repair",
+      "Custom Paint & Refinishing",
+      "Paintless Dent Repair",
+      "Spray-In Bedliners",
+      "Light Mechanical Repairs",
+      "Insurance Claims Assistance",
+      "Free Estimates",
+      "Frame Straightening",
+      "Auto Body Repair",
+      "Color Matching"
+    ]
+  },
+  "settings": {
+    "model": "claude-sonnet-4-20250514",
+    "headless": false,
+    "timeout_ms": 30000,
+    "delay_between_sites_ms": 2000,
+    "screenshot_on_error": true,
+    "max_retries_per_site": 2,
+    "human_like_typing_delay_ms": 30
+  },
+  "scheduler": {
+    "weekly_limit": 15,
+    "daily_limit": 3,
+    "start_hour_cst": 21,
+    "min_delay_between_ms": 180000,
+    "max_delay_between_ms": 600000
+  }
+}
