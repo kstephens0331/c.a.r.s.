@@ -112,6 +112,7 @@ const handleGoogleLogin = async () => {
       <>
         <Helmet>
           <title>Customer Login | C.A.R.S Collision & Refinish Shop</title>
+          <meta name="robots" content="noindex, nofollow" />
         </Helmet>
         <div className="min-h-screen flex items-center justify-center bg-accent px-4">
           <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md text-center">
@@ -127,9 +128,10 @@ const handleGoogleLogin = async () => {
     <>
       <Helmet>
         <title>Customer Login | C.A.R.S Collision & Refinish Shop</title>
+        <meta name="robots" content="noindex, nofollow" />
         <meta
           name="description"
-          content="Secure login for customers to track repair progress and updates from Collision & Refinish Shop."
+          content="Secure login for customers to track repair progress and updates from C.A.R.S Collision & Refinish Shop."
         />
       </Helmet>
 

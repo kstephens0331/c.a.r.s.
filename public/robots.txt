@@ -1,10 +1,9 @@
 # ============================================================================
 # robots.txt for C.A.R.S Collision & Refinish Shop
-# Website: https://c-a-r-s.vercel.app
-# Production: https://collisionandrefinishshop.com
+# Website: https://www.carscollisionandrefinishshop.com
 # ============================================================================
 # This file tells search engine crawlers which pages they can and cannot access
-# Updated: 2025-01-20
+# Updated: 2026-02-05
 
 # ============================================================================
 # ALLOW ALL SEARCH ENGINES - PUBLIC PAGES
@@ -18,8 +17,8 @@ Allow: /services
 Allow: /contact
 Allow: /repair-gallery
 Allow: /financing
-Allow: /login
-Allow: /register
+Disallow: /login
+Disallow: /register
 
 # Allow indexing of all service detail pages
 Allow: /services/collision-repair
@@ -368,7 +367,6 @@ Disallow: /
 # ============================================================================
 # Point search engines to your XML sitemap
 Sitemap: https://www.carscollisionandrefinishshop.com/sitemap.xml
-Sitemap: https://c-a-r-s.vercel.app/sitemap.xml
 
 # ============================================================================
 # ADDITIONAL NOTES

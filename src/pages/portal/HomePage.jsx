@@ -65,7 +65,7 @@ export default function Home() {
   return (
     <div className="bg-site text-white relative overflow-hidden">
       <Helmet>
-        <title>C.A.R.S Collision & Refinish | Home</title>
+        <title>C.A.R.S Collision & Refinish | Auto Body Shop Spring TX | Veteran Owned</title>
         <meta
           name="description"
           content="Veteran and family-owned. Quality repairs, honest work, and no surprises. Schedule your estimate or explore our services."

@@ -50,7 +50,8 @@ export default function RegisterPage() {
   return (
     <>
       <Helmet>
-        <title>Create Account | Collision & Refinish Shop</title>
+        <title>Create Account | C.A.R.S Collision & Refinish Shop</title>
+        <meta name="robots" content="noindex, nofollow" />
         <meta
           name="description"
           content="Create your customer account to track vehicle repairs and receive real-time updates."

@@ -7,11 +7,11 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-8">
         {/* Company Info */}
         <div>
-          <h3 className="text-lg font-semibold mb-2">Collision & Refinish Shop</h3>
+          <h3 className="text-lg font-semibold mb-2">C.A.R.S Collision & Refinish Shop</h3>
           <p className="mb-1">2530 Old Louetta Loop #114</p>
           <p className="mb-1">Spring, TX 77388</p>
           <p className="mb-1">📞 832-885-3055</p>
-          <p className="mb-1">✉️ collisionandrefinishshop@gmail.com</p>
+          <p className="mb-1">✉️ carscollisionhouston@gmail.com</p>
         </div>
 
         {/* Quick Links */}
