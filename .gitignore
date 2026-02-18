@@ -35,3 +35,6 @@ smart-submitter/screenshots/
 *.sln
 *.sw?
 nul
+
+.claude/
+CLAUDE.md
