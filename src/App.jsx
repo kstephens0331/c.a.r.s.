@@ -27,6 +27,7 @@ const PaintlessDentRepair = lazy(() => import('./pages/portal/PaintlessDentRepai
 const BedlinersPage = lazy(() => import('./pages/portal/BedlinersPage'));
 const LightMechanicalPage = lazy(() => import('./pages/portal/LightMechanicalPage'));
 const FinancingPage = lazy(() => import('./pages/portal/FinancingPage.jsx'));
+const TrustedPartnersPage = lazy(() => import('./pages/portal/TrustedPartnersPage.jsx'));
 
 // Lazy load Admin Layout and Components
 const AdminLayout = lazy(() => import('./layouts/AdminLayout.jsx'));
@@ -91,6 +92,7 @@ function App() {
                 <Route path="/services/bedliners-accessories" element={<BedlinersPage />} />
                 <Route path="/services/light-mechanical" element={<LightMechanicalPage />} />
                 <Route path="/financing" element={<FinancingPage />} />
+                <Route path="/trusted-partners" element={<TrustedPartnersPage />} />
 
                 {/* Admin Routes - Nested under AdminLayout with ErrorBoundary */}
                 <Route path="/admin" element={

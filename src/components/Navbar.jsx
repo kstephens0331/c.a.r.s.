@@ -65,6 +65,7 @@ export default function Navbar() {
 
           <NavLink to="/contact" className={navClass}>Contact</NavLink>
           <NavLink to="/repair-gallery" className={navClass}>Repair Gallery</NavLink>
+          <NavLink to="/trusted-partners" className={navClass}>Partners</NavLink>
           <NavLink to="/financing" className={navClass}>Financing</NavLink>
           <NavLink to="/login" className={navClass}>Customer Login</NavLink>
         </nav>
@@ -99,6 +100,7 @@ export default function Navbar() {
           <NavLink to="/services/light-mechanical" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Light Mechanical</NavLink>
           <NavLink to="/contact" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Contact</NavLink>
           <NavLink to="/repair-gallery" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Repair Gallery</NavLink>
+          <NavLink to="/trusted-partners" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Partners</NavLink>
           <NavLink to="/financing" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Financing</NavLink>
           <NavLink to="/login" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Customer Login</NavLink>
         </nav>
