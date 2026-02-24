@@ -89,6 +89,13 @@ const partners = [
       'A study platform built for medical students working toward the USMLE Step 1. With 50,000-plus flashcards, thousands of practice questions, video lectures, and AI-powered tools, Get Step Ready gives future doctors the edge they need.',
     url: 'https://getstepready.com',
   },
+  {
+    name: 'Lefty Cartel',
+    category: 'Sports & Community',
+    description:
+      'An exclusive community and streetwear brand built by and for left-handed ball players. Lefty Cartel offers curated training resources, a private members store, and a growing brotherhood united by the left side of the plate.',
+    url: 'https://leftycartel.net',
+  },
 ];
 
 export default function TrustedPartnersPage() {
