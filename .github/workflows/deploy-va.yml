@@ -1,0 +1,17 @@
+name: Deploy to VA Server
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VA_SSH_HOST }}
+          username: ${{ secrets.VA_SSH_USER }}
+          key: ${{ secrets.VA_SSH_KEY }}
+          script: /srv/collision-shop-repo/deploy.sh
