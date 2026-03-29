@@ -1,6 +1,6 @@
 {
   "business": {
-    "name": "C.A.R.S. Collision & Refinish Shop",
+    "name": "C.A.R.S. Collision and Refinish Shop",
     "address": "2530 Old Louetta Loop, Ste 114",
     "city": "Spring",
     "state": "TX",
@@ -9,7 +9,9 @@
     "country": "United States",
     "phone": "(832) 885-3055",
     "website": "https://www.carscollisionandrefinishshop.com",
-    "email": "marketing@carscollisionandrefinishshop.com",
+    "email": "carscollisionhouston@gmail.com",
+    "registration_email": "marketing@carscollisionandrefinishshop.com",
+    "registration_password": "C4RS_D1r3ct0ry_2025!",
     "owner_first": "Tony",
     "owner_last": "Velasquez",
     "description_short": "Veteran & family owned collision repair and auto body shop in Spring, TX. Expert collision repair, custom paint, paintless dent repair, and spray-in bedliners.",
@@ -57,10 +59,10 @@
     "human_like_typing_delay_ms": 30
   },
   "scheduler": {
-    "weekly_limit": 15,
-    "daily_limit": 3,
+    "weekly_limit": 100,
+    "daily_limit": 35,
     "start_hour_cst": 21,
-    "min_delay_between_ms": 180000,
-    "max_delay_between_ms": 600000
+    "min_delay_between_ms": 15000,
+    "max_delay_between_ms": 45000
   }
 }

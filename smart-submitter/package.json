@@ -11,14 +11,23 @@
     "status": "node src/index.js --mode status",
     "dry-run": "node src/index.js --dry-run"
   },
-  "keywords": ["seo", "backlinks", "directory-submission", "puppeteer", "automation"],
+  "keywords": [
+    "seo",
+    "backlinks",
+    "directory-submission",
+    "puppeteer",
+    "automation"
+  ],
   "author": "Kyle Stephens <kyle@stephenscode.dev>",
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
     "dotenv": "^16.4.0",
-    "puppeteer": "^23.0.0"
+    "puppeteer": "^23.0.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-recaptcha": "^3.6.8",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
   },
   "engines": {
     "node": ">=18.0.0"

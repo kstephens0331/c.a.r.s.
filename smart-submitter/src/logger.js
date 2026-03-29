@@ -76,6 +76,22 @@ class SubmissionLog {
         .map(e => e.url)
     );
   }
+
+  getLastEntry() {
+    return this.data.entries.length > 0
+      ? this.data.entries[this.data.entries.length - 1]
+      : null;
+  }
+
+  /** Remove all skipped/failed entries so those directories get retried */
+  clearRetryable() {
+    const before = this.data.entries.length;
+    this.data.entries = this.data.entries.filter(
+      e => e.status === 'submitted' || e.status === 'pending_verification'
+    );
+    this.save();
+    return before - this.data.entries.length;
+  }
 }
 
 module.exports = { SubmissionLog };

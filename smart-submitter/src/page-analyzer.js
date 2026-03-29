@@ -162,6 +162,20 @@ async function analyzePage(page) {
         // Skip hidden, submit, button, file types
         if (['hidden', 'submit', 'button', 'image', 'reset'].includes(type)) return;
 
+        // Detect if this is a dynamic/autocomplete dropdown
+        const isAutocomplete = input.getAttribute('role') === 'combobox'
+          || input.getAttribute('aria-autocomplete') !== null
+          || input.getAttribute('autocomplete') === 'off' && input.classList.toString().match(/autocomplete|typeahead|select2|combo|search/i)
+          || input.getAttribute('data-toggle') === 'dropdown'
+          || input.getAttribute('list') !== null
+          || (input.parentElement && input.parentElement.querySelector('[class*="dropdown"], [class*="autocomplete"], [class*="suggestion"], [class*="typeahead"]'));
+
+        // Check if there's a nearby dropdown/suggestions container
+        const nearbyDropdown = input.parentElement && (
+          input.parentElement.querySelector('ul[role="listbox"], [class*="dropdown-menu"], [class*="suggestions"], [class*="autocomplete-results"]')
+          || input.closest('[class*="combobox"], [class*="autocomplete"], [class*="typeahead"], [class*="select2"]')
+        );
+
         const field = {
           index: idx,
           tag: input.tagName.toLowerCase(),
@@ -174,6 +188,13 @@ async function analyzePage(page) {
           value: input.value || '',
           maxlength: input.maxLength > 0 ? input.maxLength : null,
           css_selector: buildSelector(input),
+          is_dynamic_dropdown: !!(isAutocomplete || nearbyDropdown),
+          autocomplete_attrs: {
+            role: input.getAttribute('role'),
+            aria_autocomplete: input.getAttribute('aria-autocomplete'),
+            data_toggle: input.getAttribute('data-toggle'),
+            list: input.getAttribute('list'),
+          },
         };
 
         // Select options

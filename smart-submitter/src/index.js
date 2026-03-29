@@ -24,7 +24,9 @@ require('dotenv').config({ path: require('path').resolve(__dirname, '..', '.env'
 
 const fs = require('fs');
 const path = require('path');
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-extra');
+const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+const RecaptchaPlugin = require('puppeteer-extra-plugin-recaptcha');
 const { AIBrain } = require('./ai-brain');
 const { analyzePage } = require('./page-analyzer');
 const { FormFiller } = require('./form-filler');
@@ -32,6 +34,20 @@ const { SubmissionLog } = require('./logger');
 const { Scheduler } = require('./scheduler');
 const { RelevanceChecker } = require('./relevance-checker');
 const { WeeklyPlanner } = require('./weekly-planner');
+
+// Stealth plugin — makes Puppeteer undetectable to bot checks
+puppeteer.use(StealthPlugin());
+
+// 2Captcha plugin — auto-solves reCAPTCHA if API key is provided
+const twoCaptchaKey = process.env.TWOCAPTCHA_API_KEY;
+if (twoCaptchaKey) {
+  puppeteer.use(
+    RecaptchaPlugin({
+      provider: { id: '2captcha', token: twoCaptchaKey },
+      visualFeedback: true,
+    })
+  );
+}
 
 // ============================================================
 // CLI ARGS
@@ -48,6 +64,8 @@ const DRY_RUN = args['dry-run'] !== undefined;
 const RESUME = args.resume !== undefined || true; // always resume by default
 const FORCE = args.force !== undefined;
 const SKIP_RELEVANCE = args['skip-relevance'] !== undefined;
+const AUTO_SKIP = args['auto-skip'] !== undefined;
+const CLEAR_SKIPS = args['clear-skips'] !== undefined;
 
 // ============================================================
 // MAIN
@@ -82,6 +100,13 @@ async function main() {
   // Init log
   const log = new SubmissionLog(LOG_PATH);
   log.setClient(biz.name);
+
+  // Clear old skips/failures so those directories get retried with stealth
+  if (CLEAR_SKIPS) {
+    const cleared = log.clearRetryable();
+    console.log(`🧹 Cleared ${cleared} skipped/failed entries — those directories will be retried\n`);
+  }
+
   const completedUrls = log.getCompletedUrls();
 
   // Filter directories
@@ -214,19 +239,12 @@ async function main() {
     const page = await browser.newPage();
     await page.setUserAgent(UA);
 
-    // Block unnecessary resources for speed
-    await page.setRequestInterception(true);
-    page.on('request', req => {
-      const type = req.resourceType();
-      if (['image', 'media', 'font'].includes(type)) {
-        req.abort();
-      } else {
-        req.continue();
-      }
-    });
+    // NOTE: Do NOT block images/fonts/media — it's a bot fingerprint
+    // that anti-bot systems (Cloudflare, reCAPTCHA v3) detect instantly.
+    // Stealth plugin handles detection evasion properly.
 
     try {
-      await processDirectory(page, dir, biz, brain, settings, log, DRY_RUN, sessionStats, relevanceChecker, SKIP_RELEVANCE);
+      await processDirectory(page, dir, biz, brain, settings, log, DRY_RUN, sessionStats, relevanceChecker, SKIP_RELEVANCE, AUTO_SKIP);
     } catch (err) {
       console.log(`    ❌ Fatal error: ${err.message}`);
       log.addEntry({
@@ -250,14 +268,17 @@ async function main() {
       }
     }
 
-    await page.close();
+    try { await page.close(); } catch (e) { /* page may already be closed */ }
 
-    // Delay between sites (scheduler-controlled for natural pacing)
-    if (i < targets.length - 1) {
-      const delay = scheduler.getSubmissionDelay();
-      const delaySec = Math.round(delay / 1000);
-      console.log(`    ⏳ Waiting ${delaySec}s before next submission (natural pacing)...`);
-      await sleep(delay);
+    // Only delay after actual submissions — skips and failures don't need pacing
+    if (i < targets.length - 1 && sessionStats.submitted > 0) {
+      const lastEntry = log.getLastEntry();
+      if (lastEntry && (lastEntry.status === 'submitted' || lastEntry.status === 'pending_verification')) {
+        const delay = scheduler.getSubmissionDelay();
+        const delaySec = Math.round(delay / 1000);
+        console.log(`    ⏳ Waiting ${delaySec}s before next submission (natural pacing)...`);
+        await sleep(delay);
+      }
     }
   }
 
@@ -277,9 +298,9 @@ async function main() {
 // DIRECTORY PROCESSING - THE CORE LOOP
 // ============================================================
 
-async function processDirectory(page, dir, biz, brain, settings, log, dryRun, stats, relevanceChecker, skipRelevance) {
+async function processDirectory(page, dir, biz, brain, settings, log, dryRun, stats, relevanceChecker, skipRelevance, autoSkip) {
   const timeout = settings.timeout_ms || 30000;
-  const maxSteps = 5; // Max pages/steps for multi-step forms
+  const maxSteps = 12; // Max pages/steps (login + reg + multi-step listing + recovery attempts)
 
   // ---- RELEVANCE PRE-CHECK (no page load needed) ----
   if (!skipRelevance) {
@@ -314,9 +335,97 @@ async function processDirectory(page, dir, biz, brain, settings, log, dryRun, st
   }
   await sleep(1500); // Let JS frameworks render
 
-  // Multi-step loop
+  // Multi-step loop — track URL + content to detect when stuck
+  let lastPageSignature = '';
+  let samePageCount = 0;
+
   for (let step = 0; step < maxSteps; step++) {
     if (step > 0) console.log(`\n    📄 Step ${step + 1}:`);
+
+    // Detect if we're stuck on the same page (works with AJAX forms too)
+    const currentSignature = await page.evaluate(() => {
+      const url = window.location.href;
+      const formCount = document.forms.length;
+      const fieldCount = document.querySelectorAll('input, select, textarea').length;
+      const title = document.title;
+      const h1 = document.querySelector('h1')?.textContent?.trim() || '';
+      return `${url}|${formCount}|${fieldCount}|${title}|${h1}`;
+    }).catch(() => page.url());
+
+    if (currentSignature === lastPageSignature) {
+      samePageCount++;
+      if (samePageCount >= 2) {
+        console.log(`    ⚠️  Stuck on same page (${samePageCount}x) — attempting recovery...`);
+
+        // Take screenshot and ask Claude to diagnose the issue
+        let recoveryScreenshot = null;
+        try {
+          recoveryScreenshot = await page.screenshot({ encoding: 'base64', fullPage: false });
+        } catch (e) {}
+
+        const stuckSnapshot = await analyzePage(page);
+        const diagnosis = await brain.diagnoseStuck(recoveryScreenshot, stuckSnapshot, biz);
+
+        if (diagnosis.can_recover && diagnosis.recovery_actions && diagnosis.recovery_actions.length > 0) {
+          console.log(`    🔧 Diagnosis: ${diagnosis.diagnosis}`);
+          const filler = new FormFiller(page, settings);
+
+          for (const action of diagnosis.recovery_actions) {
+            console.log(`    🔧 Recovery: ${action.description}`);
+            try {
+              if (action.type === 'js_eval') {
+                await page.evaluate(action.value);
+              } else if (action.type === 'click') {
+                await filler.clickButton(action.css_selector);
+              } else if (action.type === 'fill' || action.type === 'type') {
+                const recEl = await filler.findElement(action.css_selector);
+                if (recEl) await filler.typeInField(recEl, action.value, action.css_selector);
+              } else if (action.type === 'select') {
+                const recEl = await filler.findElement(action.css_selector);
+                if (recEl) await filler.selectOption(recEl, action.value, action.css_selector);
+              } else if (action.type === 'type_select') {
+                const recEl = await filler.findElement(action.css_selector);
+                if (recEl) await filler.typeAndSelect(recEl, action.value, action.css_selector);
+              }
+              await sleep(500);
+            } catch (e) {
+              console.log(`    ⚠️  Recovery action failed: ${e.message}`);
+            }
+          }
+
+          // Try clicking submit after recovery
+          if (diagnosis.submit_button_selector) {
+            console.log(`    🖱️  Clicking submit after recovery...`);
+            await filler.clickButton(diagnosis.submit_button_selector);
+            try {
+              await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 10000 });
+            } catch (e) {
+              await sleep(2000);
+            }
+          }
+
+          // Reset stuck counter to give it another chance
+          samePageCount = 0;
+          lastPageSignature = '';
+          await sleep(1500);
+          continue;
+        } else {
+          console.log(`    ❌ Cannot recover: ${diagnosis.diagnosis}`);
+          // Log as failed instead of silently breaking
+          log.addEntry({
+            name: dir.name, url: dir.url, dr: dir.dr,
+            status: 'failed',
+            error: `Stuck: ${diagnosis.diagnosis}`,
+            ai_assessment: null,
+          });
+          stats.failed++;
+          return;
+        }
+      }
+    } else {
+      samePageCount = 0;
+    }
+    lastPageSignature = currentSignature;
 
     // 1. Analyze page
     console.log(`    🔍 Analyzing page...`);
@@ -325,7 +434,24 @@ async function processDirectory(page, dir, biz, brain, settings, log, dryRun, st
     // Quick stats
     const fieldCount = snapshot.forms.reduce((sum, f) => sum + f.fields.length, 0);
     console.log(`    📝 Found ${snapshot.forms.length} form(s), ${fieldCount} field(s), ${snapshot.buttons.length} button(s)`);
-    if (snapshot.captcha_detected) console.log(`    ⚠️  CAPTCHA detected: ${snapshot.captcha_type}`);
+    if (snapshot.captcha_detected) {
+      console.log(`    ⚠️  CAPTCHA detected: ${snapshot.captcha_type}`);
+      // Attempt to solve CAPTCHA if 2Captcha is configured
+      if (twoCaptchaKey) {
+        console.log(`    🔓 Attempting CAPTCHA solve via 2Captcha...`);
+        try {
+          const { solved } = await page.solveRecaptchas();
+          if (solved && solved.length > 0) {
+            console.log(`    ✅ CAPTCHA solved! (${solved.length} challenge(s))`);
+            snapshot.captcha_detected = false; // Clear so AI doesn't re-flag
+          } else {
+            console.log(`    ⚠️  No solvable CAPTCHAs found on page`);
+          }
+        } catch (captchaErr) {
+          console.log(`    ⚠️  CAPTCHA solve failed: ${captchaErr.message}`);
+        }
+      }
+    }
 
     // ---- DEEP RELEVANCE CHECK (first step only) ----
     if (step === 0 && !skipRelevance) {
@@ -348,15 +474,120 @@ async function processDirectory(page, dir, biz, brain, settings, log, dryRun, st
       }
     }
 
-    // 2. Send to AI brain
-    console.log(`    🧠 AI analyzing form structure...`);
-    const plan = await brain.analyzeAndPlan(snapshot, biz);
+    // 2. Take screenshot for vision analysis
+    console.log(`    📸 Taking screenshot for AI vision...`);
+    let screenshot = null;
+    try {
+      screenshot = await page.screenshot({ encoding: 'base64', fullPage: false });
+    } catch (e) { /* screenshot failed, continue without */ }
+
+    // 3. Send to AI brain with screenshot
+    console.log(`    🧠 AI analyzing form structure${screenshot ? ' + screenshot' : ''}...`);
+    let plan = await brain.analyzeAndPlan(snapshot, biz, screenshot);
 
     // Log the assessment
     console.log(`    📋 Assessment: ${plan.assessment.page_type} (confidence: ${plan.assessment.confidence})`);
     if (plan.assessment.description) console.log(`    📝 ${plan.assessment.description}`);
 
-    // 3. Handle skip/human-needed cases
+    // 3. Handle registration/login pages — fill them and continue to listing
+    if (plan.assessment.page_type === 'registration' && plan.fills && plan.fills.length > 0) {
+      console.log(`    📝 Registration form detected — creating account...`);
+
+      const filler = new FormFiller(page, settings);
+      const regResults = await filler.executeFills(plan.fills);
+      console.log(`    ✅ Registration fills: ${regResults.filled} | ❌ Failed: ${regResults.failed}`);
+
+      // Solve any CAPTCHAs on registration page
+      if (twoCaptchaKey) {
+        try {
+          const { solved } = await page.solveRecaptchas();
+          if (solved && solved.length > 0) console.log(`    🔓 Registration CAPTCHA solved`);
+        } catch (e) {}
+      }
+
+      // Click the registration submit button
+      if (plan.click_after_fill?.css_selector) {
+        console.log(`    🖱️  Clicking: ${plan.click_after_fill.description}`);
+        await sleep(500);
+        const clicked = await filler.clickButton(plan.click_after_fill.css_selector);
+        if (!clicked) await filler.clickByText(plan.click_after_fill.description);
+
+        try {
+          await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 10000 });
+        } catch (e) {
+          await sleep(3000);
+        }
+      }
+
+      console.log(`    ✅ Account created — continuing to listing form...`);
+      await sleep(2000);
+      continue; // Go to next step — the listing form
+    }
+
+    if (plan.assessment.page_type === 'login_required' && plan.fills && plan.fills.length > 0) {
+      console.log(`    🔑 Login form detected — attempting login...`);
+
+      const filler = new FormFiller(page, settings);
+      const loginResults = await filler.executeFills(plan.fills);
+      console.log(`    ✅ Login fills: ${loginResults.filled}`);
+
+      if (plan.click_after_fill?.css_selector) {
+        console.log(`    🖱️  Clicking: ${plan.click_after_fill.description}`);
+        await sleep(500);
+        const clicked = await filler.clickButton(plan.click_after_fill.css_selector);
+        if (!clicked) await filler.clickByText(plan.click_after_fill.description);
+
+        try {
+          await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 10000 });
+        } catch (e) {
+          await sleep(3000);
+        }
+      }
+
+      // Check if login failed — look for error messages
+      await sleep(1500);
+      const loginPostScreenshot = await page.screenshot({ encoding: 'base64', fullPage: false }).catch(() => null);
+      const loginPostSnapshot = await analyzePage(page);
+      const loginErrors = loginPostSnapshot.alerts.some(a =>
+        a.toLowerCase().includes('invalid') || a.toLowerCase().includes('incorrect') ||
+        a.toLowerCase().includes('wrong') || a.toLowerCase().includes('failed') ||
+        a.toLowerCase().includes('not found') || a.toLowerCase().includes('error')
+      );
+
+      if (loginErrors) {
+        console.log(`    ⚠️  Login failed — switching to registration...`);
+        // Look for a sign-up / register link on the same page
+        const signupClicked = await page.evaluate(() => {
+          const links = [...document.querySelectorAll('a, button')];
+          const signupLink = links.find(l => {
+            const text = (l.innerText || l.textContent || '').toLowerCase().trim();
+            return text.includes('sign up') || text.includes('register') || text.includes('create account') || text.includes('new account');
+          });
+          if (signupLink) {
+            signupLink.click();
+            return true;
+          }
+          return false;
+        });
+
+        if (signupClicked) {
+          try {
+            await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 10000 });
+          } catch (e) {
+            await sleep(3000);
+          }
+          console.log(`    📝 Navigated to signup — continuing...`);
+        }
+        await sleep(2000);
+        continue; // Re-analyze the new page (signup form)
+      }
+
+      console.log(`    ✅ Logged in — continuing to listing form...`);
+      await sleep(2000);
+      continue;
+    }
+
+    // Handle skip cases
     if (plan.assessment.should_skip) {
       console.log(`    ⏭️  Skipping: ${plan.assessment.skip_reason}`);
       log.addEntry({
@@ -370,7 +601,38 @@ async function processDirectory(page, dir, biz, brain, settings, log, dryRun, st
     }
 
     if (plan.assessment.needs_human) {
-      console.log(`    👤 Needs human: ${plan.assessment.reason_needs_human}`);
+      const reasonLower = (plan.assessment.reason_needs_human || '').toLowerCase();
+      const isCaptchaReason = reasonLower.includes('captcha') || reasonLower.includes('recaptcha');
+      const isLoginReason = reasonLower.includes('login') || reasonLower.includes('sign in') || reasonLower.includes('sign-in');
+
+      // If the only reason was CAPTCHA and we already solved it, re-analyze without CAPTCHA flag
+      if (isCaptchaReason && !snapshot.captcha_detected) {
+        console.log(`    ✅ CAPTCHA was the blocker — already solved, re-analyzing for fills...`);
+        const rePlan = await brain.analyzeAndPlan(snapshot, biz, screenshot);
+        if (rePlan.fills && rePlan.fills.length > 0) {
+          plan.fills = rePlan.fills;
+          plan.click_after_fill = rePlan.click_after_fill;
+          plan.expect_next = rePlan.expect_next;
+        }
+      } else if (isLoginReason && plan.fills && plan.fills.length > 0) {
+        // AI flagged login-required but also provided login fills — proceed with login
+        console.log(`    🔑 Login required — AI provided login fills, proceeding...`);
+        plan.assessment.needs_human = false;
+      } else {
+        console.log(`    👤 Needs human: ${plan.assessment.reason_needs_human}`);
+
+        if (autoSkip) {
+          console.log(`    ⏭️  Auto-skipping (--auto-skip enabled)`);
+          log.addEntry({
+            name: dir.name, url: dir.url, dr: dir.dr,
+            status: 'skipped',
+            reason: 'Auto-skipped (human intervention needed)',
+            ai_assessment: plan.assessment,
+          });
+          stats.skipped++;
+          return;
+        }
+
       console.log(`    👆 Handle manually in the browser, then press Enter to continue (or 's' to skip)...`);
 
       const input = await waitForInput();
@@ -395,6 +657,7 @@ async function processDirectory(page, dir, biz, brain, settings, log, dryRun, st
       });
       stats.submitted++;
       return;
+      } // end else (non-CAPTCHA needs_human)
     }
 
     if (dryRun) {
@@ -421,6 +684,16 @@ async function processDirectory(page, dir, biz, brain, settings, log, dryRun, st
       results.details
         .filter(d => d.status !== 'ok')
         .forEach(d => console.log(`       ⚠️  ${d.field}: ${d.status} ${d.error || ''}`));
+    }
+
+    // 4b. Solve any CAPTCHAs that appeared after filling (common pattern)
+    if (twoCaptchaKey) {
+      try {
+        const { solved } = await page.solveRecaptchas();
+        if (solved && solved.length > 0) {
+          console.log(`    🔓 Post-fill CAPTCHA solved (${solved.length})`);
+        }
+      } catch (e) { /* no CAPTCHA present, that's fine */ }
     }
 
     // 5. Click submit/next button
@@ -456,11 +729,15 @@ async function processDirectory(page, dir, biz, brain, settings, log, dryRun, st
       continue;
     }
 
-    // 7. Assess result
+    // 7. Assess result with screenshot
     console.log(`    🔍 Checking result...`);
     await sleep(1000);
     const postSnapshot = await analyzePage(page);
-    const result = await brain.assessResult(postSnapshot);
+    let postScreenshot = null;
+    try {
+      postScreenshot = await page.screenshot({ encoding: 'base64', fullPage: false });
+    } catch (e) { /* screenshot failed */ }
+    const result = await brain.assessResult(postSnapshot, postScreenshot);
 
     console.log(`    📋 Result: ${result.status} - ${result.message}`);
 
@@ -502,6 +779,16 @@ async function processDirectory(page, dir, biz, brain, settings, log, dryRun, st
 
     return; // Done with this directory
   }
+
+  // If we exhausted all steps without submitting, log as failed
+  console.log(`    ❌ Exhausted ${maxSteps} steps without completing submission`);
+  log.addEntry({
+    name: dir.name, url: dir.url, dr: dir.dr,
+    status: 'failed',
+    error: `Exhausted ${maxSteps} steps without completing submission`,
+    ai_assessment: null,
+  });
+  stats.failed++;
 }
 
 // ============================================================

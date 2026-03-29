@@ -174,7 +174,41 @@ class RelevanceChecker {
       };
     }
 
-    // Ambiguous — ask Claude
+    // If page has forms (it's a submission page), auto-pass unless negative signals dominate
+    const hasForm = (snapshot.forms || []).some(f => f.fields && f.fields.length > 0);
+    if (hasForm && negativeScore < 2) {
+      return {
+        relevant: true,
+        score: 0.70,
+        reason: `Has submission form, no strong negative signals. Positive: ${posMatches.slice(0, 3).join(', ') || 'general directory'}`,
+        categories_found: hasAutoCategory,
+        method: 'form_present',
+      };
+    }
+
+    // If page is a 404 or error, reject
+    if (title.includes('404') || title.includes('not found') || title.includes('error') || pageText.includes('page not found') || pageText.includes('server error')) {
+      return {
+        relevant: false,
+        score: 0,
+        reason: 'Page error (404/server error)',
+        categories_found: false,
+        method: 'error_detect',
+      };
+    }
+
+    // For anything else with positive signals, auto-pass (be aggressive for backlinks)
+    if (positiveScore > 0) {
+      return {
+        relevant: true,
+        score: 0.60 + positiveScore * 0.05,
+        reason: `Positive signals found: ${posMatches.slice(0, 3).join(', ')}`,
+        categories_found: hasAutoCategory,
+        method: 'signal_match',
+      };
+    }
+
+    // Only use Claude for truly ambiguous cases with zero signals
     return await this._aiRelevanceCheck(snapshot, directory);
   }
 
