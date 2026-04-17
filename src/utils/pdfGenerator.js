@@ -45,8 +45,8 @@ const addCompanyHeader = async (doc, documentType, metadata = {}) => {
   doc.setFontSize(9);
   doc.setTextColor(100, 100, 100);
   doc.text('Spring, TX 77388', 60, 35);
-  doc.text('Phone: (832) 844-5458', 60, 40);
-  doc.text('Email: info@carsautobody.com', 60, 45);
+  doc.text('Phone: (832) 885-3055', 60, 40);
+  doc.text('Email: carscollisionhouston@gmail.com', 60, 45);
 
   // Document type and metadata (right side)
   doc.setFontSize(20);
@@ -95,7 +95,7 @@ const addCompanyFooter = (doc) => {
 
   doc.text('Thank you for choosing C.A.R.S Collision & Refinish Shop!', 105, pageHeight - 14, { align: 'center' });
   doc.text('Quality Repairs • Professional Service • Customer Satisfaction Guaranteed', 105, pageHeight - 10, { align: 'center' });
-  doc.text('(832) 844-5458 • Spring, TX 77388', 105, pageHeight - 6, { align: 'center' });
+  doc.text('(832) 885-3055 • Spring, TX 77388', 105, pageHeight - 6, { align: 'center' });
 
   doc.setTextColor(0, 0, 0); // Reset to black
 };
@@ -429,7 +429,7 @@ export const generateInvoicePDF = async (workOrder, customer, vehicle, parts, la
   doc.text('• Payment is due upon receipt of this invoice.', 17, paymentY + 9);
   doc.text('• We accept: Cash, Check, Visa, Mastercard, Discover, American Express', 17, paymentY + 13);
   doc.text('• Make checks payable to: C.A.R.S Collision & Refinish Shop', 17, paymentY + 17);
-  doc.text('• For questions regarding this invoice, please call (832) 844-5458', 17, paymentY + 21);
+  doc.text('• For questions regarding this invoice, please call (832) 885-3055', 17, paymentY + 21);
 
   // Thank you note
   doc.setFont('helvetica', 'bold');

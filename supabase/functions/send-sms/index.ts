@@ -127,7 +127,7 @@ serve(async (req) => {
     const vehicle = `${workOrder.vehicles?.year} ${workOrder.vehicles?.make} ${workOrder.vehicles?.model}`;
     const customerName = workOrder.vehicles?.customers?.name || 'Customer';
 
-    const messageBody = `Hi ${customerName}! Your ${vehicle} (WO #${workOrder.work_order_number}) ${statusMessage}. Questions? Call us at (832) 844-5458. - C.A.R.S`;
+    const messageBody = `Hi ${customerName}! Your ${vehicle} (WO #${workOrder.work_order_number}) ${statusMessage}. Questions? Call us at (832) 885-3055. - C.A.R.S`;
 
     // Normalize phone number to E.164 format (+1XXXXXXXXXX)
     let formattedPhone = phoneNumber.replace(/\D/g, '');

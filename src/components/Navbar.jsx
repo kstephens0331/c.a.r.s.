@@ -63,6 +63,7 @@ export default function Navbar() {
             )}
           </div>
 
+          <NavLink to="/insurance-claim" className={navClass}>Insurance Claim</NavLink>
           <NavLink to="/contact" className={navClass}>Contact</NavLink>
           <NavLink to="/repair-gallery" className={navClass}>Repair Gallery</NavLink>
           <NavLink to="/trusted-partners" className={navClass}>Partners</NavLink>
@@ -98,6 +99,7 @@ export default function Navbar() {
           <NavLink to="/services/paintless-dent-repair" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Paintless Dent Repair</NavLink>
           <NavLink to="/services/bedliners-accessories" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Spray-In Bedliners</NavLink>
           <NavLink to="/services/light-mechanical" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Light Mechanical</NavLink>
+          <NavLink to="/insurance-claim" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Insurance Claim</NavLink>
           <NavLink to="/contact" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Contact</NavLink>
           <NavLink to="/repair-gallery" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Repair Gallery</NavLink>
           <NavLink to="/trusted-partners" onClick={() => setMenuOpen(false)} className="block py-2 hover:text-brandRed transition-colors duration-200">Partners</NavLink>

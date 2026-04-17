@@ -48,7 +48,7 @@ export default function ContactPage() {
     {
       question: 'What are your business hours?',
       answer:
-        'We’re open Monday through Friday from 8am to 6pm. Saturday appointments available upon request.',
+        'We are open Monday through Friday from 9:00 AM to 6:00 PM. Saturday: 9:00 AM to 1:00 PM.',
     },
     {
       question: 'What services do you offer?',
@@ -89,7 +89,7 @@ export default function ContactPage() {
             <p><strong>📍 Address:</strong> 2530 Old Louetta Loop #114, Spring, TX 77388</p>
             <p><strong>📞 Phone:</strong> <a href="tel:8328853055" className="text-brandRed hover:underline">832-885-3055</a></p>
             <p><strong>📧 Email:</strong> <a href="mailto:carscollisionhouston@gmail.com" className="text-brandRed hover:underline">carscollisionhouston@gmail.com</a></p>
-            <p><strong>🕐 Hours:</strong> Mon–Fri: 8am – 6pm, Sat by appt.</p>
+            <p><strong>🕐 Hours:</strong> Mon-Fri: 9:00 AM - 6:00 PM, Sat: 9:00 AM - 1:00 PM</p>
           </div>
         </div>
 

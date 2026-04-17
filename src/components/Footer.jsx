@@ -20,7 +20,7 @@ export default function Footer() {
           <ul className="space-y-1">
             <li><Link to="/" className="hover:text-brandRed">Home</Link></li>
             <li><Link to="/about" className="hover:text-brandRed">About</Link></li>
-            <li><Link to="/collision-repair" className="hover:text-brandRed">Collision Repair</Link></li>
+            <li><Link to="/services/collision-repair" className="hover:text-brandRed">Collision Repair</Link></li>
             <li><Link to="/contact" className="hover:text-brandRed">Contact</Link></li>
             <li><Link to="/trusted-partners" className="hover:text-brandRed">Partners</Link></li>
             <li><Link to="/financing" className="hover:text-brandRed">Financing</Link></li>
@@ -57,6 +57,11 @@ export default function Footer() {
 
       {/* Copyright */}
       <div className="bg-black text-center py-3 text-white">
+        <div className="flex justify-center space-x-4 mb-2">
+          <Link to="/privacy-policy" className="hover:text-brandRed">Privacy Policy</Link>
+          <span>|</span>
+          <Link to="/terms-of-service" className="hover:text-brandRed">Terms of Service</Link>
+        </div>
         <p>
           &copy; {new Date().getFullYear()} C.A.R.S Collision & Refinish. All rights reserved. Built by{' '}
           <a

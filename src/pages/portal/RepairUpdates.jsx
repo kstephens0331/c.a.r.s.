@@ -1,7 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useState, useCallback } from 'react';
-import { supabase } from '../../services/supabaseClient.js'; // Ensure path is correct
+import { Link } from 'react-router-dom';
+import { supabase } from '../../services/supabaseClient.js';
 import { TimelineSkeleton } from '../../components/LoadingSkeletons';
+import RepairTimeline from '../../components/portal/RepairTimeline';
 
 export default function RepairUpdates() {
   const [customerWorkOrders, setCustomerWorkOrders] = useState([]);
@@ -195,14 +197,22 @@ export default function RepairUpdates() {
               <h2 className="text-xl font-semibold mb-2">
                 {order.vehicles?.year} {order.vehicles?.make} {order.vehicles?.model} (Work Order #{order.work_order_number})
               </h2>
-              <ol className="list-decimal list-inside text-sm space-y-1 mb-4">
-                {statuses.map((statusItem) => (
-                  <li key={statusItem} className={getStatusClass(order.current_status, statusItem)}>
-                    {statusItem}
-                    {order.current_status === statusItem && ' — In Progress'}
-                  </li>
-                ))}
-              </ol>
+              {/* Visual Timeline */}
+              <div className="mb-6">
+                <RepairTimeline currentStatus={order.current_status} />
+              </div>
+
+              {/* Show repair care link when complete */}
+              {(order.current_status === 'Complete' || order.current_status === 'Ready for Pickup') && (
+                <div className="mb-4 bg-green-50 border border-green-200 rounded-lg p-4">
+                  <p className="text-green-800 text-sm font-medium">
+                    Your vehicle is {order.current_status === 'Complete' ? 'complete' : 'ready for pickup'}!{' '}
+                    <Link to="/repair-care" className="text-brandRed hover:underline font-semibold">
+                      View post-repair care instructions
+                    </Link>
+                  </p>
+                </div>
+              )}
 
               {/* Display Parts Used */}
               {order.work_order_parts && order.work_order_parts.length > 0 && (

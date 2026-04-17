@@ -28,6 +28,11 @@ const BedlinersPage = lazy(() => import('./pages/portal/BedlinersPage'));
 const LightMechanicalPage = lazy(() => import('./pages/portal/LightMechanicalPage'));
 const FinancingPage = lazy(() => import('./pages/portal/FinancingPage.jsx'));
 const TrustedPartnersPage = lazy(() => import('./pages/portal/TrustedPartnersPage.jsx'));
+const PrivacyPolicy = lazy(() => import('./pages/portal/PrivacyPolicy.jsx'));
+const TermsOfService = lazy(() => import('./pages/portal/TermsOfService.jsx'));
+const NotFoundPage = lazy(() => import('./pages/portal/NotFoundPage.jsx'));
+const InsuranceClaimPage = lazy(() => import('./pages/portal/InsuranceClaimPage.jsx'));
+const RepairCarePage = lazy(() => import('./pages/portal/RepairCarePage.jsx'));
 
 // Lazy load Admin Layout and Components
 const AdminLayout = lazy(() => import('./layouts/AdminLayout.jsx'));
@@ -41,6 +46,7 @@ const Invoices = lazy(() => import('./pages/admin/Invoices.jsx'));
 const PhotoUploads = lazy(() => import('./pages/admin/PhotoUploads.jsx'));
 const AdminDashboardContent = lazy(() => import('./pages/admin/AdminDashboard.jsx'));
 const CustomerDetailsPage = lazy(() => import('./pages/admin/CustomerDetailsPage.jsx'));
+const Reports = lazy(() => import('./pages/admin/Reports.jsx'));
 
 // Lazy load Customer Portal Layout and Components
 const CustomerPortalLayout = lazy(() => import('./layouts/CustomerPortalLayout.jsx'));
@@ -93,6 +99,10 @@ function App() {
                 <Route path="/services/light-mechanical" element={<LightMechanicalPage />} />
                 <Route path="/financing" element={<FinancingPage />} />
                 <Route path="/trusted-partners" element={<TrustedPartnersPage />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms-of-service" element={<TermsOfService />} />
+                <Route path="/insurance-claim" element={<InsuranceClaimPage />} />
+                <Route path="/repair-care" element={<RepairCarePage />} />
 
                 {/* Admin Routes - Nested under AdminLayout with ErrorBoundary */}
                 <Route path="/admin" element={
@@ -110,6 +120,7 @@ function App() {
                   <Route path="inventory" element={<ErrorBoundary><Inventory /></ErrorBoundary>} />
                   <Route path="invoices" element={<ErrorBoundary><Invoices /></ErrorBoundary>} />
                   <Route path="photos" element={<ErrorBoundary><PhotoUploads /></ErrorBoundary>} />
+                  <Route path="reports" element={<ErrorBoundary><Reports /></ErrorBoundary>} />
                 </Route>
 
                 {/* Customer Portal Routes - Nested under CustomerPortalLayout with ErrorBoundary */}
@@ -127,8 +138,8 @@ function App() {
                   <Route path="vehicles/:id" element={<ErrorBoundary><VehicleDetailsPage /></ErrorBoundary>} />
                 </Route>
 
-                {/* Optional: Add a catch-all for 404 Not Found pages */}
-                {/* <Route path="*" element={<NotFoundPage />} /> */}
+                {/* 404 Not Found */}
+                <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </Suspense>
           </main>
