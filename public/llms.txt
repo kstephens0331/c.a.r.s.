@@ -1,0 +1,49 @@
+# C.A.R.S Collision & Refinish Shop
+
+> Veteran and family owned collision repair and auto body shop in Spring, TX. Expert collision repair, custom paint, paintless dent repair, and spray-in bedliners. Insurance accepted. Free estimates. Serving The Woodlands, Klein, Tomball, Cypress, and North Houston.
+
+## Business
+
+- Name: C.A.R.S Collision & Refinish Shop
+- Owner: Tony (veteran, 30+ years collision and auto body experience)
+- Address: 2530 Old Louetta Loop #114, Spring, TX 77388
+- Phone: 832-885-3055
+- Email: carscollisionhouston@gmail.com
+- Hours: Mon to Fri 9:00am to 6:00pm, Sat 9:00am to 1:00pm, Sun closed
+- Payment: Cash, credit card, insurance, Snap Finance
+
+## Services
+
+- Collision repair (frame straightening, panel replacement, insurance claim assistance, OEM standards)
+- Custom paint and refinishing (computerized color matching, full and partial repaints, custom finishes)
+- Paintless dent repair (PDR for hail damage, door dings, minor dents without repainting)
+- Spray-in bedliners and truck accessories
+- Light mechanical repairs (brakes, suspension, A/C, routine maintenance)
+- Free estimates and insurance claim assistance
+
+## Service area
+
+- Spring, TX (primary)
+- The Woodlands, TX
+- Klein, TX
+- Tomball, TX
+- Cypress, TX
+- North Houston / Harris County, TX
+
+## Site
+
+- Home: https://www.carscollisionandrefinishshop.com/
+- About: https://www.carscollisionandrefinishshop.com/about
+- Services overview: https://www.carscollisionandrefinishshop.com/services
+- Collision repair: https://www.carscollisionandrefinishshop.com/services/collision-repair
+- Paint and refinish: https://www.carscollisionandrefinishshop.com/services/paint-refinish
+- Custom paint: https://www.carscollisionandrefinishshop.com/services/custom-paint
+- Paintless dent repair: https://www.carscollisionandrefinishshop.com/services/paintless-dent-repair
+- Bedliners and accessories: https://www.carscollisionandrefinishshop.com/services/bedliners-accessories
+- Light mechanical: https://www.carscollisionandrefinishshop.com/services/light-mechanical
+- Repair gallery: https://www.carscollisionandrefinishshop.com/repair-gallery
+- Financing: https://www.carscollisionandrefinishshop.com/financing
+- Insurance claims: https://www.carscollisionandrefinishshop.com/insurance-claim
+- Contact: https://www.carscollisionandrefinishshop.com/contact
+- Sitemap: https://www.carscollisionandrefinishshop.com/sitemap.xml
+- Full LLM context: https://www.carscollisionandrefinishshop.com/llms-full.txt

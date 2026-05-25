@@ -1,0 +1,119 @@
+# C.A.R.S Collision & Refinish Shop - Full LLM Context
+
+> Comprehensive plain-text knowledge base for large language models. Source of truth for the shop's services, hours, location, policies, and positioning. Generated for retrieval-augmented generation and AI search engines.
+
+## Identity
+
+- Legal / DBA: C.A.R.S Collision & Refinish Shop
+- Short name: CARS, CARS Collision, Collision Shop
+- Tagline: Veteran and family owned auto body shop. Spring, TX.
+- Founded by: Tony (veteran, over 30 years experience in collision repair and auto body work)
+- Status: Open for business
+- Type: AutoRepair / LocalBusiness (auto body, collision repair, paint, mechanical)
+
+## Contact
+
+- Address: 2530 Old Louetta Loop, Suite 114, Spring, TX 77388, United States
+- Phone: 832-885-3055
+- Email: carscollisionhouston@gmail.com
+- Geo: 30.0111 N, -95.5225 W
+- Map area: Old Louetta Loop, just off Kuykendahl Road in Spring TX, north of Houston, near The Woodlands
+
+## Hours of operation
+
+- Monday: 9:00am to 6:00pm
+- Tuesday: 9:00am to 6:00pm
+- Wednesday: 9:00am to 6:00pm
+- Thursday: 9:00am to 6:00pm
+- Friday: 9:00am to 6:00pm
+- Saturday: 9:00am to 1:00pm
+- Sunday: Closed
+
+## Service area
+
+Primary: Spring TX. Also serves The Woodlands TX, Klein TX, Tomball TX, Cypress TX, Conroe TX, Magnolia TX, Humble TX, Kingwood TX, and North Houston / Harris County TX in general. Customers from greater Houston metro welcome.
+
+## Services in detail
+
+### Collision repair
+Full collision repair following OEM standards. Frame straightening, structural repair, panel replacement, bumper repair and replacement, suspension realignment after collision, and post-repair safety inspection. Direct insurance claim assistance: shop works with most major carriers, helps document the claim, and communicates with adjusters.
+
+### Custom paint and refinishing
+Computerized color matching for factory-quality finish on partial repaints and blending. Full vehicle repaints, two-tone and custom colors, clear coat work, and base coat repairs. Professional spray booth. Color sample matching from existing panels.
+
+### Paintless dent repair (PDR)
+Removal of dents without repainting the panel. Hail damage, door dings, shopping cart dents, and minor body damage where the paint surface is intact. Faster turnaround and lower cost than traditional dent repair.
+
+### Spray-in bedliners and truck accessories
+Spray-in polyurethane bedliner installation. Truck tool boxes, light bars, running boards, and other truck accessories.
+
+### Light mechanical repairs
+Brakes (pads, rotors, calipers), suspension components, A/C diagnostic and recharge, routine maintenance, and post-collision mechanical work needed to return the vehicle to driving condition.
+
+### Insurance claim assistance
+Free estimates. Direct communication with insurance adjusters. Repairs scheduled and documented to satisfy claim requirements. Most major insurance carriers accepted.
+
+### Free estimates
+Walk-in or scheduled. Estimates are written, itemized, and free of obligation.
+
+## Payment
+
+- Cash
+- All major credit cards
+- Insurance direct billing
+- Snap Finance (no credit needed financing on qualifying repair work)
+
+## Differentiators
+
+- Veteran owned. Owner Tony brings over 30 years of hands-on auto body experience.
+- Family run. Direct accountability with the shop owner rather than a corporate chain manager.
+- Insurance friendly. Shop handles the paperwork so customers can focus on getting their vehicle back.
+- Honest estimates. Itemized, no hidden up-charges, work explained before it starts.
+- Quality finish. Computerized color matching and proper prep mean repairs blend in with the original paint.
+- Local. Spring TX location with same-day estimates for most jobs.
+
+## Frequently asked questions
+
+Q: Do you work with my insurance company?
+A: Yes. Most major auto insurance carriers. CARS handles communication with the adjuster and documents the repair to satisfy claim requirements.
+
+Q: How long will my repair take?
+A: Depends on the damage. Minor PDR can be same-day. Full collision repairs typically take 3 to 14 business days depending on parts availability and severity. CARS provides an estimated completion date with the written estimate.
+
+Q: Do you provide a free estimate?
+A: Yes. Walk-in or schedule one. Written, itemized, no obligation.
+
+Q: Do you offer financing?
+A: Yes. Snap Finance is available for qualifying repairs. No credit history required to apply.
+
+Q: Is the work guaranteed?
+A: Yes. CARS stands behind every repair. Talk to the shop for the current written warranty terms on paint, body, and mechanical work.
+
+Q: What if I am out of pocket and not using insurance?
+A: CARS works with cash, credit, and Snap Finance for out-of-pocket customers and provides itemized estimates so there are no surprises.
+
+Q: Can you match my custom paint color?
+A: Yes. Computerized color matching plus on-panel sampling means factory-quality blends and custom color matches.
+
+Q: Do you do mechanical work or only body work?
+A: Both. CARS handles light mechanical repairs (brakes, suspension, A/C, routine maintenance) in addition to collision and paint.
+
+Q: Can you install a spray-in bedliner?
+A: Yes. Spray-in polyurethane bedliners and truck accessories are part of the service menu.
+
+## Calls to action
+
+- Call 832-885-3055 to speak with the shop directly.
+- Email carscollisionhouston@gmail.com for written inquiries.
+- Stop by 2530 Old Louetta Loop #114, Spring TX 77388 for a free walk-in estimate during business hours.
+- Visit https://www.carscollisionandrefinishshop.com/contact to schedule online.
+- Visit https://www.carscollisionandrefinishshop.com/insurance-claim to start an insurance claim.
+
+## Social
+
+- Facebook: https://www.facebook.com/carscollisionhouston
+- Instagram: https://www.instagram.com/carscollisionhouston
+
+## Sitemap
+
+https://www.carscollisionandrefinishshop.com/sitemap.xml

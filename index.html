@@ -4,9 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/logo.png" />
-    <link rel="apple-touch-icon" href="/logo.png" />
+    <!-- Favicon (real .svg + .ico fallback) -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/logo.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <!-- Theme color (browser chrome / PWA) -->
+    <meta name="theme-color" content="#212121" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#212121" media="(prefers-color-scheme: dark)" />
 
     <!-- Ahrefs Analytics -->
     <script src="https://analytics.ahrefs.com/analytics.js" data-key="nQHigIOX69SGXZauDEWkQg" async></script>
@@ -37,8 +43,12 @@
     <meta property="og:url" content="https://www.carscollisionandrefinishshop.com/" />
     <meta property="og:title" content="C.A.R.S Collision & Refinish | Auto Body Shop Spring TX" />
     <meta property="og:description" content="Veteran & family owned collision repair shop. Expert auto body repair, custom paint, PDR, and bedliners. Insurance accepted. Serving Spring, The Woodlands, and North Houston." />
-    <meta property="og:image" content="https://www.carscollisionandrefinishshop.com/logo.png" />
-    <meta property="og:image:alt" content="C.A.R.S Collision & Refinish Shop Logo" />
+    <meta property="og:image" content="https://www.carscollisionandrefinishshop.com/og-image.png" />
+    <meta property="og:image:secure_url" content="https://www.carscollisionandrefinishshop.com/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="C.A.R.S Collision & Refinish Shop - Veteran owned auto body shop in Spring TX" />
     <meta property="og:site_name" content="C.A.R.S Collision & Refinish" />
     <meta property="og:locale" content="en_US" />
 
@@ -47,13 +57,19 @@
     <meta name="twitter:url" content="https://www.carscollisionandrefinishshop.com/" />
     <meta name="twitter:title" content="C.A.R.S Collision & Refinish | Auto Body Shop Spring TX" />
     <meta name="twitter:description" content="Veteran & family owned collision repair shop. Expert auto body repair, custom paint, PDR, and bedliners. Insurance accepted." />
-    <meta name="twitter:image" content="https://www.carscollisionandrefinishshop.com/logo.png" />
+    <meta name="twitter:image" content="https://www.carscollisionandrefinishshop.com/og-image.png" />
+    <meta name="twitter:image:alt" content="C.A.R.S Collision & Refinish Shop - Veteran owned auto body shop in Spring TX" />
+    <meta name="twitter:site" content="@carscollisionhouston" />
+    <meta name="twitter:creator" content="@carscollisionhouston" />
 
-    <!-- Local Business Schema.org JSON-LD -->
+    <!-- Local Business Schema.org JSON-LD (AutoRepair LocalBusiness) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "AutoRepair",
+      "@id": "https://www.carscollisionandrefinishshop.com/#localbusiness",
+      "parentOrganization": { "@id": "https://www.carscollisionandrefinishshop.com/#organization" },
+      "founder": { "@id": "https://www.carscollisionandrefinishshop.com/#founder" },
       "name": "C.A.R.S Collision & Refinish Shop",
       "description": "Veteran and family owned collision repair and auto body shop specializing in collision repair, custom paint, paintless dent repair, and spray-in bedliners.",
       "url": "https://www.carscollisionandrefinishshop.com",
@@ -166,12 +182,79 @@
       "sameAs": [
         "https://www.facebook.com/carscollisionhouston",
         "https://www.instagram.com/carscollisionhouston"
-      ],
-      "founder": {
-        "@type": "Person",
-        "name": "Tony",
-        "description": "Veteran owner with over 30 years of experience in collision repair and auto body work"
-      }
+      ]
+    }
+    </script>
+
+    <!-- Organization Schema (legal entity, distinct from the storefront LocalBusiness) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://www.carscollisionandrefinishshop.com/#organization",
+      "name": "C.A.R.S Collision & Refinish Shop",
+      "url": "https://www.carscollisionandrefinishshop.com/",
+      "logo": "https://www.carscollisionandrefinishshop.com/logo.png",
+      "email": "carscollisionhouston@gmail.com",
+      "telephone": "+1-832-885-3055",
+      "founder": { "@id": "https://www.carscollisionandrefinishshop.com/#founder" },
+      "foundingLocation": {
+        "@type": "Place",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Spring",
+          "addressRegion": "TX",
+          "addressCountry": "US"
+        }
+      },
+      "sameAs": [
+        "https://www.facebook.com/carscollisionhouston",
+        "https://www.instagram.com/carscollisionhouston"
+      ]
+    }
+    </script>
+
+    <!-- Person Schema (founder) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://www.carscollisionandrefinishshop.com/#founder",
+      "name": "Tony",
+      "jobTitle": "Owner and Lead Technician",
+      "description": "Veteran owner with over 30 years of experience in collision repair and auto body work.",
+      "worksFor": { "@id": "https://www.carscollisionandrefinishshop.com/#organization" }
+    }
+    </script>
+
+    <!-- WebSite Schema (with SearchAction) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://www.carscollisionandrefinishshop.com/#website",
+      "url": "https://www.carscollisionandrefinishshop.com/",
+      "name": "C.A.R.S Collision & Refinish Shop",
+      "description": "Veteran and family owned collision repair and auto body shop in Spring, TX. Collision repair, custom paint, paintless dent repair, and spray-in bedliners.",
+      "publisher": { "@id": "https://www.carscollisionandrefinishshop.com/#organization" },
+      "inLanguage": "en-US"
+    }
+    </script>
+
+    <!-- BreadcrumbList template (home only at index.html; per-page breadcrumbs injected via react-helmet-async on nested routes) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "@id": "https://www.carscollisionandrefinishshop.com/#breadcrumbs",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.carscollisionandrefinishshop.com/"
+        }
+      ]
     }
     </script>
 
