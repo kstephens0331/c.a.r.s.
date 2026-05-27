@@ -25,10 +25,12 @@
     <link rel="dns-prefetch" href="https://www.google-analytics.com" />
     <link rel="dns-prefetch" href="https://maps.googleapis.com" />
 
-    <!-- Primary Meta Tags (Enhanced for SEO) -->
+    <!-- Primary Meta Tags. Description is set per-route via react-helmet-async.
+         The static <meta name="description"> was removed 2026-05-27 because Ahrefs
+         flagged 'Multiple meta description tags' when Helmet injected page-level
+         meta on top of the static one. -->
     <title>C.A.R.S Collision & Refinish | Auto Body Shop Spring TX | Veteran Owned</title>
     <meta name="title" content="C.A.R.S Collision & Refinish | Auto Body Shop Spring TX | Veteran Owned" />
-    <meta name="description" content="Veteran & family owned collision repair and auto body shop in Spring, TX. Expert collision repair, custom paint, paintless dent repair, and spray-in bedliners. Insurance accepted. Free estimates. Serving The Woodlands, Klein, Tomball, and North Houston." />
     <meta name="keywords" content="collision repair spring tx, auto body shop the woodlands, car paint refinishing houston, paintless dent repair spring, spray in bedliner installation, custom auto paint spring tx, veteran owned auto body shop, insurance collision repair, truck accessories houston, hail damage repair spring tx, frame straightening, panel replacement, OEM collision repair" />
     <meta name="author" content="C.A.R.S Collision & Refinish Shop" />
     <meta name="robots" content="index, follow" />
@@ -324,10 +326,13 @@
   </head>
 
   <body>
-    <!-- No-JavaScript fallback message -->
+    <!-- No-JavaScript fallback message. Uses <p> with role=heading instead of <h1>
+         to avoid Ahrefs 'Multiple H1 tags' flag - this noscript block is in the
+         static HTML alongside the React-rendered H1 from each route, and Ahrefs's
+         crawler sees both. Removed 2026-05-27. -->
     <noscript>
       <div style="padding: 20px; text-align: center; background: #f0f0f0; font-family: Arial, sans-serif;">
-        <h1>C.A.R.S Collision & Refinish Shop</h1>
+        <p style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">C.A.R.S Collision & Refinish Shop</p>
         <p><strong>Veteran & Family Owned Auto Body Shop in Spring, TX</strong></p>
         <p>Please enable JavaScript to view this website.</p>
         <p>Call us at <a href="tel:8328853055" style="color: #c41e3a; font-weight: bold;">832-885-3055</a></p>
