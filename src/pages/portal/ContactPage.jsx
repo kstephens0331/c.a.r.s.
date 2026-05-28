@@ -61,6 +61,10 @@ export default function ContactPage() {
     <div className="min-h-screen bg-gradient-to-br from-[#2c1b14] via-[#3e1f1c] to-black text-white px-4 py-20">
       <Helmet>
         <title>Contact Us | C.A.R.S. Collision & Refinish</title>
+        <meta
+          name="description"
+          content="Contact C.A.R.S. Collision & Refinish in Spring, TX for a free estimate. Call, message, or visit our shop serving Spring, The Woodlands, and North Houston."
+        />
       </Helmet>
 
       <section className="max-w-6xl mx-auto">

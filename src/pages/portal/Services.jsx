@@ -6,6 +6,10 @@ export default function Services() {
     <div className="min-h-screen bg-gradient-to-br from-[#2c1b14] via-[#3e1f1c] to-black text-white px-6 py-20">
       <Helmet>
         <title>Our Services | C.A.R.S. Collision & Refinish</title>
+        <meta
+          name="description"
+          content="Full-service auto body shop in Spring, TX: collision repair, custom paint, paintless dent repair, spray-in bedliners, and light mechanical work. Insurance accepted."
+        />
       </Helmet>
 
       <section className="max-w-5xl mx-auto text-center mb-16">

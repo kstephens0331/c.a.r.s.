@@ -34,6 +34,10 @@ export default function RepairGallery() {
     <div className="min-h-screen bg-gradient-to-br from-[#2c1b14] via-[#3e1f1c] to-black text-white py-20 px-4">
       <Helmet>
         <title>Repair Gallery | C.A.R.S. Collision & Refinish</title>
+        <meta
+          name="description"
+          content="See real before-and-after collision repair, custom paint, and refinish work from C.A.R.S. Collision & Refinish in Spring, TX. Quality craftsmanship you can see."
+        />
       </Helmet>
 
   <section className="max-w-5xl mx-auto px-4 py-12 text-center">

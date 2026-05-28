@@ -19,6 +19,10 @@ export default function PaintRefinishPage() {
     <div className="bg-gradient-to-br from-[#2c1b14] via-[#3e1f1c] to-black text-white min-h-screen py-20 px-6">
       <Helmet>
         <title>Paint & Refinish | C.A.R.S. Collision & Refinish</title>
+        <meta
+          name="description"
+          content="Expert automotive paint and refinishing in Spring, TX. Color-matched factory finishes, full repaints, and clear-coat restoration from C.A.R.S. Collision & Refinish."
+        />
       </Helmet>
 
       <div className="max-w-6xl mx-auto space-y-20">

@@ -1,0 +1,29 @@
+# False positives for gitleaks rule "generic-api-key".
+#
+# These fingerprints are the Ahrefs Analytics data-key attribute on the
+# <script src="https://analytics.ahrefs.com/analytics.js"> tag baked into
+# every prerendered marketing page. The key is a PUBLIC analytics identifier
+# (Ahrefs Web Analytics, same class as a Google Analytics measurement ID),
+# not a credential. It is already present in the live client-side HTML; the
+# prerender pipeline just bakes it into committed static snapshots.
+#
+# If the analytics key ever rotates, regenerate from:
+#   gitleaks protect --staged --verbose --no-banner | sed 's/\x1b\[[0-9;]*m//g' \
+#     | grep -i fingerprint | sed 's/.*[Ff]ingerprint: *//' | sort -u
+public/_prerendered_root.html:generic-api-key:16
+public/about/index.html:generic-api-key:16
+public/contact/index.html:generic-api-key:16
+public/financing/index.html:generic-api-key:16
+public/insurance-claim/index.html:generic-api-key:16
+public/privacy-policy/index.html:generic-api-key:16
+public/repair-care/index.html:generic-api-key:16
+public/repair-gallery/index.html:generic-api-key:16
+public/services/bedliners-accessories/index.html:generic-api-key:16
+public/services/collision-repair/index.html:generic-api-key:16
+public/services/custom-paint/index.html:generic-api-key:16
+public/services/index.html:generic-api-key:16
+public/services/light-mechanical/index.html:generic-api-key:16
+public/services/paint-refinish/index.html:generic-api-key:16
+public/services/paintless-dent-repair/index.html:generic-api-key:16
+public/terms-of-service/index.html:generic-api-key:16
+public/trusted-partners/index.html:generic-api-key:16
