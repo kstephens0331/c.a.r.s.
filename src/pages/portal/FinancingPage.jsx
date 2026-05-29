@@ -94,7 +94,7 @@ export default function FinancingPage() {
             className="inline-block"
           >
             <img
-              src="https://merchant-banners-s3.snapfinance.com/Loans/EN/A160x600.jpeg"
+              src="/images/snap-finance-banner.jpeg"
               alt="Snap Finance - Apply Here"
               style={{ boxShadow: '4px 2px 6px #010101', border: 'none' }}
               className="mx-auto rounded-lg hover:scale-105 transition-transform duration-300"

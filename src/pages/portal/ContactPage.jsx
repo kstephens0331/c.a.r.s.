@@ -151,7 +151,7 @@ export default function ContactPage() {
     rel="noopener noreferrer"
   >
     <img
-      src="https://merchant-banners-s3.snapfinance.com/Loans/EN/A160x600.jpeg"
+      src="/images/snap-finance-banner.jpeg"
       alt="Snap Finance - Apply Here"
       style={{ boxShadow: '4px 2px 6px #010101', border: 'none' }}
       className="mx-auto rounded-lg"
