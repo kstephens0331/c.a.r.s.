@@ -98,6 +98,16 @@ if (!existingCustomer && !customerCheckError) {
         setIsAdmin(false);
         setIsSuperadmin(false);
       } else {
+        // If the admin has 2FA enrolled but the session is still password-only,
+        // send them to the login page to complete the second-factor challenge.
+        const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+        if (aal?.nextLevel === 'aal2' && aal.currentLevel !== 'aal2') {
+          logger.warn('AdminLayout: 2FA required; redirecting to /login for challenge');
+          navigate('/login', { replace: true });
+          setIsAdmin(false);
+          setLoading(false);
+          return;
+        }
         logger.debug('AdminLayout: User IS an admin. Granting access.');
         setIsAdmin(true);
         setIsSuperadmin(!!profile.is_superadmin);
@@ -161,6 +171,7 @@ if (!existingCustomer && !customerCheckError) {
         {isSuperadmin && (
           <Link to="/admin/admin-users" className="hover:text-brandRed">Admin Users &amp; Audit</Link>
         )}
+        <Link to="/admin/security" className="hover:text-brandRed">Security (2FA)</Link>
         <Link to="/reset-password" className="mt-auto border-t border-white/30 pt-4 hover:text-brandRed">Change Password</Link>
         <button
           onClick={handleLogout}

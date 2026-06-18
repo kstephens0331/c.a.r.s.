@@ -10,32 +10,38 @@ export default function CustomerLogin() {
   const [error, setError] = useState(null);
   const [fieldErrors, setFieldErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [mfaRequired, setMfaRequired] = useState(false);
+  const [mfaCode, setMfaCode] = useState('');
+  const [mfaError, setMfaError] = useState('');
   const navigate = useNavigate();
 
-  // Check if user is already logged in (from OAuth redirect or existing session)
+  // Returns true if the session still needs a second factor (aal2) to continue.
+  const needsMfa = async () => {
+    const { data } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+    return data?.nextLevel === 'aal2' && data.currentLevel !== 'aal2';
+  };
+
+  const redirectByRole = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('is_admin, is_superadmin')
+      .eq('id', user.id)
+      .maybeSingle();
+    navigate(profile?.is_admin || profile?.is_superadmin ? '/admin' : '/portal');
+  };
+
+  // Already logged in (existing session / OAuth redirect): challenge MFA if needed, else route.
   useEffect(() => {
     const checkUserAndRedirect = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-
-      if (session?.user) {
-        setLoading(true);
-
-        // Check if user is admin
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('is_admin')
-          .eq('id', session.user.id)
-          .maybeSingle();
-
-        if (profile?.is_admin) {
-          navigate('/admin');
-        } else {
-          navigate('/portal');
-        }
-      }
+      if (!session?.user) return;
+      if (await needsMfa()) { setMfaRequired(true); return; }
+      setLoading(true);
+      await redirectByRole();
     };
-
     checkUserAndRedirect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
   const handleLogin = async (e) => {
@@ -64,29 +70,29 @@ export default function CustomerLogin() {
     return;
   }
 
-  const {
-    data: { user }
-  } = await supabase.auth.getUser();
-
-  const { data: profile, error: profileError } = await supabase
-    .from('profiles')
-    .select('is_admin')
-    .eq('id', user.id)
-    .maybeSingle();
-
-  if (profileError) {
-    console.error('Profile lookup failed:', profileError.message);
-    setError('Unable to verify user role.');
+  // If the account has two-factor enabled, challenge for a code before routing.
+  if (await needsMfa()) {
+    setMfaRequired(true);
     setLoading(false);
     return;
   }
 
-  // Redirect based on admin status
-  if (profile?.is_admin) {
-    navigate('/admin');
-  } else {
-    navigate('/portal');
-  }
+  await redirectByRole();
+};
+
+const submitMfa = async (e) => {
+  e.preventDefault();
+  setMfaError('');
+  setLoading(true);
+  const { data: factors, error: lfErr } = await supabase.auth.mfa.listFactors();
+  if (lfErr) { setMfaError(lfErr.message); setLoading(false); return; }
+  const totp = factors?.totp?.[0];
+  if (!totp) { setMfaError('No authenticator is set up for this account.'); setLoading(false); return; }
+  const { data: ch, error: chErr } = await supabase.auth.mfa.challenge({ factorId: totp.id });
+  if (chErr) { setMfaError(chErr.message); setLoading(false); return; }
+  const { error: vErr } = await supabase.auth.mfa.verify({ factorId: totp.id, challengeId: ch.id, code: mfaCode.trim() });
+  if (vErr) { setMfaError('Invalid code. Please try again.'); setLoading(false); return; }
+  await redirectByRole();
 };
 
 const handleGoogleLogin = async () => {
@@ -136,6 +142,22 @@ const handleGoogleLogin = async () => {
       </Helmet>
 
       <div className="min-h-screen flex items-center justify-center bg-accent px-4">
+        {mfaRequired ? (
+        <form onSubmit={submitMfa} className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+          <h2 className="text-2xl font-bold mb-4 text-primary text-center">Two-Factor Authentication</h2>
+          <p className="text-sm text-gray-600 mb-4 text-center">Enter the 6-digit code from your authenticator app.</p>
+          {mfaError && <p className="text-red-600 mb-4 text-sm">{mfaError}</p>}
+          <input
+            inputMode="numeric" autoComplete="one-time-code" placeholder="123456" autoFocus
+            className="w-full p-3 border rounded text-gray-900 tracking-widest text-center mb-4"
+            value={mfaCode} onChange={(e) => setMfaCode(e.target.value)} required
+          />
+          <button type="submit" disabled={loading}
+            className="bg-primary text-white w-full py-3 rounded font-semibold hover:bg-black disabled:opacity-50">
+            {loading ? 'Verifying…' : 'Verify'}
+          </button>
+        </form>
+        ) : (
         <form
           onSubmit={handleLogin}
           className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md"
@@ -198,6 +220,7 @@ const handleGoogleLogin = async () => {
             </Link>
           </p>
         </form>
+        )}
       </div>
     </>
   );

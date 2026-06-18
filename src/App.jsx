@@ -62,6 +62,7 @@ const AdminDashboardContent = lazy(() => import('./pages/admin/AdminDashboard.js
 const CustomerDetailsPage = lazy(() => import('./pages/admin/CustomerDetailsPage.jsx'));
 const Reports = lazy(() => import('./pages/admin/Reports.jsx'));
 const AdminUsers = lazy(() => import('./pages/admin/AdminUsers.jsx'));
+const Security = lazy(() => import('./pages/admin/Security.jsx'));
 
 // Lazy load Customer Portal Layout and Components
 const CustomerPortalLayout = lazy(() => import('./layouts/CustomerPortalLayout.jsx'));
@@ -139,6 +140,7 @@ function App() {
                   <Route path="photos" element={<ErrorBoundary><PhotoUploads /></ErrorBoundary>} />
                   <Route path="reports" element={<ErrorBoundary><Reports /></ErrorBoundary>} />
                   <Route path="admin-users" element={<ErrorBoundary><AdminUsers /></ErrorBoundary>} />
+                  <Route path="security" element={<ErrorBoundary><Security /></ErrorBoundary>} />
                 </Route>
 
                 {/* Customer Portal Routes - Nested under CustomerPortalLayout with ErrorBoundary */}
