@@ -6,6 +6,7 @@ import { logger } from '../utils/logger'; // Safe logging utility
 export default function AdminLayout() {
   const [session, setSession] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isSuperadmin, setIsSuperadmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation(); // Get current location
@@ -78,9 +79,9 @@ if (!existingCustomer && !customerCheckError) {
       logger.debug('AdminLayout: Attempting to fetch profile for user ID:', currentSession.user.id);
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
-        .select('is_admin')
+        .select('is_admin, is_superadmin')
         .eq('id', currentSession.user.id)
-        .single();
+        .maybeSingle();
 
       // DEBUG LOG 2: Profile data and error check
       logger.debug('AdminLayout: Profile data retrieved:', profile);
@@ -91,13 +92,15 @@ if (!existingCustomer && !customerCheckError) {
         logger.warn('AdminLayout: Profile fetch error, redirecting to /portal');
         navigate('/portal', { replace: true }); // Use replace: true
         setIsAdmin(false);
-      } else if (!profile || !profile.is_admin) {
-        logger.warn('AdminLayout: User is NOT an admin. Profile exists:', !!profile, 'is_admin:', profile?.is_admin, 'Redirecting to /portal');
+      } else if (!profile || !(profile.is_admin || profile.is_superadmin)) {
+        logger.warn('AdminLayout: User is NOT an admin. Redirecting to /portal');
         navigate('/portal', { replace: true }); // Use replace: true
         setIsAdmin(false);
+        setIsSuperadmin(false);
       } else {
         logger.debug('AdminLayout: User IS an admin. Granting access.');
         setIsAdmin(true);
+        setIsSuperadmin(!!profile.is_superadmin);
       }
       setLoading(false);
       logger.debug('AdminLayout: Auth/Admin Check Complete');
@@ -155,6 +158,9 @@ if (!existingCustomer && !customerCheckError) {
         <Link to="/admin/invoices" className="hover:text-brandRed">Invoices</Link>
         <Link to="/admin/photos" className="hover:text-brandRed">Photo Uploads</Link>
         <Link to="/admin/reports" className="hover:text-brandRed">Reports</Link>
+        {isSuperadmin && (
+          <Link to="/admin/admin-users" className="hover:text-brandRed">Admin Users &amp; Audit</Link>
+        )}
         <Link to="/reset-password" className="mt-auto border-t border-white/30 pt-4 hover:text-brandRed">Change Password</Link>
         <button
           onClick={handleLogout}
