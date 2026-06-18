@@ -152,3 +152,33 @@ begin
 end $$;
 revoke all on function public.decrement_inventory(uuid, integer) from public;
 grant execute on function public.decrement_inventory(uuid, integer) to authenticated, service_role;
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- 8. Superadmin tier (Phase 2): role flag, function, role-change protection.
+--    NOTE: seed the first superadmin BEFORE the protect trigger exists.
+-- ─────────────────────────────────────────────────────────────────────────
+alter table public.profiles add column if not exists is_superadmin boolean not null default false;
+
+create or replace function public.is_superadmin()
+returns boolean language sql security definer stable set search_path = public as
+$$ select coalesce((select is_superadmin from public.profiles where id = auth.uid()), false) $$;
+grant execute on function public.is_superadmin() to anon, authenticated, service_role;
+
+-- is_admin() includes superadmins
+create or replace function public.is_admin()
+returns boolean language sql security definer stable set search_path = public as
+$$ select coalesce((select is_admin or is_superadmin from public.profiles where id = auth.uid()), false) $$;
+
+-- seed (run once, before the trigger below): info@stephenscode.dev is superadmin
+-- update public.profiles set is_superadmin=true, is_admin=true where lower(email)='info@stephenscode.dev';
+
+create or replace function public.protect_role_columns()
+returns trigger language plpgsql security definer set search_path = public as $$
+begin
+  if (new.is_admin is distinct from old.is_admin) or (new.is_superadmin is distinct from old.is_superadmin) then
+    if not public.is_superadmin() then raise exception 'only a superadmin may change role flags'; end if;
+  end if;
+  return new;
+end $$;
+drop trigger if exists protect_role_columns on public.profiles;
+create trigger protect_role_columns before update on public.profiles for each row execute function public.protect_role_columns();
