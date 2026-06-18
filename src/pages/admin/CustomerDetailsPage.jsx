@@ -76,7 +76,7 @@ const customerVehicleIds = vehiclesData.map(v => v.id);
       if (customerVehicleIds.length > 0) {
           const { data: allWoData, error: allWoError } = await supabase
               .from('work_orders')
-              .select(`id, work_order_number, current_status, description, vehicle_id`)
+              .select(`id, work_order_number, current_status, description, vehicle_id, created_at`)
               .in('vehicle_id', customerVehicleIds)
               .order('created_at', { ascending: false });
           if (allWoError) throw new Error(`Error fetching all work orders: ${allWoError.message}`);
