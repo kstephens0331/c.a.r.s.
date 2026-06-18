@@ -41,9 +41,10 @@ export default function AdminDashboardContent() {
 
         if (completedTodayError) throw new Error(completedTodayError.message);
 
-        // Fetch Total Customers
+        // Fetch Total Customers (the customers table is the source of truth;
+        // profiles also includes staff/admin accounts)
         const { count: totalCustomersCount, error: customersError } = await supabase
-          .from('profiles') // Assuming profiles table has all customers
+          .from('customers')
           .select('id', { count: 'exact', head: true });
 
         if (customersError) throw new Error(customersError.message);

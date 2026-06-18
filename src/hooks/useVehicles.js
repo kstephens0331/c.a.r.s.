@@ -28,12 +28,13 @@ export function useCustomerVehicles() {
 
       const userId = session.user.id;
 
-      // First, get the customer record for this user
+      // First, get the customer record for this user.
+      // maybeSingle(): no row yet → null (not an error); never hangs on 0/dup rows.
       const { data: customer, error: customerError } = await supabase
         .from('customers')
         .select('id')
         .eq('user_id', userId)
-        .single();
+        .maybeSingle();
 
       if (customerError) throw customerError;
       if (!customer) {

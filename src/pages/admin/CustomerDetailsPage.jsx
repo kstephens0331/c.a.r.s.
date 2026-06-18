@@ -10,31 +10,19 @@ import AdminWorkOrderCreator from '../../components/admin/CustomerDetails/AdminW
 import AdminWorkOrderManager from '../../components/admin/CustomerDetails/AdminWorkOrderManager.jsx';
 
 async function fetchCustomerVehicles(customerId) {
-  try {
-    // Get the current session to send auth token
-    const { data: { session } } = await supabase.auth.getSession();
+  // Query the DB directly — RLS authorizes admins to read any customer's vehicles.
+  // (Replaces a removed Edge Function that pointed at the old cloud project.)
+  const { data, error } = await supabase
+    .from('vehicles')
+    .select('*')
+    .eq('customer_id', customerId)
+    .order('created_at', { ascending: false });
 
-    const res = await fetch('https://vbxrcqtjpcyhylanozgz.functions.supabase.co/get-customer-vehicles', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${session?.access_token || ''}`
-      },
-      body: JSON.stringify({ customerId }),
-    });
-
-    const resJson = await res.json();
-
-    if (!res.ok || !Array.isArray(resJson.data)) {
-      console.error('Unexpected response from vehicle function:', res.status, resJson);
-      return [];
-    }
-
-    return resJson.data;
-  } catch (err) {
-    console.error('fetchCustomerVehicles error:', err);
+  if (error) {
+    console.error('fetchCustomerVehicles error:', error);
     return [];
   }
+  return data || [];
 }
 
 

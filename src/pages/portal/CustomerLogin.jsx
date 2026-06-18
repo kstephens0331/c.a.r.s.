@@ -25,7 +25,7 @@ export default function CustomerLogin() {
           .from('profiles')
           .select('is_admin')
           .eq('id', session.user.id)
-          .single();
+          .maybeSingle();
 
         if (profile?.is_admin) {
           navigate('/admin');
@@ -72,7 +72,7 @@ export default function CustomerLogin() {
     .from('profiles')
     .select('is_admin')
     .eq('id', user.id)
-    .single();
+    .maybeSingle();
 
   if (profileError) {
     console.error('Profile lookup failed:', profileError.message);

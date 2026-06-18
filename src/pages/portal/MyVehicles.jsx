@@ -12,18 +12,24 @@ export default function MyVehicles() {
   useEffect(() => {
   const fetchVehicles = async () => {
     setLoading(true);
-    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    const { data: { user } } = await supabase.auth.getUser();
 
-    if (!user) return;
+    if (!user) { setLoading(false); return; }
 
     const { data: customer, error: customerError } = await supabase
       .from("customers")
       .select("*")
       .eq("user_id", user.id)
-      .single();
+      .maybeSingle();
 
-    if (customerError || !customer) {
-      console.error("Customer not found or error", customerError);
+    if (customerError) {
+      console.error("Customer lookup error", customerError);
+      setLoading(false);
+      return;
+    }
+    if (!customer) {
+      setVehicles([]);
+      setLoading(false);
       return;
     }
 
@@ -34,10 +40,11 @@ export default function MyVehicles() {
 
     if (vehicleError) {
       console.error("Error fetching vehicles", vehicleError);
+      setLoading(false);
       return;
     }
 
-    setVehicles(vehiclesData);
+    setVehicles(vehiclesData || []);
     setLoading(false);
   };
 

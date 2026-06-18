@@ -29,15 +29,18 @@ export function useCustomer() {
 
       const userId = session.user.id;
 
-      // Fetch customer record for this user
+      // Fetch customer record for this user.
+      // maybeSingle(): returns null (no error) when the row doesn't exist yet,
+      // and a unique(user_id) index guarantees at most one row — so this never
+      // throws PGRST116 and never leaves the page stuck on "Loading…".
       const { data, error: fetchError } = await supabase
         .from('customers')
         .select('id, name, phone, email, address, user_id, created_at')
         .eq('user_id', userId)
-        .single();
+        .maybeSingle();
 
       if (fetchError) {
-        // If customer doesn't exist yet, that's okay
+        // No customer row yet is not an error for the portal.
         if (fetchError.code === 'PGRST116') {
           if (!isCancelled) {
             setCustomer(null);

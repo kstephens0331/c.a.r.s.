@@ -425,7 +425,7 @@ export default function WorkOrders() {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         const emailResponse = await fetch(
-          'https://vbxrcqtjpcyhylanozgz.functions.supabase.co/status-update-email',
+          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/status-update-email`,
           {
             method: 'POST',
             headers: {

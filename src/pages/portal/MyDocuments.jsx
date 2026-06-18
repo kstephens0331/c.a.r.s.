@@ -22,6 +22,20 @@ export default function MyDocuments() {
       const userId = session.user.id;
 
       try {
+        // Resolve this user's customer record; customer_documents.customer_id
+        // references customers.id (NOT the auth user id).
+        const { data: customer, error: custErr } = await supabase
+          .from('customers')
+          .select('id')
+          .eq('user_id', userId)
+          .maybeSingle();
+
+        if (custErr) throw new Error(custErr.message);
+        if (!customer) {
+          setDocuments([]);
+          return;
+        }
+
         const { data: docs, error: docsError } = await supabase
           .from('customer_documents')
           .select(`
@@ -39,11 +53,11 @@ export default function MyDocuments() {
               )
             )
           `)
-          .eq('customer_id', userId)
+          .eq('customer_id', customer.id)
           .order('created_at', { ascending: false });
 
         if (docsError) throw new Error(docsError.message);
-        setDocuments(docs);
+        setDocuments(docs || []);
       } catch (err) {
         console.error('Error fetching documents:', err);
         setError(`Failed to load your documents: ${err.message}`);

@@ -45,7 +45,7 @@ export default function RepairUpdates() {
           .from('customers')
           .select('id')
           .eq('user_id', userId)
-          .single();
+          .maybeSingle();
 
         if (customerError) throw new Error(customerError.message);
         if (!customer) {
