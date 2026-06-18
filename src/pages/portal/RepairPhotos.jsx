@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../services/supabaseClient.js'; // <= Verify this path and filename/extension
+import { getSignedUrl } from '../../services/signedUrl';
 import LazyImage from '../../components/LazyImage';
 
 export default function RepairPhotos() {
@@ -69,6 +70,11 @@ export default function RepairPhotos() {
 
       if (docError) throw new Error(docError.message);
 
+      // Sign photo URLs (private bucket) before display.
+      const signedDocs = await Promise.all(
+        (documents || []).map(async (d) => ({ ...d, document_url: await getSignedUrl(d.document_url) }))
+      );
+
       // Group repair photos by work order
       const grouped = {};
       for (const wo of workOrders) {
@@ -77,7 +83,7 @@ export default function RepairPhotos() {
 
         grouped[wo.id] = {
           title,
-          photos: documents.filter(doc => doc.work_order_id === wo.id).map(doc => doc.document_url),
+          photos: signedDocs.filter(doc => doc.work_order_id === wo.id).map(doc => doc.document_url),
         };
       }
 

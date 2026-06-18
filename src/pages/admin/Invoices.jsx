@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../services/supabaseClient'; // Changed: removed .js extension
+import { getSignedUrl } from '../../services/signedUrl';
 import Pagination from '../../components/Pagination'; // Import pagination component
 
 const ITEMS_PER_PAGE = 50; // Show 50 invoices per page
@@ -53,9 +54,15 @@ export default function Invoices() {
           throw new Error(fetchError.message);
         }
 
+        // Sign the stored PDF URLs (private bucket) into a SEPARATE field so the
+        // original pdf_url remains usable for storage path extraction on delete.
+        const signedInvoices = await Promise.all(
+          (data || []).map(async (inv) => ({ ...inv, pdf_url_signed: inv.pdf_url ? await getSignedUrl(inv.pdf_url) : null }))
+        );
+
         // Only update state if component is still mounted
         if (!isCancelled) {
-          setInvoices(data || []);
+          setInvoices(signedInvoices);
           setTotalCount(count || 0);
         }
       } catch (err) {
@@ -602,8 +609,8 @@ export default function Invoices() {
                       <td className="p-3 border-b">{new Date(invoice.invoice_date).toLocaleDateString()}</td>
                       <td className="p-3 border-b">${invoice.total_amount ? parseFloat(invoice.total_amount).toFixed(2) : '0.00'}</td>
                       <td className="p-3 border-b">
-                        {invoice.pdf_url ? (
-                          <a href={invoice.pdf_url} target="_blank" rel="noopener noreferrer" className="text-brandRed hover:underline">
+                        {invoice.pdf_url_signed ? (
+                          <a href={invoice.pdf_url_signed} target="_blank" rel="noopener noreferrer" className="text-brandRed hover:underline">
                             View File
                           </a>
                         ) : (

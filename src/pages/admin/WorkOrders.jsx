@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useState, useCallback, memo } from 'react';
 import { supabase } from '../../services/supabaseClient.js'; // Ensure this path is correct
+import { getSignedUrl } from '../../services/signedUrl';
 import Pagination from '../../components/Pagination'; // Import pagination component
 import { generateEstimatePDF, generateInvoicePDF } from '../../utils/pdfGenerator';
 
@@ -401,7 +402,10 @@ export default function WorkOrders() {
         setError(`Failed to load customer documents: ${docsError.message}`);
         return;
       }
-      setCustomerDocuments(docsData);
+      const signedDocs = await Promise.all(
+        (docsData || []).map(async (d) => ({ ...d, document_url: await getSignedUrl(d.document_url) }))
+      );
+      setCustomerDocuments(signedDocs);
     };
 
     fetchDetailsForSelectedWorkOrder();

@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../services/supabaseClient.js'; // Ensure path is correct
+import { getSignedUrl } from '../../services/signedUrl';
 
 export default function MyDocuments() {
   const [documents, setDocuments] = useState([]);
@@ -57,7 +58,10 @@ export default function MyDocuments() {
           .order('created_at', { ascending: false });
 
         if (docsError) throw new Error(docsError.message);
-        setDocuments(docs || []);
+        const signed = await Promise.all(
+          (docs || []).map(async (d) => ({ ...d, document_url: await getSignedUrl(d.document_url) }))
+        );
+        setDocuments(signed);
       } catch (err) {
         console.error('Error fetching documents:', err);
         setError(`Failed to load your documents: ${err.message}`);

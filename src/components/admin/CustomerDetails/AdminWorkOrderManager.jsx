@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../../services/supabaseClient.js'; // Adjust path as needed
+import { getSignedUrl } from '../../../services/signedUrl';
 import { generateEstimatePDF, generateInvoicePDF } from '../../../utils/pdfGenerator';
 
 export default function AdminWorkOrderManager({ workOrder, customerId, onAddPart, onUploadDocument, message, setMessage }) {
@@ -58,7 +59,10 @@ export default function AdminWorkOrderManager({ workOrder, customerId, onAddPart
         console.error('Error fetching documents for work order:', docsError.message);
         return;
       }
-      setCurrentWorkOrderDocuments(docsData);
+      const signedDocs = await Promise.all(
+        (docsData || []).map(async (d) => ({ ...d, document_url: await getSignedUrl(d.document_url) }))
+      );
+      setCurrentWorkOrderDocuments(signedDocs);
     };
 
     fetchData();

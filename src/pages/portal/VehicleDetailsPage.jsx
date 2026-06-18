@@ -101,11 +101,11 @@ export default function VehicleDetailsPage() {
             if (!storageError && files?.length) {
               for (const file of files) {
                 if (file.name !== '.emptyFolderPlaceholder') {
-                  const { data: publicUrlData } = supabase.storage
+                  const { data: signed } = await supabase.storage
                     .from('repair-photos')
-                    .getPublicUrl(`work_orders/${order.id}/${file.name}`);
-                  if (publicUrlData?.publicUrl) {
-                    photoUrls.push(publicUrlData.publicUrl);
+                    .createSignedUrl(`work_orders/${order.id}/${file.name}`, 3600);
+                  if (signed?.signedUrl) {
+                    photoUrls.push(signed.signedUrl);
                   }
                 }
               }

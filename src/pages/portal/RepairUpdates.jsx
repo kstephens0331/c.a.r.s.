@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../services/supabaseClient.js';
+import { getSignedUrl } from '../../services/signedUrl';
 import { TimelineSkeleton } from '../../components/LoadingSkeletons';
 import RepairTimeline from '../../components/portal/RepairTimeline';
 
@@ -102,9 +103,22 @@ export default function RepairUpdates() {
 
         if (woError) throw new Error(woError.message);
 
+        // Sign any document URLs (buckets are private) before display.
+        const signedWorkOrders = await Promise.all(
+          (workOrders || []).map(async (wo) => ({
+            ...wo,
+            customer_documents: await Promise.all(
+              (wo.customer_documents || []).map(async (d) => ({
+                ...d,
+                document_url: await getSignedUrl(d.document_url),
+              }))
+            ),
+          }))
+        );
+
         // Only update state if component is still mounted
         if (!isCancelled) {
-          setCustomerWorkOrders(workOrders);
+          setCustomerWorkOrders(signedWorkOrders);
         }
 
       }
