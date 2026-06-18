@@ -155,9 +155,10 @@ if (!existingCustomer && !customerCheckError) {
         <Link to="/admin/invoices" className="hover:text-brandRed">Invoices</Link>
         <Link to="/admin/photos" className="hover:text-brandRed">Photo Uploads</Link>
         <Link to="/admin/reports" className="hover:text-brandRed">Reports</Link>
+        <Link to="/reset-password" className="mt-auto border-t border-white/30 pt-4 hover:text-brandRed">Change Password</Link>
         <button
           onClick={handleLogout}
-          className="mt-auto text-sm text-white border-t border-white/30 pt-4 hover:text-red-400"
+          className="text-sm text-white hover:text-red-400"
         >
           Log Out
         </button>

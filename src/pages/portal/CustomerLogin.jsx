@@ -185,7 +185,13 @@ const handleGoogleLogin = async () => {
             Sign in with Google
           </button>
 
-          <p className="text-sm text-center mt-6">
+          <p className="text-sm text-center mt-4">
+            <Link to="/reset-password" className="text-brandRed font-semibold hover:underline">
+              Forgot password?
+            </Link>
+          </p>
+
+          <p className="text-sm text-center mt-2">
             Don’t have an account?{' '}
             <Link to="/register" className="text-brandRed font-semibold hover:underline">
               Register here

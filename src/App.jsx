@@ -1,10 +1,23 @@
 // App.jsx
-import React, { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { Suspense, lazy, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
 // Import Error Boundary
 import ErrorBoundary from './components/ErrorBoundary.jsx';
+import { supabase } from './services/supabaseClient';
+
+// Redirects any password-recovery link (which may land on any path) to the reset page.
+function RecoveryRedirect() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'PASSWORD_RECOVERY') navigate('/reset-password');
+    });
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+  return null;
+}
 
 // Import General Layout Components (needed immediately)
 import Navbar from './components/Navbar.jsx';
@@ -15,6 +28,7 @@ import HomePage from './pages/portal/HomePage.jsx';
 
 // Lazy load all other public pages
 const CustomerLogin = lazy(() => import('./pages/portal/CustomerLogin.jsx'));
+const ResetPassword = lazy(() => import('./pages/portal/ResetPassword.jsx'));
 const RegisterPage = lazy(() => import('./pages/portal/RegisterPage.jsx'));
 const AboutPage = lazy(() => import('./pages/portal/AboutPage.jsx'));
 const CollisionRepairPage = lazy(() => import('./pages/portal/Services.jsx'));
@@ -77,6 +91,7 @@ function App() {
     <ErrorBoundary>
       <HelmetProvider>
         <Router>
+          <RecoveryRedirect />
           {/* Navbar that appears on most public pages */}
           <Navbar />
 
@@ -86,6 +101,7 @@ function App() {
                 {/* Public-facing routes */}
                 <Route path="/" element={<HomePage />} />
                 <Route path="/login" element={<CustomerLogin />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/services" element={<CollisionRepairPage />} />

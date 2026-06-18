@@ -116,9 +116,10 @@ if (!existingCustomer && !customerCheckError) {
         <Link to="/portal/repair-updates" className="hover:text-brandRed">Repair Updates</Link>
         <Link to="/portal/repair-photos" className="hover:text-brandRed">Repair Photos</Link>
         <Link to="/portal/my-documents" className="hover:text-brandRed">My Documents</Link>
+        <Link to="/reset-password" className="mt-auto border-t border-white/30 pt-4 hover:text-brandRed">Change Password</Link>
         <button
           onClick={handleLogout}
-          className="mt-auto text-sm text-white border-t border-white/30 pt-4 hover:text-red-400"
+          className="text-sm text-white hover:text-red-400"
         >
           Log Out
         </button>
