@@ -53,7 +53,7 @@ serve(async (req) => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      from: 'C.A.R.S Collision <onboarding@resend.dev>', // Using Resend's test domain
+      from: 'C.A.R.S Collision <noreply@carscollisionandrefinishshop.com>', // verified Resend domain
       to: customer.email,
       subject: `Repair Update: ${workOrder.vehicles.year} ${workOrder.vehicles.make} ${workOrder.vehicles.model}`,
       html: `

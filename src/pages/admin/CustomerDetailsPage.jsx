@@ -175,6 +175,7 @@ const handleAddNewVehicle = async (newVehicleData) => {
           work_order_number: newWorkOrderData.work_order_number,
           description: newWorkOrderData.description,
           vehicle_id: vehicleId,
+          customer_id: customerId, // required + links the WO to the customer's portal
           current_status: 'Estimate Scheduled',
         })
         .select()
