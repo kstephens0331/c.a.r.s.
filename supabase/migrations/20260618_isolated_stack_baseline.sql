@@ -114,3 +114,41 @@ begin
     execute format('create trigger audit_%1$s after insert or update or delete on public.%1$s for each row execute function public.audit_trigger();', t);
   end loop;
 end $$;
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- 6. Storage hardening: private buckets + RLS
+-- ─────────────────────────────────────────────────────────────────────────
+insert into storage.buckets (id, name, public) values ('invoice-files','invoice-files', false)
+  on conflict (id) do update set public = excluded.public;
+update storage.buckets set public = false where id in ('customer-files','repair-photos');
+
+drop policy if exists "admin_all_objects" on storage.objects;
+create policy "admin_all_objects" on storage.objects for all to authenticated
+  using (public.is_admin()) with check (public.is_admin());
+drop policy if exists "auth_read_customer_buckets" on storage.objects;
+create policy "auth_read_customer_buckets" on storage.objects for select to authenticated
+  using (bucket_id in ('customer-files','repair-photos'));
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- 7. Server-set timestamps + atomic inventory decrement
+-- ─────────────────────────────────────────────────────────────────────────
+create or replace function public.set_updated_at()
+returns trigger language plpgsql as $$ begin new.updated_at := now(); return new; end $$;
+drop trigger if exists set_updated_at on public.work_orders;
+create trigger set_updated_at before update on public.work_orders for each row execute function public.set_updated_at();
+drop trigger if exists set_updated_at on public.inventory;
+create trigger set_updated_at before update on public.inventory for each row execute function public.set_updated_at();
+
+create or replace function public.decrement_inventory(p_inventory_id uuid, p_qty integer)
+returns integer language plpgsql security definer set search_path = public as $$
+declare v_remaining integer;
+begin
+  if not public.is_admin() then raise exception 'not authorized'; end if;
+  if p_qty is null or p_qty <= 0 then raise exception 'quantity must be positive'; end if;
+  update public.inventory set quantity = quantity - p_qty
+    where id = p_inventory_id and quantity >= p_qty returning quantity into v_remaining;
+  if not found then raise exception 'insufficient inventory'; end if;
+  return v_remaining;
+end $$;
+revoke all on function public.decrement_inventory(uuid, integer) from public;
+grant execute on function public.decrement_inventory(uuid, integer) to authenticated, service_role;
