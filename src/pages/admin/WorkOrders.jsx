@@ -2,6 +2,8 @@ import { Helmet } from 'react-helmet-async';
 import { useEffect, useState, useCallback, memo } from 'react';
 import { supabase } from '../../services/supabaseClient.js'; // Ensure this path is correct
 import { getSignedUrl } from '../../services/signedUrl';
+import WorkOrderCharges from '../../components/admin/WorkOrderCharges';
+import WorkOrderInsurance from '../../components/admin/WorkOrderInsurance';
 import Pagination from '../../components/Pagination'; // Import pagination component
 import { generateEstimatePDF, generateInvoicePDF } from '../../utils/pdfGenerator';
 
@@ -865,8 +867,18 @@ export default function WorkOrders() {
         color: order.vehicles?.color || ''
       };
 
+      // Itemized charges from the work order.
+      const { data: eLabor } = await supabase.from('work_order_labor').select('amount').eq('work_order_id', order.id);
+      const { data: eCharges } = await supabase.from('work_orders').select('paint_materials_total, sublet_total, tax_rate').eq('id', order.id).maybeSingle();
+      const charges = {
+        laborTotal: (eLabor || []).reduce((s, l) => s + Number(l.amount), 0),
+        materials: Number(eCharges?.paint_materials_total || 0),
+        sublet: Number(eCharges?.sublet_total || 0),
+        taxRate: Number(eCharges?.tax_rate ?? 0.0825),
+      };
+
       // Generate PDF
-      await generateEstimatePDF(workOrder, customer, vehicle, parts);
+      await generateEstimatePDF(workOrder, customer, vehicle, parts, charges);
       setMessage(`Estimate PDF generated for Work Order #${order.work_order_number}`);
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {
@@ -927,16 +939,20 @@ export default function WorkOrders() {
         color: order.vehicles?.color || ''
       };
 
-      // Real labor + materials from the work order's charges.
+      // Itemized charges from the work order.
       const { data: laborRows } = await supabase
         .from('work_order_labor').select('amount').eq('work_order_id', order.id);
       const { data: woCharges } = await supabase
-        .from('work_orders').select('paint_materials_total, sublet_total').eq('id', order.id).maybeSingle();
-      const laborCost = (laborRows || []).reduce((s, l) => s + Number(l.amount), 0)
-        + Number(woCharges?.paint_materials_total || 0) + Number(woCharges?.sublet_total || 0);
+        .from('work_orders').select('paint_materials_total, sublet_total, tax_rate').eq('id', order.id).maybeSingle();
+      const charges = {
+        laborTotal: (laborRows || []).reduce((s, l) => s + Number(l.amount), 0),
+        materials: Number(woCharges?.paint_materials_total || 0),
+        sublet: Number(woCharges?.sublet_total || 0),
+        taxRate: Number(woCharges?.tax_rate ?? 0.0825),
+      };
 
       // Generate PDF
-      await generateInvoicePDF(workOrder, customer, vehicle, parts, laborCost);
+      await generateInvoicePDF(workOrder, customer, vehicle, parts, charges);
       setMessage(`Invoice PDF generated for Work Order #${order.work_order_number}`);
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {
@@ -1054,6 +1070,10 @@ export default function WorkOrders() {
                     </p>
                   </div>
                 </div>
+
+                {/* --- Charges / Estimate + Insurance & Scheduling --- */}
+                <WorkOrderCharges workOrderId={order.id} />
+                <WorkOrderInsurance workOrderId={order.id} />
 
                 {/* --- Add Parts Section --- */}
                 <div className="mt-6 pt-4 border-t border-gray-200">

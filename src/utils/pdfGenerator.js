@@ -107,8 +107,13 @@ const addCompanyFooter = (doc) => {
  * @param {Object} vehicle - Vehicle data
  * @param {Array} parts - Parts list
  */
-export const generateEstimatePDF = async (workOrder, customer, vehicle, parts) => {
+export const generateEstimatePDF = async (workOrder, customer, vehicle, parts, charges = 0) => {
   const doc = new jsPDF();
+
+  const c = typeof charges === 'number'
+    ? { laborTotal: charges, materials: 0, sublet: 0, taxRate: 0.0825 }
+    : { laborTotal: Number(charges.laborTotal || 0), materials: Number(charges.materials || 0),
+        sublet: Number(charges.sublet || 0), taxRate: Number(charges.taxRate ?? 0.0825) };
 
   // Add professional header with logo
   await addCompanyHeader(doc, 'ESTIMATE', {
@@ -177,11 +182,18 @@ export const generateEstimatePDF = async (workOrder, customer, vehicle, parts) =
     `$${(part.quantity * part.unit_price).toFixed(2)}`,
   ]);
 
+  if (c.laborTotal > 0) partsTableData.push(['LABOR', 'Body / paint / repair labor', '1', `$${c.laborTotal.toFixed(2)}`, `$${c.laborTotal.toFixed(2)}`]);
+  if (c.materials > 0) partsTableData.push(['MATERIALS', 'Paint & materials', '1', `$${c.materials.toFixed(2)}`, `$${c.materials.toFixed(2)}`]);
+  if (c.sublet > 0) partsTableData.push(['SUBLET', 'Sublet services', '1', `$${c.sublet.toFixed(2)}`, `$${c.sublet.toFixed(2)}`]);
+
   const partsSubtotal = parts.reduce((sum, part) => sum + part.quantity * part.unit_price, 0);
+  const estSubtotal = partsSubtotal + c.laborTotal + c.materials + c.sublet;
+  const estTax = estSubtotal * c.taxRate;
+  const estTotal = estSubtotal + estTax;
 
   doc.autoTable({
     startY: tableStartY,
-    head: [['Part Number', 'Description', 'Qty', 'Unit Price', 'Total']],
+    head: [['Item', 'Description', 'Qty', 'Unit Price', 'Total']],
     body: partsTableData,
     theme: 'grid',
     headStyles: {
@@ -212,11 +224,11 @@ export const generateEstimatePDF = async (workOrder, customer, vehicle, parts) =
 
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
-  doc.text('Parts Subtotal:', rightAlign, finalY, { align: 'right' });
-  doc.text(`$${partsSubtotal.toFixed(2)}`, 190, finalY, { align: 'right' });
+  doc.text('Subtotal:', rightAlign, finalY, { align: 'right' });
+  doc.text(`$${estSubtotal.toFixed(2)}`, 190, finalY, { align: 'right' });
 
-  doc.text('Labor (estimate):', rightAlign, finalY + 6, { align: 'right' });
-  doc.text('TBD', 190, finalY + 6, { align: 'right' });
+  doc.text(`Tax (${(c.taxRate * 100).toFixed(2)}%):`, rightAlign, finalY + 6, { align: 'right' });
+  doc.text(`$${estTax.toFixed(2)}`, 190, finalY + 6, { align: 'right' });
 
   // Draw line above total
   doc.setDrawColor(33, 33, 33);
@@ -226,7 +238,7 @@ export const generateEstimatePDF = async (workOrder, customer, vehicle, parts) =
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(12);
   doc.text('ESTIMATED TOTAL:', rightAlign, finalY + 16, { align: 'right' });
-  doc.text(`$${partsSubtotal.toFixed(2)}+`, 190, finalY + 16, { align: 'right' });
+  doc.text(`$${estTotal.toFixed(2)}`, 190, finalY + 16, { align: 'right' });
 
   // Terms and conditions
   const termsY = finalY + 26;
@@ -263,8 +275,14 @@ export const generateEstimatePDF = async (workOrder, customer, vehicle, parts) =
  * @param {Array} parts - Parts list
  * @param {number} laborCost - Labor cost (optional)
  */
-export const generateInvoicePDF = async (workOrder, customer, vehicle, parts, laborCost = 0) => {
+export const generateInvoicePDF = async (workOrder, customer, vehicle, parts, charges = 0) => {
   const doc = new jsPDF();
+
+  // Accept either a number (legacy laborCost) or an itemized charges object.
+  const c = typeof charges === 'number'
+    ? { laborTotal: charges, materials: 0, sublet: 0, taxRate: 0.0825 }
+    : { laborTotal: Number(charges.laborTotal || 0), materials: Number(charges.materials || 0),
+        sublet: Number(charges.sublet || 0), taxRate: Number(charges.taxRate ?? 0.0825) };
 
   // Add professional header with logo
   await addCompanyHeader(doc, 'INVOICE', {
@@ -345,19 +363,14 @@ export const generateInvoicePDF = async (workOrder, customer, vehicle, parts, la
     ])
   ];
 
-  // Add labor row if provided
-  if (laborCost > 0) {
-    tableData.push([
-      'LABOR',
-      'Labor charges for repair work',
-      '1',
-      `$${laborCost.toFixed(2)}`,
-      `$${laborCost.toFixed(2)}`,
-    ]);
-  }
+  // Itemized labor / materials / sublet rows
+  if (c.laborTotal > 0) tableData.push(['LABOR', 'Body / paint / repair labor', '1', `$${c.laborTotal.toFixed(2)}`, `$${c.laborTotal.toFixed(2)}`]);
+  if (c.materials > 0) tableData.push(['MATERIALS', 'Paint & materials', '1', `$${c.materials.toFixed(2)}`, `$${c.materials.toFixed(2)}`]);
+  if (c.sublet > 0) tableData.push(['SUBLET', 'Sublet services', '1', `$${c.sublet.toFixed(2)}`, `$${c.sublet.toFixed(2)}`]);
 
-  const subtotal = parts.reduce((sum, part) => sum + part.quantity * part.unit_price, 0) + laborCost;
-  const taxRate = 0.0825; // 8.25% Texas sales tax
+  const partsSubtotal = parts.reduce((sum, part) => sum + part.quantity * part.unit_price, 0);
+  const subtotal = partsSubtotal + c.laborTotal + c.materials + c.sublet;
+  const taxRate = c.taxRate;
   const tax = subtotal * taxRate;
   const total = subtotal + tax;
 
@@ -401,7 +414,7 @@ export const generateInvoicePDF = async (workOrder, customer, vehicle, parts, la
   doc.text('Subtotal:', rightAlign, finalY, { align: 'right' });
   doc.text(`$${subtotal.toFixed(2)}`, 190, finalY, { align: 'right' });
 
-  doc.text('Tax (8.25%):', rightAlign, finalY + 6, { align: 'right' });
+  doc.text(`Tax (${(taxRate * 100).toFixed(2)}%):`, rightAlign, finalY + 6, { align: 'right' });
   doc.text(`$${tax.toFixed(2)}`, 190, finalY + 6, { align: 'right' });
 
   // Draw line above total

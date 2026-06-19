@@ -244,6 +244,19 @@ export default function RepairUpdates() {
                         onClick={async () => {
                           const { error } = await supabase.rpc('approve_estimate', { p_work_order_id: order.id });
                           if (error) { alert(`Could not approve: ${error.message}`); return; }
+                          // Notify the shop (best-effort; never blocks the approval).
+                          try {
+                            const { data: { session } } = await supabase.auth.getSession();
+                            await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/notify-estimate-approved`, {
+                              method: 'POST',
+                              headers: {
+                                'Content-Type': 'application/json',
+                                'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY,
+                                'Authorization': `Bearer ${session?.access_token || ''}`,
+                              },
+                              body: JSON.stringify({ workOrderId: order.id }),
+                            });
+                          } catch (_e) { /* ignore */ }
                           window.location.reload();
                         }}
                         className="mt-2 bg-primary text-white px-4 py-2 rounded font-semibold hover:bg-black"

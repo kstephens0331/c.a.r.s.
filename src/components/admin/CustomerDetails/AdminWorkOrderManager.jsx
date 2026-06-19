@@ -110,8 +110,18 @@ export default function AdminWorkOrderManager({ workOrder, customerId, onAddPart
         unit_price: part.unit_price_at_time || 0
       }));
 
+      // Itemized charges from the work order.
+      const { data: eLabor } = await supabase.from('work_order_labor').select('amount').eq('work_order_id', workOrder.id);
+      const { data: eCharges } = await supabase.from('work_orders').select('paint_materials_total, sublet_total, tax_rate').eq('id', workOrder.id).maybeSingle();
+      const estCharges = {
+        laborTotal: (eLabor || []).reduce((s, l) => s + Number(l.amount), 0),
+        materials: Number(eCharges?.paint_materials_total || 0),
+        sublet: Number(eCharges?.sublet_total || 0),
+        taxRate: Number(eCharges?.tax_rate ?? 0.0825),
+      };
+
       // Generate PDF
-      await generateEstimatePDF(workOrder, customerData, vehicleData, parts);
+      await generateEstimatePDF(workOrder, customerData, vehicleData, parts, estCharges);
       setMessage(`Estimate PDF generated for Work Order #${workOrder.work_order_number}`);
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {
@@ -147,16 +157,20 @@ export default function AdminWorkOrderManager({ workOrder, customerId, onAddPart
         unit_price: part.unit_price_at_time || 0
       }));
 
-      // Real labor + materials from the work order's charges.
+      // Itemized charges from the work order.
       const { data: laborRows } = await supabase
         .from('work_order_labor').select('amount').eq('work_order_id', workOrder.id);
       const { data: woCharges } = await supabase
-        .from('work_orders').select('paint_materials_total, sublet_total').eq('id', workOrder.id).maybeSingle();
-      const laborCost = (laborRows || []).reduce((s, l) => s + Number(l.amount), 0)
-        + Number(woCharges?.paint_materials_total || 0) + Number(woCharges?.sublet_total || 0);
+        .from('work_orders').select('paint_materials_total, sublet_total, tax_rate').eq('id', workOrder.id).maybeSingle();
+      const charges = {
+        laborTotal: (laborRows || []).reduce((s, l) => s + Number(l.amount), 0),
+        materials: Number(woCharges?.paint_materials_total || 0),
+        sublet: Number(woCharges?.sublet_total || 0),
+        taxRate: Number(woCharges?.tax_rate ?? 0.0825),
+      };
 
       // Generate PDF
-      await generateInvoicePDF(workOrder, customerData, vehicleData, parts, laborCost);
+      await generateInvoicePDF(workOrder, customerData, vehicleData, parts, charges);
       setMessage(`Invoice PDF generated for Work Order #${workOrder.work_order_number}`);
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {
