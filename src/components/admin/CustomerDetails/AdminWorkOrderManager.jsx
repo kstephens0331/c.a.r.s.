@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../../../services/supabaseClient.js'; // Adjust path as needed
 import { getSignedUrl } from '../../../services/signedUrl';
 import { generateEstimatePDF, generateInvoicePDF } from '../../../utils/pdfGenerator';
+import WorkOrderCharges from '../WorkOrderCharges';
+import WorkOrderInsurance from '../WorkOrderInsurance';
 
 export default function AdminWorkOrderManager({ workOrder, customerId, onAddPart, onUploadDocument, message, setMessage }) {
   // Parts Management States
@@ -145,8 +147,13 @@ export default function AdminWorkOrderManager({ workOrder, customerId, onAddPart
         unit_price: part.unit_price_at_time || 0
       }));
 
-      // Labor cost (can be made dynamic later)
-      const laborCost = 0; // Set to 0 for now
+      // Real labor + materials from the work order's charges.
+      const { data: laborRows } = await supabase
+        .from('work_order_labor').select('amount').eq('work_order_id', workOrder.id);
+      const { data: woCharges } = await supabase
+        .from('work_orders').select('paint_materials_total, sublet_total').eq('id', workOrder.id).maybeSingle();
+      const laborCost = (laborRows || []).reduce((s, l) => s + Number(l.amount), 0)
+        + Number(woCharges?.paint_materials_total || 0) + Number(woCharges?.sublet_total || 0);
 
       // Generate PDF
       await generateInvoicePDF(workOrder, customerData, vehicleData, parts, laborCost);
@@ -164,6 +171,11 @@ export default function AdminWorkOrderManager({ workOrder, customerId, onAddPart
       <p className="text-sm">Status: {workOrder.current_status}</p>
       <p className="text-sm">Description: {workOrder.description}</p>
       {message && <p className="text-sm mt-2">{message}</p>}
+
+      {/* Charges / Estimate (labor + materials + tax). Hidden when CCC sync is on. */}
+      <WorkOrderCharges workOrderId={workOrder.id} />
+      {/* Insurance + scheduling (always available) */}
+      <WorkOrderInsurance workOrderId={workOrder.id} />
 
       {/* Add Parts Section */}
       <div>

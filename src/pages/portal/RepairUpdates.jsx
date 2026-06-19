@@ -81,6 +81,14 @@ export default function RepairUpdates() {
             id,
             work_order_number,
             current_status,
+            estimate_total,
+            deductible,
+            is_insurance,
+            insurance_company,
+            claim_number,
+            estimate_approved_at,
+            dropoff_date,
+            pickup_date,
             vehicles (
               make,
               model,
@@ -211,6 +219,42 @@ export default function RepairUpdates() {
               <h2 className="text-xl font-semibold mb-2">
                 {order.vehicles?.year} {order.vehicles?.make} {order.vehicles?.model} (Work Order #{order.work_order_number})
               </h2>
+
+              {/* Estimate / insurance / scheduling summary */}
+              {(order.estimate_total != null || order.is_insurance || order.dropoff_date || order.pickup_date) && (
+                <div className="bg-accent rounded p-3 mb-4 text-sm space-y-1">
+                  {order.estimate_total != null && (
+                    <div className="flex justify-between"><span>Estimate total</span><span className="font-semibold">${Number(order.estimate_total).toFixed(2)}</span></div>
+                  )}
+                  {order.is_insurance && (
+                    <>
+                      <div className="flex justify-between"><span>Insurance</span><span>{order.insurance_company || '—'}{order.claim_number ? ` · Claim #${order.claim_number}` : ''}</span></div>
+                      {order.deductible != null && (
+                        <div className="flex justify-between"><span>Your deductible</span><span className="font-semibold">${Number(order.deductible).toFixed(2)}</span></div>
+                      )}
+                    </>
+                  )}
+                  {order.dropoff_date && <div className="flex justify-between"><span>Drop-off</span><span>{new Date(order.dropoff_date).toLocaleDateString()}</span></div>}
+                  {order.pickup_date && <div className="flex justify-between"><span>Pickup</span><span>{new Date(order.pickup_date).toLocaleDateString()}</span></div>}
+                  {order.estimate_total != null && (
+                    order.estimate_approved_at ? (
+                      <p className="text-green-700 font-semibold pt-1">✓ Estimate approved {new Date(order.estimate_approved_at).toLocaleDateString()}</p>
+                    ) : (
+                      <button
+                        onClick={async () => {
+                          const { error } = await supabase.rpc('approve_estimate', { p_work_order_id: order.id });
+                          if (error) { alert(`Could not approve: ${error.message}`); return; }
+                          window.location.reload();
+                        }}
+                        className="mt-2 bg-primary text-white px-4 py-2 rounded font-semibold hover:bg-black"
+                      >
+                        Approve Estimate
+                      </button>
+                    )
+                  )}
+                </div>
+              )}
+
               {/* Visual Timeline */}
               <div className="mb-6">
                 <RepairTimeline currentStatus={order.current_status} />

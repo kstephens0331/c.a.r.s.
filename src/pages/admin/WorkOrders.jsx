@@ -927,8 +927,13 @@ export default function WorkOrders() {
         color: order.vehicles?.color || ''
       };
 
-      // Labor cost (can be made dynamic later)
-      const laborCost = 0; // Set to 0 for now, can add labor tracking later
+      // Real labor + materials from the work order's charges.
+      const { data: laborRows } = await supabase
+        .from('work_order_labor').select('amount').eq('work_order_id', order.id);
+      const { data: woCharges } = await supabase
+        .from('work_orders').select('paint_materials_total, sublet_total').eq('id', order.id).maybeSingle();
+      const laborCost = (laborRows || []).reduce((s, l) => s + Number(l.amount), 0)
+        + Number(woCharges?.paint_materials_total || 0) + Number(woCharges?.sublet_total || 0);
 
       // Generate PDF
       await generateInvoicePDF(workOrder, customer, vehicle, parts, laborCost);

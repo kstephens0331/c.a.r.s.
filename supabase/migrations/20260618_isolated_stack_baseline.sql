@@ -182,3 +182,70 @@ begin
 end $$;
 drop trigger if exists protect_role_columns on public.profiles;
 create trigger protect_role_columns before update on public.profiles for each row execute function public.protect_role_columns();
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- 9. Phase 4 — quoting, insurance, approval, scheduling
+-- ─────────────────────────────────────────────────────────────────────────
+create table if not exists public.shop_settings (
+  id int primary key default 1,
+  default_labor_rate numeric(10,2) not null default 55.00,
+  tax_rate numeric(5,4) not null default 0.0825,
+  manual_estimating_enabled boolean not null default true,
+  updated_at timestamptz not null default now(),
+  constraint shop_settings_singleton check (id = 1)
+);
+insert into public.shop_settings (id) values (1) on conflict (id) do nothing;
+alter table public.shop_settings enable row level security;
+drop policy if exists shop_settings_read on public.shop_settings;
+create policy shop_settings_read on public.shop_settings for select to authenticated using (true);
+drop policy if exists shop_settings_admin on public.shop_settings;
+create policy shop_settings_admin on public.shop_settings for all using (public.is_admin()) with check (public.is_admin());
+
+create table if not exists public.work_order_labor (
+  id uuid primary key default gen_random_uuid(),
+  work_order_id uuid not null references public.work_orders(id) on delete cascade,
+  category text not null default 'Body',
+  hours numeric(10,2) not null default 0,
+  rate numeric(10,2) not null default 0,
+  amount numeric(12,2) generated always as (round(hours * rate, 2)) stored,
+  created_at timestamptz not null default now()
+);
+create index if not exists work_order_labor_wo_idx on public.work_order_labor(work_order_id);
+alter table public.work_order_labor enable row level security;
+drop policy if exists admin_access_all on public.work_order_labor;
+create policy admin_access_all on public.work_order_labor for all using (public.is_admin()) with check (public.is_admin());
+drop policy if exists client_select_own on public.work_order_labor;
+create policy client_select_own on public.work_order_labor for select
+  using (work_order_id in (select id from public.work_orders where customer_id in (select public.my_customer_ids())));
+
+alter table public.work_orders
+  add column if not exists paint_materials_total numeric(12,2) not null default 0,
+  add column if not exists sublet_total numeric(12,2) not null default 0,
+  add column if not exists tax_rate numeric(5,4) not null default 0.0825,
+  add column if not exists estimate_total numeric(12,2),
+  add column if not exists is_insurance boolean not null default false,
+  add column if not exists insurance_company text,
+  add column if not exists claim_number text,
+  add column if not exists policy_number text,
+  add column if not exists adjuster_name text,
+  add column if not exists adjuster_phone text,
+  add column if not exists deductible numeric(12,2),
+  add column if not exists estimate_approved_at timestamptz,
+  add column if not exists approved_by uuid,
+  add column if not exists dropoff_date date,
+  add column if not exists pickup_date date;
+
+drop trigger if exists audit_work_order_labor on public.work_order_labor;
+create trigger audit_work_order_labor after insert or update or delete on public.work_order_labor for each row execute function public.audit_trigger();
+drop trigger if exists audit_shop_settings on public.shop_settings;
+create trigger audit_shop_settings after insert or update or delete on public.shop_settings for each row execute function public.audit_trigger();
+
+create or replace function public.approve_estimate(p_work_order_id uuid)
+returns void language plpgsql security definer set search_path = public as $$
+begin
+  update public.work_orders set estimate_approved_at = now(), approved_by = auth.uid()
+    where id = p_work_order_id and customer_id in (select public.my_customer_ids()) and estimate_approved_at is null;
+  if not found then raise exception 'not authorized, not found, or already approved'; end if;
+end $$;
+revoke all on function public.approve_estimate(uuid) from public;
+grant execute on function public.approve_estimate(uuid) to authenticated;

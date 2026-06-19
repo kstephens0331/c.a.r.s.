@@ -7,6 +7,7 @@ export default function AdminUsers() {
   const [isSuperadmin, setIsSuperadmin] = useState(null); // null = loading
   const [profiles, setProfiles] = useState([]);
   const [audit, setAudit] = useState([]);
+  const [settings, setSettings] = useState(null);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
@@ -33,7 +34,22 @@ export default function AdminUsers() {
       .order('occurred_at', { ascending: false })
       .limit(100);
     setAudit(logs || []);
+
+    const { data: s } = await supabase
+      .from('shop_settings')
+      .select('id, manual_estimating_enabled, default_labor_rate, tax_rate')
+      .eq('id', 1).maybeSingle();
+    setSettings(s || null);
   }, []);
+
+  const toggleManualEstimating = async () => {
+    setMessage(''); setError('');
+    const next = !settings?.manual_estimating_enabled;
+    const { error: e } = await supabase.from('shop_settings').update({ manual_estimating_enabled: next }).eq('id', 1);
+    if (e) { setError(e.message); return; }
+    setMessage(next ? 'In-platform estimating turned ON.' : 'In-platform estimating turned OFF (CCC-synced).');
+    load();
+  };
 
   useEffect(() => { load(); }, [load]);
 
@@ -106,6 +122,26 @@ export default function AdminUsers() {
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+
+        <div>
+          <h2 className="text-2xl font-bold text-primary mb-3">Platform Settings</h2>
+          <div className="bg-white border rounded-lg p-5 shadow-sm flex items-center justify-between">
+            <div>
+              <p className="font-semibold">In-platform estimating</p>
+              <p className="text-sm text-gray-600">
+                {settings?.manual_estimating_enabled
+                  ? 'ON — admins build quotes (labor, parts, materials) in the back office.'
+                  : 'OFF — estimating is synced from CCC ONE; the manual charges panel is hidden.'}
+              </p>
+            </div>
+            <button
+              onClick={toggleManualEstimating}
+              className={`px-4 py-2 rounded font-semibold text-white ${settings?.manual_estimating_enabled ? 'bg-brandRed hover:bg-red-700' : 'bg-primary hover:bg-black'}`}
+            >
+              {settings?.manual_estimating_enabled ? 'Turn OFF (use CCC)' : 'Turn ON'}
+            </button>
           </div>
         </div>
 
