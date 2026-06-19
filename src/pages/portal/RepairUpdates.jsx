@@ -261,8 +261,8 @@ export default function RepairUpdates() {
                       )}
                     </>
                   )}
-                  {order.dropoff_date && <div className="flex justify-between"><span>Drop-off</span><span>{new Date(order.dropoff_date).toLocaleDateString()}</span></div>}
-                  {order.pickup_date && <div className="flex justify-between"><span>Pickup</span><span>{new Date(order.pickup_date).toLocaleDateString()}</span></div>}
+                  {order.dropoff_date && <div className="flex justify-between"><span>Drop-off</span><span>{new Date(`${order.dropoff_date}T00:00:00`).toLocaleDateString()}</span></div>}
+                  {order.pickup_date && <div className="flex justify-between"><span>Pickup</span><span>{new Date(`${order.pickup_date}T00:00:00`).toLocaleDateString()}</span></div>}
                   {order.estimate_total != null && (
                     order.estimate_approved_at ? (
                       <p className="text-green-700 font-semibold pt-1">✓ Estimate approved {new Date(order.estimate_approved_at).toLocaleDateString()}</p>

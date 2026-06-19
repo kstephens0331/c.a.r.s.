@@ -96,7 +96,7 @@ export default function RequestAppointment() {
             <div className="space-y-2">
               {requests.map((r) => (
                 <div key={r.id} className="flex justify-between items-center bg-white border rounded p-3 text-sm">
-                  <span>{TYPES.find(t => t.value === r.request_type)?.label || r.request_type}{r.preferred_date ? ` · ${new Date(r.preferred_date).toLocaleDateString()}` : ''}</span>
+                  <span>{TYPES.find(t => t.value === r.request_type)?.label || r.request_type}{r.preferred_date ? ` · ${new Date(`${r.preferred_date}T00:00:00`).toLocaleDateString()}` : ''}</span>
                   <span className={`px-2 py-1 rounded text-xs font-semibold ${r.status === 'scheduled' ? 'bg-green-100 text-green-800' : r.status === 'declined' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'}`}>{r.status}</span>
                 </div>
               ))}

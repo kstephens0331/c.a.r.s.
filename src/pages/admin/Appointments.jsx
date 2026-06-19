@@ -71,7 +71,7 @@ export default function Appointments() {
                       <div className="text-xs text-gray-500">{r.customers?.phone || r.customers?.email || ''}</div>
                     </td>
                     <td className="p-3 border-b">{TYPE_LABEL[r.request_type] || r.request_type}</td>
-                    <td className="p-3 border-b whitespace-nowrap">{r.preferred_date ? new Date(r.preferred_date).toLocaleDateString() : '—'}</td>
+                    <td className="p-3 border-b whitespace-nowrap">{r.preferred_date ? new Date(`${r.preferred_date}T00:00:00`).toLocaleDateString() : '—'}</td>
                     <td className="p-3 border-b">{r.vehicles ? `${r.vehicles.year} ${r.vehicles.make} ${r.vehicles.model}` : '—'}</td>
                     <td className="p-3 border-b max-w-[200px]">{r.notes || '—'}</td>
                     <td className="p-3 border-b">
