@@ -249,3 +249,56 @@ begin
 end $$;
 revoke all on function public.approve_estimate(uuid) from public;
 grant execute on function public.approve_estimate(uuid) to authenticated;
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- 10. Bucket C — supplements, vehicle intake, review request, booking
+-- ─────────────────────────────────────────────────────────────────────────
+create table if not exists public.work_order_supplements (
+  id uuid primary key default gen_random_uuid(),
+  work_order_id uuid not null references public.work_orders(id) on delete cascade,
+  description text not null,
+  amount numeric(12,2) not null default 0,
+  status text not null default 'pending' check (status in ('pending','approved','denied')),
+  created_at timestamptz not null default now()
+);
+create index if not exists wos_supp_wo_idx on public.work_order_supplements(work_order_id);
+alter table public.work_order_supplements enable row level security;
+drop policy if exists admin_access_all on public.work_order_supplements;
+create policy admin_access_all on public.work_order_supplements for all using (public.is_admin()) with check (public.is_admin());
+drop policy if exists client_select_own on public.work_order_supplements;
+create policy client_select_own on public.work_order_supplements for select
+  using (work_order_id in (select id from public.work_orders where customer_id in (select public.my_customer_ids())));
+drop trigger if exists audit_wos_supp on public.work_order_supplements;
+create trigger audit_wos_supp after insert or update or delete on public.work_order_supplements for each row execute function public.audit_trigger();
+
+alter table public.work_orders
+  add column if not exists mileage_in integer,
+  add column if not exists drivable boolean,
+  add column if not exists impact_point text,
+  add column if not exists damage_description text,
+  add column if not exists review_request_sent_at timestamptz;
+
+alter table public.shop_settings
+  add column if not exists review_url text
+  default 'https://www.google.com/search?q=C.A.R.S+Collision+and+Refinish+Shop+Reviews';
+
+create table if not exists public.appointment_requests (
+  id uuid primary key default gen_random_uuid(),
+  customer_id uuid not null references public.customers(id) on delete cascade,
+  vehicle_id uuid references public.vehicles(id) on delete set null,
+  request_type text not null default 'estimate' check (request_type in ('estimate','dropoff','other')),
+  preferred_date date,
+  notes text,
+  status text not null default 'requested' check (status in ('requested','scheduled','declined')),
+  created_at timestamptz not null default now()
+);
+create index if not exists appt_customer_idx on public.appointment_requests(customer_id);
+alter table public.appointment_requests enable row level security;
+drop policy if exists admin_access_all on public.appointment_requests;
+create policy admin_access_all on public.appointment_requests for all using (public.is_admin()) with check (public.is_admin());
+drop policy if exists client_insert_own on public.appointment_requests;
+create policy client_insert_own on public.appointment_requests for insert with check (customer_id in (select public.my_customer_ids()));
+drop policy if exists client_select_own on public.appointment_requests;
+create policy client_select_own on public.appointment_requests for select using (customer_id in (select public.my_customer_ids()));
+drop trigger if exists audit_appt on public.appointment_requests;
+create trigger audit_appt after insert or update or delete on public.appointment_requests for each row execute function public.audit_trigger();

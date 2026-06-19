@@ -4,6 +4,7 @@ import { getSignedUrl } from '../../../services/signedUrl';
 import { generateEstimatePDF, generateInvoicePDF } from '../../../utils/pdfGenerator';
 import WorkOrderCharges from '../WorkOrderCharges';
 import WorkOrderInsurance from '../WorkOrderInsurance';
+import WorkOrderSupplements from '../WorkOrderSupplements';
 
 export default function AdminWorkOrderManager({ workOrder, customerId, onAddPart, onUploadDocument, message, setMessage }) {
   // Parts Management States
@@ -190,6 +191,8 @@ export default function AdminWorkOrderManager({ workOrder, customerId, onAddPart
       <WorkOrderCharges workOrderId={workOrder.id} />
       {/* Insurance + scheduling (always available) */}
       <WorkOrderInsurance workOrderId={workOrder.id} />
+      {/* Supplements (additional damage found mid-repair) */}
+      <WorkOrderSupplements workOrderId={workOrder.id} />
 
       {/* Add Parts Section */}
       <div>

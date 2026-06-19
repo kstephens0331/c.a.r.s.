@@ -164,6 +164,7 @@ if (!existingCustomer && !customerCheckError) {
         <h2 className="text-2xl font-bold mb-6">Admin Panel</h2>
         <Link to="/admin" className="hover:text-brandRed">Dashboard</Link>
         <Link to="/admin/work-orders" className="hover:text-brandRed">Work Orders</Link>
+        <Link to="/admin/appointments" className="hover:text-brandRed">Appointments</Link>
         <Link to="/admin/inventory" className="hover:text-brandRed">Inventory</Link>
         <Link to="/admin/invoices" className="hover:text-brandRed">Invoices</Link>
         <Link to="/admin/photos" className="hover:text-brandRed">Photo Uploads</Link>

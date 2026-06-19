@@ -4,6 +4,7 @@ import { supabase } from '../../services/supabaseClient.js'; // Ensure this path
 import { getSignedUrl } from '../../services/signedUrl';
 import WorkOrderCharges from '../../components/admin/WorkOrderCharges';
 import WorkOrderInsurance from '../../components/admin/WorkOrderInsurance';
+import WorkOrderSupplements from '../../components/admin/WorkOrderSupplements';
 import Pagination from '../../components/Pagination'; // Import pagination component
 import { generateEstimatePDF, generateInvoicePDF } from '../../utils/pdfGenerator';
 
@@ -455,6 +456,20 @@ export default function WorkOrders() {
       } catch (emailError) {
         console.warn('Email notification error:', emailError);
         // Don't fail the status update if email fails
+      }
+
+      // When the repair is finished, send a one-time review request (idempotent server-side).
+      if (newStatus === 'Complete' || newStatus === 'Ready for Pickup') {
+        try {
+          const { data: { session } } = await supabase.auth.getSession();
+          await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/review-request-email`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token || ''}` },
+            body: JSON.stringify({ workOrderId }),
+          });
+        } catch (reviewError) {
+          console.warn('Review request error:', reviewError);
+        }
       }
 
       // Send SMS notification to customer (if phone number available)
@@ -1071,9 +1086,10 @@ export default function WorkOrders() {
                   </div>
                 </div>
 
-                {/* --- Charges / Estimate + Insurance & Scheduling --- */}
+                {/* --- Charges / Estimate + Insurance & Scheduling + Supplements --- */}
                 <WorkOrderCharges workOrderId={order.id} />
                 <WorkOrderInsurance workOrderId={order.id} />
+                <WorkOrderSupplements workOrderId={order.id} />
 
                 {/* --- Add Parts Section --- */}
                 <div className="mt-6 pt-4 border-t border-gray-200">

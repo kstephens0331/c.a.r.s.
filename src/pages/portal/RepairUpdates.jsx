@@ -89,10 +89,18 @@ export default function RepairUpdates() {
             estimate_approved_at,
             dropoff_date,
             pickup_date,
+            damage_description,
+            impact_point,
+            drivable,
             vehicles (
               make,
               model,
               year
+            ),
+            work_order_supplements (
+              description,
+              amount,
+              status
             ),
             work_order_parts (
               part_number,
@@ -221,11 +229,30 @@ export default function RepairUpdates() {
               </h2>
 
               {/* Estimate / insurance / scheduling summary */}
-              {(order.estimate_total != null || order.is_insurance || order.dropoff_date || order.pickup_date) && (
+              {(order.estimate_total != null || order.is_insurance || order.dropoff_date || order.pickup_date || order.damage_description || (order.work_order_supplements || []).some(s => s.status === 'approved')) && (
                 <div className="bg-accent rounded p-3 mb-4 text-sm space-y-1">
+                  {order.damage_description && (
+                    <div className="flex justify-between"><span>Damage</span><span className="text-right max-w-[60%]">{order.damage_description}</span></div>
+                  )}
                   {order.estimate_total != null && (
                     <div className="flex justify-between"><span>Estimate total</span><span className="font-semibold">${Number(order.estimate_total).toFixed(2)}</span></div>
                   )}
+                  {(() => {
+                    const supps = (order.work_order_supplements || []).filter(s => s.status === 'approved');
+                    const suppTotal = supps.reduce((sum, x) => sum + Number(x.amount), 0);
+                    if (suppTotal <= 0) return null;
+                    return (
+                      <>
+                        {supps.map((s, i) => (
+                          <div key={i} className="flex justify-between text-xs text-gray-600"><span>+ Supplement: {s.description}</span><span>${Number(s.amount).toFixed(2)}</span></div>
+                        ))}
+                        <div className="flex justify-between border-t pt-1"><span>Approved supplements</span><span className="font-semibold">${suppTotal.toFixed(2)}</span></div>
+                        {order.estimate_total != null && (
+                          <div className="flex justify-between font-bold"><span>Updated total</span><span>${(Number(order.estimate_total) + suppTotal).toFixed(2)}</span></div>
+                        )}
+                      </>
+                    );
+                  })()}
                   {order.is_insurance && (
                     <>
                       <div className="flex justify-between"><span>Insurance</span><span>{order.insurance_company || '—'}{order.claim_number ? ` · Claim #${order.claim_number}` : ''}</span></div>

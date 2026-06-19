@@ -63,6 +63,7 @@ const CustomerDetailsPage = lazy(() => import('./pages/admin/CustomerDetailsPage
 const Reports = lazy(() => import('./pages/admin/Reports.jsx'));
 const AdminUsers = lazy(() => import('./pages/admin/AdminUsers.jsx'));
 const Security = lazy(() => import('./pages/admin/Security.jsx'));
+const Appointments = lazy(() => import('./pages/admin/Appointments.jsx'));
 
 // Lazy load Customer Portal Layout and Components
 const CustomerPortalLayout = lazy(() => import('./layouts/CustomerPortalLayout.jsx'));
@@ -72,6 +73,7 @@ const RepairPhotos = lazy(() => import('./pages/portal/RepairPhotos.jsx'));
 const RepairUpdates = lazy(() => import('./pages/portal/RepairUpdates.jsx'));
 const AddVehicleForm = lazy(() => import('./pages/portal/AddVehicleForm.jsx'));
 const MyDocuments = lazy(() => import('./pages/portal/MyDocuments.jsx'));
+const RequestAppointment = lazy(() => import('./pages/portal/RequestAppointment.jsx'));
 const VehicleDetailsPage = lazy(() => import('./pages/portal/VehicleDetailsPage.jsx'));
 
 // Loading fallback component
@@ -139,6 +141,7 @@ function App() {
                   <Route path="invoices" element={<ErrorBoundary><Invoices /></ErrorBoundary>} />
                   <Route path="photos" element={<ErrorBoundary><PhotoUploads /></ErrorBoundary>} />
                   <Route path="reports" element={<ErrorBoundary><Reports /></ErrorBoundary>} />
+                  <Route path="appointments" element={<ErrorBoundary><Appointments /></ErrorBoundary>} />
                   <Route path="admin-users" element={<ErrorBoundary><AdminUsers /></ErrorBoundary>} />
                   <Route path="security" element={<ErrorBoundary><Security /></ErrorBoundary>} />
                 </Route>
@@ -155,6 +158,7 @@ function App() {
                   <Route path="repair-updates" element={<ErrorBoundary><RepairUpdates /></ErrorBoundary>} />
                   <Route path="repair-photos" element={<ErrorBoundary><RepairPhotos /></ErrorBoundary>} />
                   <Route path="my-documents" element={<ErrorBoundary><MyDocuments /></ErrorBoundary>} />
+                  <Route path="request-appointment" element={<ErrorBoundary><RequestAppointment /></ErrorBoundary>} />
                   <Route path="vehicles/:id" element={<ErrorBoundary><VehicleDetailsPage /></ErrorBoundary>} />
                 </Route>
 
